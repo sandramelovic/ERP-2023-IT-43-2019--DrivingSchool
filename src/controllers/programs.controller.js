@@ -43,6 +43,10 @@ export const getProgramById = async (req, res) => {
             .input("id", id)
             .query(query.getProgramById)
 
+        if (!result.recordset[0]) {
+            res.status(404)
+            return res.send('Program not found')
+        }
         res.send(result.recordset[0])
     } catch (error) {
         res.status(500)

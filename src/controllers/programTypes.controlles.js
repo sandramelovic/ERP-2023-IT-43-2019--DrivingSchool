@@ -50,7 +50,7 @@ export const deleteProgramType = async (req, res) => {
 
 export const putProgramType = async (req, res) => {
     const { programType } = req.body
-    const {id} = req.params
+    const { id } = req.params
 
     if (programType == null) {
         return res.status(400).json({ msg: "Bad Request. Please fill all fields" })
@@ -80,6 +80,10 @@ export const getProgramTypeById = async (req, res) => {
             .input("id", id)
             .query(query.getProgramTypeById)
 
+        if (!result.recordset[0]) {
+            res.status(404)
+            return res.send('Program type not found')
+        }
         res.send(result.recordset[0])
     } catch (error) {
         res.status(500)

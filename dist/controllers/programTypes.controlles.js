@@ -183,19 +183,26 @@ var getProgramTypeById = /*#__PURE__*/function () {
           return pool.request().input("id", id).query(_database.query.getProgramTypeById);
         case 7:
           result = _context5.sent;
-          res.send(result.recordset[0]);
-          _context5.next = 15;
-          break;
+          if (result.recordset[0]) {
+            _context5.next = 11;
+            break;
+          }
+          res.status(404);
+          return _context5.abrupt("return", res.send('Program type not found'));
         case 11:
-          _context5.prev = 11;
+          res.send(result.recordset[0]);
+          _context5.next = 18;
+          break;
+        case 14:
+          _context5.prev = 14;
           _context5.t0 = _context5["catch"](0);
           res.status(500);
           res.send(_context5.t0.message);
-        case 15:
+        case 18:
         case "end":
           return _context5.stop();
       }
-    }, _callee5, null, [[0, 11]]);
+    }, _callee5, null, [[0, 14]]);
   }));
   return function getProgramTypeById(_x9, _x10) {
     return _ref5.apply(this, arguments);

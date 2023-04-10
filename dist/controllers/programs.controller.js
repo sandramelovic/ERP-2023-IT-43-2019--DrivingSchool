@@ -105,19 +105,26 @@ var getProgramById = /*#__PURE__*/function () {
           return pool.request().input("id", id).query(_database.query.getProgramById);
         case 7:
           result = _context3.sent;
-          res.send(result.recordset[0]);
-          _context3.next = 15;
-          break;
+          if (result.recordset[0]) {
+            _context3.next = 11;
+            break;
+          }
+          res.status(404);
+          return _context3.abrupt("return", res.send('Program not found'));
         case 11:
-          _context3.prev = 11;
+          res.send(result.recordset[0]);
+          _context3.next = 18;
+          break;
+        case 14:
+          _context3.prev = 14;
           _context3.t0 = _context3["catch"](0);
           res.status(500);
           res.send(_context3.t0.message);
-        case 15:
+        case 18:
         case "end":
           return _context3.stop();
       }
-    }, _callee3, null, [[0, 11]]);
+    }, _callee3, null, [[0, 14]]);
   }));
   return function getProgramById(_x5, _x6) {
     return _ref3.apply(this, arguments);

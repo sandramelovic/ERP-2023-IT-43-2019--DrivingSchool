@@ -223,7 +223,6 @@ var postUser = /*#__PURE__*/function () {
             id: userId,
             username: username
           }, res);
-          // res.json({ nameSurename, address, birthDate, jmbg, phoneNumber, role, password, username })
           _context5.next = 30;
           break;
         case 26:

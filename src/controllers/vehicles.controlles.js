@@ -45,6 +45,10 @@ export const getVehicleById = async (req, res) => {
             .input("id", id)
             .query(query.getVehicleById)
 
+        if (!result.recordset[0]) {
+            res.status(404)
+            return res.send('Vehicle not found')
+        }
         res.send(result.recordset[0])
     } catch (error) {
         res.status(500)
@@ -88,7 +92,7 @@ export const putVehicle = async (req, res) => {
             .input("id", sql.Int, id)
             .query(query.putVehicle)
 
-            res.json({ vin, ccm, color, type, categoryId })
+        res.json({ vin, ccm, color, type, categoryId })
     } catch (error) {
         res.status(500)
         res.send(error.message)
