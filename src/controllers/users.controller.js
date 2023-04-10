@@ -116,7 +116,6 @@ export const postUser = async (req, res) => {
         userId = result.recordset[0].userId
        
         createSendToken({ id: userId, username }, res);
-        // res.json({ nameSurename, address, birthDate, jmbg, phoneNumber, role, password, username })
     } catch (err) {
         console.log(`⛔⛔⛔ SIGNUP: ${err.message}`);
         res.status(404).json({
