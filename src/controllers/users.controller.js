@@ -51,7 +51,8 @@ export const deleteUser = async (req, res) => {
 }
 
 export const putUser = async (req, res) => {
-    const { nameSurename, address, birthDate, jmbg, phoneNumber, username, password, role } = req.body
+    const { nameSurename, address, birthDate, jmbg, phoneNumber, username, role } = req.body
+    let { password } = req.body;
 
     const { id } = req.params
 
@@ -60,6 +61,9 @@ export const putUser = async (req, res) => {
     }
     try {
         const pool = await getConnection()
+
+        var salt = await bcrypt.genSalt(HASH_SALT);
+        password = await bcrypt.hash(password, salt);
 
         await pool.request()
             .input("nameSurename", sql.VarChar, nameSurename)

@@ -125,28 +125,37 @@ var deleteUser = /*#__PURE__*/function () {
 exports.deleteUser = deleteUser;
 var putUser = /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var _req$body, nameSurename, address, birthDate, jmbg, phoneNumber, username, password, role, id, pool;
+    var _req$body, nameSurename, address, birthDate, jmbg, phoneNumber, username, role, password, id, pool, salt;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
-          _req$body = req.body, nameSurename = _req$body.nameSurename, address = _req$body.address, birthDate = _req$body.birthDate, jmbg = _req$body.jmbg, phoneNumber = _req$body.phoneNumber, username = _req$body.username, password = _req$body.password, role = _req$body.role;
+          _req$body = req.body, nameSurename = _req$body.nameSurename, address = _req$body.address, birthDate = _req$body.birthDate, jmbg = _req$body.jmbg, phoneNumber = _req$body.phoneNumber, username = _req$body.username, role = _req$body.role;
+          password = req.body.password;
           id = req.params.id;
           if (!(nameSurename == null || jmbg == null || phoneNumber == null || username == null || password == null)) {
-            _context4.next = 4;
+            _context4.next = 5;
             break;
           }
           return _context4.abrupt("return", res.status(400).json({
             msg: "Bad Request. Please fill all fields"
           }));
-        case 4:
-          _context4.prev = 4;
-          _context4.next = 7;
+        case 5:
+          _context4.prev = 5;
+          _context4.next = 8;
           return (0, _database.getConnection)();
-        case 7:
+        case 8:
           pool = _context4.sent;
-          _context4.next = 10;
+          _context4.next = 11;
+          return bcrypt.genSalt(_config.HASH_SALT);
+        case 11:
+          salt = _context4.sent;
+          _context4.next = 14;
+          return bcrypt.hash(password, salt);
+        case 14:
+          password = _context4.sent;
+          _context4.next = 17;
           return pool.request().input("nameSurename", _database.sql.VarChar, nameSurename).input("address", _database.sql.VarChar, address).input("birthDate", _database.sql.Date, birthDate).input("jmbg", _database.sql.VarChar, jmbg).input("phoneNumber", _database.sql.VarChar, phoneNumber).input("role", _database.sql.Bit, role).input("username", _database.sql.VarChar, username).input("password", _database.sql.Char, password).input("id", _database.sql.Int, id).query(_database.query.putUser);
-        case 10:
+        case 17:
           res.json({
             nameSurename: nameSurename,
             address: address,
@@ -157,18 +166,18 @@ var putUser = /*#__PURE__*/function () {
             username: username,
             password: password
           });
-          _context4.next = 17;
+          _context4.next = 24;
           break;
-        case 13:
-          _context4.prev = 13;
-          _context4.t0 = _context4["catch"](4);
+        case 20:
+          _context4.prev = 20;
+          _context4.t0 = _context4["catch"](5);
           res.status(500);
           res.send(_context4.t0.message);
-        case 17:
+        case 24:
         case "end":
           return _context4.stop();
       }
-    }, _callee4, null, [[4, 13]]);
+    }, _callee4, null, [[5, 20]]);
   }));
   return function putUser(_x7, _x8) {
     return _ref4.apply(this, arguments);
