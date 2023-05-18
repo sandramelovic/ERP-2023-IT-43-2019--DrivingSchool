@@ -11,11 +11,12 @@ var _users2 = require("../permissions/users.permissions");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 var router = (0, _express.Router)();
 router.get('/users', _users.protect, (0, _users.authRole)(_role["default"].Admin), _users.getUsers);
-router.get('/user/:id', _users.protect, (0, _users.authRole)(_role["default"].Admin), _users.getUserById);
+router.get('/user/:id', _users.protect, authPutUser, _users.getUserById);
 router.post('/user', _users.postUser);
 router.put('/user/:id', _users.protect, authPutUser, _users.putUser);
-router["delete"]('/user/:id', _users.protect, (0, _users.authRole)(_role["default"].NoOneCan), _users.deleteUser);
+router["delete"]('/user/:id', _users.protect, (0, _users.authRole)(_role["default"].Admin), _users.deleteUser);
 router.post('/login', _users.login);
+router.post('/logout', _users.logout);
 router.get("/free-endpoint", function (req, res) {
   res.json({
     message: "You are free to access me anytime"

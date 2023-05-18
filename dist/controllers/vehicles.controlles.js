@@ -45,11 +45,11 @@ var getVehicles = /*#__PURE__*/function () {
 exports.getVehicles = getVehicles;
 var postVehicle = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
-    var _req$body, vin, ccm, color, type, categoryId, pool;
+    var _req$body, vin, ccm, color, type, categoryId, description, yearOfProduction, carImage, name, pool;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
-          _req$body = req.body, vin = _req$body.vin, ccm = _req$body.ccm, color = _req$body.color, type = _req$body.type, categoryId = _req$body.categoryId;
+          _req$body = req.body, vin = _req$body.vin, ccm = _req$body.ccm, color = _req$body.color, type = _req$body.type, categoryId = _req$body.categoryId, description = _req$body.description, yearOfProduction = _req$body.yearOfProduction, carImage = _req$body.carImage, name = _req$body.name;
           if (!(vin == null || ccm == null || type == null, categoryId == null)) {
             _context2.next = 3;
             break;
@@ -64,14 +64,18 @@ var postVehicle = /*#__PURE__*/function () {
         case 6:
           pool = _context2.sent;
           _context2.next = 9;
-          return pool.request().input("vin", _database.sql.VarChar, vin).input("ccm", _database.sql.Int, ccm).input("color", _database.sql.VarChar, color).input("type", _database.sql.VarChar, type).input("categoryId", _database.sql.Int, categoryId).query(_database.query.postVehicle);
+          return pool.request().input("vin", _database.sql.VarChar, vin).input("ccm", _database.sql.Int, ccm).input("color", _database.sql.VarChar, color).input("type", _database.sql.VarChar, type).input("categoryId", _database.sql.Int, categoryId).input("description", _database.sql.VarChar, description).input("yearOfProduction", _database.sql.Int, yearOfProduction).input("carImage", _database.sql.VarChar, carImage).input("name", _database.sql.VarChar, name).query(_database.query.postVehicle);
         case 9:
           res.json({
             vin: vin,
             ccm: ccm,
             color: color,
             type: type,
-            categoryId: categoryId
+            categoryId: categoryId,
+            description: description,
+            yearOfProduction: yearOfProduction,
+            carImage: carImage,
+            name: name
           });
           _context2.next = 16;
           break;
@@ -170,11 +174,11 @@ var deleteVehicle = /*#__PURE__*/function () {
 exports.deleteVehicle = deleteVehicle;
 var putVehicle = /*#__PURE__*/function () {
   var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
-    var _req$body2, vin, ccm, color, type, categoryId, id, pool;
+    var _req$body2, vin, ccm, color, type, categoryId, description, yearOfProduction, carImage, name, id, pool;
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) switch (_context5.prev = _context5.next) {
         case 0:
-          _req$body2 = req.body, vin = _req$body2.vin, ccm = _req$body2.ccm, color = _req$body2.color, type = _req$body2.type, categoryId = _req$body2.categoryId;
+          _req$body2 = req.body, vin = _req$body2.vin, ccm = _req$body2.ccm, color = _req$body2.color, type = _req$body2.type, categoryId = _req$body2.categoryId, description = _req$body2.description, yearOfProduction = _req$body2.yearOfProduction, carImage = _req$body2.carImage, name = _req$body2.name;
           id = req.params.id;
           if (!(vin == null || ccm == null || type == null, categoryId == null)) {
             _context5.next = 4;
@@ -190,7 +194,7 @@ var putVehicle = /*#__PURE__*/function () {
         case 7:
           pool = _context5.sent;
           _context5.next = 10;
-          return pool.request().input("vin", _database.sql.VarChar, vin).input("ccm", _database.sql.Int, ccm).input("color", _database.sql.VarChar, color).input("type", _database.sql.VarChar, type).input("categoryId", _database.sql.Int, categoryId).input("id", _database.sql.Int, id).query(_database.query.putVehicle);
+          return pool.request().input("vin", _database.sql.VarChar, vin).input("ccm", _database.sql.Int, ccm).input("color", _database.sql.VarChar, color).input("type", _database.sql.VarChar, type).input("categoryId", _database.sql.Int, categoryId).input("description", _database.sql.VarChar, description).input("yearOfProduction", _database.sql.Int, yearOfProduction).input("carImage", _database.sql.VarChar, carImage).input("name", _database.sql.VarChar, name).input("id", _database.sql.Int, id).query(_database.query.putVehicle);
         case 10:
           res.json({
             vin: vin,

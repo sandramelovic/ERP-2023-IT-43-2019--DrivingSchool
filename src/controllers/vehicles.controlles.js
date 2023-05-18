@@ -12,7 +12,7 @@ export const getVehicles = async (req, res) => {
 }
 
 export const postVehicle = async (req, res) => {
-    const { vin, ccm, color, type, categoryId } = req.body
+    const { vin, ccm, color, type, categoryId, description, yearOfProduction, carImage, name} = req.body
 
     if (vin == null || ccm == null || type == null, categoryId == null) {
         return res.status(400).json({ msg: "Bad Request. Please fill all fields" })
@@ -26,9 +26,13 @@ export const postVehicle = async (req, res) => {
             .input("color", sql.VarChar, color)
             .input("type", sql.VarChar, type)
             .input("categoryId", sql.Int, categoryId)
+            .input("description", sql.VarChar, description)
+            .input("yearOfProduction", sql.Int, yearOfProduction)
+            .input("carImage", sql.VarChar, carImage)
+            .input("name", sql.VarChar, name)
             .query(query.postVehicle)
 
-        res.json({ vin, ccm, color, type, categoryId })
+        res.json({ vin, ccm, color, type, categoryId, description, yearOfProduction, carImage, name })
     } catch (error) {
         res.status(500)
         res.send(error.message)
@@ -73,7 +77,7 @@ export const deleteVehicle = async (req, res) => {
 }
 
 export const putVehicle = async (req, res) => {
-    const { vin, ccm, color, type, categoryId } = req.body
+    const { vin, ccm, color, type, categoryId, description, yearOfProduction, carImage, name} = req.body
 
     const { id } = req.params
 
@@ -89,6 +93,10 @@ export const putVehicle = async (req, res) => {
             .input("color", sql.VarChar, color)
             .input("type", sql.VarChar, type)
             .input("categoryId", sql.Int, categoryId)
+            .input("description", sql.VarChar, description)
+            .input("yearOfProduction", sql.Int, yearOfProduction)
+            .input("carImage", sql.VarChar, carImage)
+            .input("name", sql.VarChar, name)
             .input("id", sql.Int, id)
             .query(query.putVehicle)
 

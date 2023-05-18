@@ -79,10 +79,34 @@ var getOrders = /*#__PURE__*/function () {
     return _ref2.apply(this, arguments);
   };
 }();
+/*
+export const postOrder = async (req, res) => {
+    const { userId, total, date } = req.body
+
+    if (userId == null || total == null || date == null) {
+        return res.status(400).json({ msg: "Bad Request. Please fill all fields" })
+    }
+    try {
+        const pool = await getConnection()
+
+        const result = await pool.request()
+            .input("userId", sql.Int, userId)
+            .input("total", sql.Int, total)
+            .input("date", sql.Date, date)
+            .query(query.postOrder)
+
+       // res.json({ userId, total, date })
+      
+    } catch (error) {
+        res.status(500)
+        res.send(error.message)
+    }
+
+}*/
 exports.getOrders = getOrders;
 var postOrder = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
-    var _req$body, userId, total, date, pool;
+    var _req$body, userId, total, date, pool, result, orderId;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
@@ -103,23 +127,28 @@ var postOrder = /*#__PURE__*/function () {
           _context3.next = 9;
           return pool.request().input("userId", _database.sql.Int, userId).input("total", _database.sql.Int, total).input("date", _database.sql.Date, date).query(_database.query.postOrder);
         case 9:
+          result = _context3.sent;
+          _context3.next = 12;
+          return pool.request().input("userId", _database.sql.Int, userId).input("total", _database.sql.Int, total).input("date", _database.sql.Date, date).query(_database.query.getOrderId);
+        case 12:
+          orderId = _context3.sent;
           res.json({
             userId: userId,
             total: total,
-            date: date
+            date: date,
+            orderId: orderId.recordset[0][""]
           });
-          _context3.next = 16;
+          _context3.next = 19;
           break;
-        case 12:
-          _context3.prev = 12;
-          _context3.t0 = _context3["catch"](3);
-          res.status(500);
-          res.send(_context3.t0.message);
         case 16:
+          _context3.prev = 16;
+          _context3.t0 = _context3["catch"](3);
+          res.status(500).send(_context3.t0.message);
+        case 19:
         case "end":
           return _context3.stop();
       }
-    }, _callee3, null, [[3, 12]]);
+    }, _callee3, null, [[3, 16]]);
   }));
   return function postOrder(_x5, _x6) {
     return _ref3.apply(this, arguments);
@@ -177,22 +206,21 @@ var deleteOrder = /*#__PURE__*/function () {
           return pool.request().input("id", id).query(_database.query.deleteOrder);
         case 7:
           result = _context5.sent;
-          res.sendStatus(200);
-          res.json({
-            message: 'Order deleted'
+          res.status(200).json({
+            success: true,
+            message: "Order deleted successfully"
           });
-          _context5.next = 16;
+          _context5.next = 14;
           break;
-        case 12:
-          _context5.prev = 12;
+        case 11:
+          _context5.prev = 11;
           _context5.t0 = _context5["catch"](0);
-          res.status(500);
-          res.send(_context5.t0.message);
-        case 16:
+          res.status(500).send(_context5.t0.message);
+        case 14:
         case "end":
           return _context5.stop();
       }
-    }, _callee5, null, [[0, 12]]);
+    }, _callee5, null, [[0, 11]]);
   }));
   return function deleteOrder(_x9, _x10) {
     return _ref5.apply(this, arguments);
@@ -223,10 +251,14 @@ var putOrder = /*#__PURE__*/function () {
           _context6.next = 10;
           return pool.request().input("userId", _database.sql.Int, userId).input("total", _database.sql.Int, total).input("date", _database.sql.Date, date).input("id", _database.sql.Int, id).query(_database.query.putOrder);
         case 10:
-          res.json({
-            userId: userId,
-            total: total,
-            date: date
+          //  res.json({ userId, total, date })
+          res.status(200).json({
+            success: true,
+            data: {
+              userId: userId,
+              total: total,
+              date: date
+            }
           });
           _context6.next = 17;
           break;

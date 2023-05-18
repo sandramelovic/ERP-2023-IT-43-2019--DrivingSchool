@@ -27,7 +27,7 @@ export const getOrders = async (req, res) => {
         res.send(error.message)
     }
 }
-
+/*
 export const postOrder = async (req, res) => {
     const { userId, total, date } = req.body
 
@@ -37,19 +37,53 @@ export const postOrder = async (req, res) => {
     try {
         const pool = await getConnection()
 
-        await pool.request()
+        const result = await pool.request()
             .input("userId", sql.Int, userId)
             .input("total", sql.Int, total)
             .input("date", sql.Date, date)
             .query(query.postOrder)
 
-        res.json({ userId, total, date })
+       // res.json({ userId, total, date })
+      
     } catch (error) {
         res.status(500)
         res.send(error.message)
     }
 
-}
+}*/
+
+export const postOrder = async (req, res) => {
+    const { userId, total, date } = req.body;
+  
+    if (userId == null || total == null || date == null) {
+      return res.status(400).json({ msg: "Bad Request. Please fill all fields" });
+    }
+  
+    try {
+      const pool = await getConnection();
+  
+      const result = await pool
+        .request()
+        .input("userId", sql.Int, userId)
+        .input("total", sql.Int, total)
+        .input("date", sql.Date, date)
+        .query(query.postOrder);
+
+        const orderId = await pool
+        .request()
+        .input("userId", sql.Int, userId)
+        .input("total", sql.Int, total)
+        .input("date", sql.Date, date)
+        .query(query.getOrderId);
+       
+  
+        res.json({ userId, total, date, orderId:orderId.recordset[0][""] })
+
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+  };
+  
 
 export const getOrderById = async (req, res) => {
     try {
@@ -76,11 +110,12 @@ export const deleteOrder = async (req, res) => {
             .input("id", id)
             .query(query.deleteOrder)
 
-        res.sendStatus(200)
-        res.json({ message: 'Order deleted' })
+            res.status(200).json({
+                success:true,
+                message: "Order deleted successfully"
+            })
     } catch (error) {
-        res.status(500)
-        res.send(error.message)
+        res.status(500).send(error.message)
     }
 }
 
@@ -101,7 +136,10 @@ export const putOrder = async (req, res) => {
             .input("id", sql.Int, id)
             .query(query.putOrder)
 
-        res.json({ userId, total, date })
+      //  res.json({ userId, total, date })
+        res.status(200).json({
+            success: true,
+            data: { userId, total, date }})
     } catch (error) {
         res.status(500)
         res.send(error.message)

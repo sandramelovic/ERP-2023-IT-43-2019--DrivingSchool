@@ -1,16 +1,17 @@
 import { Router } from "express";
-import { getUserById, getUsers, postUser, putUser, deleteUser, login, protect, authorize, authRole } from "../controllers/users.controller";
+import { getUserById, getUsers, postUser, putUser, deleteUser, login, protect, authorize, authRole, logout } from "../controllers/users.controller";
 import Role from "../helpers/role"
 import {canViewUsers} from '../permissions/users.permissions'
 
 const router = Router()
 
 router.get('/users', protect, authRole(Role.Admin), getUsers)
-router.get('/user/:id', protect, authRole(Role.Admin), getUserById)
+router.get('/user/:id', protect, authPutUser, getUserById)
 router.post('/user', postUser)
 router.put('/user/:id', protect, authPutUser, putUser)
-router.delete('/user/:id', protect, authRole(Role.NoOneCan), deleteUser)
+router.delete('/user/:id', protect, authRole(Role.Admin), deleteUser)
 router.post('/login', login)
+router.post('/logout', logout)
 
 router.get("/free-endpoint", (req, res) => {
     res.json({ message: "You are free to access me anytime" });

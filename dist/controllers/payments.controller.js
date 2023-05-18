@@ -81,11 +81,11 @@ var getPayments = /*#__PURE__*/function () {
 exports.getPayments = getPayments;
 var postPayment = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
-    var _req$body, paid, details, orderId, pool;
+    var _req$body, paid, details, orderId, status, pool;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
-          _req$body = req.body, paid = _req$body.paid, details = _req$body.details, orderId = _req$body.orderId;
+          _req$body = req.body, paid = _req$body.paid, details = _req$body.details, orderId = _req$body.orderId, status = _req$body.status;
           if (!(paid == null || details == null || orderId == null)) {
             _context3.next = 3;
             break;
@@ -100,12 +100,13 @@ var postPayment = /*#__PURE__*/function () {
         case 6:
           pool = _context3.sent;
           _context3.next = 9;
-          return pool.request().input("paid", _database.sql.Date, paid).input("details", _database.sql.VarChar, details).input("orderId", _database.sql.Int, orderId).query(_database.query.postPayment);
+          return pool.request().input("paid", _database.sql.Date, paid).input("details", _database.sql.VarChar, details).input("orderId", _database.sql.Int, orderId).input("status", _database.sql.VarChar, status).query(_database.query.postPayment);
         case 9:
           res.json({
             paid: paid,
             details: details,
-            orderId: orderId
+            orderId: orderId,
+            status: status
           });
           _context3.next = 16;
           break;

@@ -1,11 +1,12 @@
 import { getConnection, sql, query } from "../database"
 import { promisify } from "util";
 import * as bcrypt from 'bcrypt';
-import  jwt  from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { ID_LENGTH, ID_ALPHABET, HASH_SALT, COOKIE_JWT } from '../config'
 import cookieParser from "cookie-parser";
 import * as jwt_decode from 'jwt-decode'
 import authorize from '../helpers/authorize'
+import Role from "../helpers/role"
 
 export const getUsers = async (req, res) => {
     try {
@@ -43,27 +44,29 @@ export const deleteUser = async (req, res) => {
             .input("id", id)
             .query(query.deleteUser)
 
-        res.sendStatus(204)
+            res.status(200).json({
+                success:true,
+                message: "User deleted successfully"
+            })
     } catch (error) {
-        res.status(500)
-        res.send(error.message)
+        res.status(500).send(error.message)
     }
 }
 
 export const putUser = async (req, res) => {
     const { nameSurename, address, birthDate, jmbg, phoneNumber, username, role } = req.body
-    let { password } = req.body;
+    
 
     const { id } = req.params
 
-    if (nameSurename == null || jmbg == null || phoneNumber == null || username == null || password == null) {
+    if (nameSurename == null || jmbg == null || phoneNumber == null || username == null) {
         return res.status(400).json({ msg: "Bad Request. Please fill all fields" })
     }
     try {
         const pool = await getConnection()
 
         var salt = await bcrypt.genSalt(HASH_SALT);
-        password = await bcrypt.hash(password, salt);
+        
 
         await pool.request()
             .input("nameSurename", sql.VarChar, nameSurename)
@@ -73,14 +76,19 @@ export const putUser = async (req, res) => {
             .input("phoneNumber", sql.VarChar, phoneNumber)
             .input("role", sql.Bit, role)
             .input("username", sql.VarChar, username)
-            .input("password", sql.Char, password)
             .input("id", sql.Int, id)
             .query(query.putUser)
 
-        res.json({ nameSurename, address, birthDate, jmbg, phoneNumber, role, username, password })
+
+            res.status(200).json({
+                success: true,
+                data: { nameSurename, address, birthDate, jmbg, phoneNumber, role, username }})
+   //     res.json({ nameSurename, address, birthDate, jmbg, phoneNumber, role, username, password })
     } catch (error) {
-        res.status(500)
-        res.send(error.message)
+        res.status(500).json({
+            success:false,
+            message: "User not found"
+        })
     }
 
 }
@@ -88,12 +96,13 @@ export const putUser = async (req, res) => {
 export const postUser = async (req, res) => {
     try {
         const { nameSurename, address, birthDate, jmbg, phoneNumber, username } = req.body
-        let { password, role } = req.body;
+        let { password } = req.body;
         let userId = '';
+        const role = Role.User
 
         if (nameSurename == null || jmbg == null || phoneNumber == null || username == null || password == null) {
             return res.status(400).json({ msg: "Bad Request. Please fill all fields" })
-        }        
+        }
 
         const pool = await getConnection()
 
@@ -118,8 +127,8 @@ export const postUser = async (req, res) => {
             .query(query.findUserId)
 
         userId = result.recordset[0].userId
-       
-        createSendToken({ id: userId, username }, res);
+
+        createSendToken({ id: userId, username }, user.role, res);
     } catch (err) {
         console.log(`⛔⛔⛔ SIGNUP: ${err.message}`);
         res.status(404).json({
@@ -146,11 +155,11 @@ export const login = async (req, res) => {
 
         const user = result.recordset[0];
 
-        if (!user || !(await correctPassword(password, user.password))) 
+        if (!user || !(await correctPassword(password, user.password)))
             throw new Error('Incorrect username or password');
         // 401: Error for user not found
 
-        createSendToken(user, res);
+        createSendToken(user, user.role, res);
     } catch (err) {
         console.log(`⛔⛔⛔ LOGIN: ${err.message}`);
         res.status(401).json({
@@ -160,8 +169,8 @@ export const login = async (req, res) => {
     }
 };
 
-function createSendToken(user, res) {
-    const token = signToken(user.userId);
+function createSendToken(user, role, res) {
+    const token = signToken(user.userId, role);
     // Cookie to store the jwt for future to verify protected routes
     const cookieOptions = {
         expires: new Date(
@@ -183,13 +192,14 @@ function createSendToken(user, res) {
         token,
         data: {
             user,
+            role
         },
     });
 
 }
 
-function signToken(id) {
-    let payload = { "id" : id};
+function signToken(id, role) {
+    let payload = { "id": id, "role": role };
     //let token = jwt.sign( payload,'secret',  { noTimestamp:true, expiresIn: '1h' })
 
     return jwt.sign(payload, process.env.JWT_SECRET, {
@@ -209,7 +219,7 @@ export const protect = async (req, res, next) => {
             req.headers.authorization &&
             req.headers.authorization.startsWith('Bearer')
         ) {
-            token = req.headers.authorization.split(' ')[2];
+            token = req.headers.authorization.split(' ')[1];
         } else if (req.cookie.jwt) {
             token = req.cookie.jwt;
         }
@@ -220,8 +230,8 @@ export const protect = async (req, res, next) => {
                 message: 'Token not valid. Please Log in again.',
             });
         // 2) Verification token
-       // const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-       const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        // const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
         // Of course, possible errors must be caught and handled in the error functions handler.
         // This is only an example, so I'll not do it but of course, in a real application is a must.
         // 3) Check if user still exists
@@ -251,22 +261,22 @@ export const protect = async (req, res, next) => {
 }
 
 
-exports.authRole = function(role) {
+exports.authRole = function (role) {
     return (req, res, next) => {
-      if (req.user.role !== role) {
-        res.status(401)
-        return res.send('Not allowed')
-      }
-  
-      next()
+        if (req.user.role !== role) {
+            res.status(401)
+            return res.send('Not allowed')
+        }
+
+        next()
     }
 }
 
 export const logout = (req, res) => {
     res.cookie(COOKIE_JWT, 'loggedout', {
-      expires: new Date(Date.now() + 10 * 1000), // In 10sec
-      httpOnly: true,
+        expires: new Date(Date.now() + 10 * 1000), // In 10sec
+        httpOnly: true,
     });
-  
+
     res.status(200).json({ status: 'success' });
-  };
+};

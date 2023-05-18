@@ -13,6 +13,7 @@ var _config = require("../config");
 var _cookieParser = _interopRequireDefault(require("cookie-parser"));
 var jwt_decode = _interopRequireWildcard(require("jwt-decode"));
 var _authorize = _interopRequireDefault(require("../helpers/authorize"));
+var _role = _interopRequireDefault(require("../helpers/role"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -104,15 +105,17 @@ var deleteUser = /*#__PURE__*/function () {
           return pool.request().input("id", id).query(_database.query.deleteUser);
         case 7:
           result = _context3.sent;
-          res.sendStatus(204);
-          _context3.next = 15;
+          res.status(200).json({
+            success: true,
+            message: "User deleted successfully"
+          });
+          _context3.next = 14;
           break;
         case 11:
           _context3.prev = 11;
           _context3.t0 = _context3["catch"](0);
-          res.status(500);
-          res.send(_context3.t0.message);
-        case 15:
+          res.status(500).send(_context3.t0.message);
+        case 14:
         case "end":
           return _context3.stop();
       }
@@ -125,59 +128,59 @@ var deleteUser = /*#__PURE__*/function () {
 exports.deleteUser = deleteUser;
 var putUser = /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var _req$body, nameSurename, address, birthDate, jmbg, phoneNumber, username, role, password, id, pool, salt;
+    var _req$body, nameSurename, address, birthDate, jmbg, phoneNumber, username, role, id, pool, salt;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
           _req$body = req.body, nameSurename = _req$body.nameSurename, address = _req$body.address, birthDate = _req$body.birthDate, jmbg = _req$body.jmbg, phoneNumber = _req$body.phoneNumber, username = _req$body.username, role = _req$body.role;
-          password = req.body.password;
           id = req.params.id;
-          if (!(nameSurename == null || jmbg == null || phoneNumber == null || username == null || password == null)) {
-            _context4.next = 5;
+          if (!(nameSurename == null || jmbg == null || phoneNumber == null || username == null)) {
+            _context4.next = 4;
             break;
           }
           return _context4.abrupt("return", res.status(400).json({
             msg: "Bad Request. Please fill all fields"
           }));
-        case 5:
-          _context4.prev = 5;
-          _context4.next = 8;
+        case 4:
+          _context4.prev = 4;
+          _context4.next = 7;
           return (0, _database.getConnection)();
-        case 8:
+        case 7:
           pool = _context4.sent;
-          _context4.next = 11;
+          _context4.next = 10;
           return bcrypt.genSalt(_config.HASH_SALT);
-        case 11:
+        case 10:
           salt = _context4.sent;
-          _context4.next = 14;
-          return bcrypt.hash(password, salt);
-        case 14:
-          password = _context4.sent;
-          _context4.next = 17;
-          return pool.request().input("nameSurename", _database.sql.VarChar, nameSurename).input("address", _database.sql.VarChar, address).input("birthDate", _database.sql.Date, birthDate).input("jmbg", _database.sql.VarChar, jmbg).input("phoneNumber", _database.sql.VarChar, phoneNumber).input("role", _database.sql.Bit, role).input("username", _database.sql.VarChar, username).input("password", _database.sql.Char, password).input("id", _database.sql.Int, id).query(_database.query.putUser);
-        case 17:
-          res.json({
-            nameSurename: nameSurename,
-            address: address,
-            birthDate: birthDate,
-            jmbg: jmbg,
-            phoneNumber: phoneNumber,
-            role: role,
-            username: username,
-            password: password
+          _context4.next = 13;
+          return pool.request().input("nameSurename", _database.sql.VarChar, nameSurename).input("address", _database.sql.VarChar, address).input("birthDate", _database.sql.Date, birthDate).input("jmbg", _database.sql.VarChar, jmbg).input("phoneNumber", _database.sql.VarChar, phoneNumber).input("role", _database.sql.Bit, role).input("username", _database.sql.VarChar, username).input("id", _database.sql.Int, id).query(_database.query.putUser);
+        case 13:
+          res.status(200).json({
+            success: true,
+            data: {
+              nameSurename: nameSurename,
+              address: address,
+              birthDate: birthDate,
+              jmbg: jmbg,
+              phoneNumber: phoneNumber,
+              role: role,
+              username: username
+            }
           });
-          _context4.next = 24;
+          //     res.json({ nameSurename, address, birthDate, jmbg, phoneNumber, role, username, password })
+          _context4.next = 19;
           break;
-        case 20:
-          _context4.prev = 20;
-          _context4.t0 = _context4["catch"](5);
-          res.status(500);
-          res.send(_context4.t0.message);
-        case 24:
+        case 16:
+          _context4.prev = 16;
+          _context4.t0 = _context4["catch"](4);
+          res.status(500).json({
+            success: false,
+            message: "User not found"
+          });
+        case 19:
         case "end":
           return _context4.stop();
       }
-    }, _callee4, null, [[5, 20]]);
+    }, _callee4, null, [[4, 16]]);
   }));
   return function putUser(_x7, _x8) {
     return _ref4.apply(this, arguments);
@@ -186,67 +189,68 @@ var putUser = /*#__PURE__*/function () {
 exports.putUser = putUser;
 var postUser = /*#__PURE__*/function () {
   var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
-    var _req$body2, nameSurename, address, birthDate, jmbg, phoneNumber, username, _req$body3, password, role, userId, pool, salt, result;
+    var _req$body2, nameSurename, address, birthDate, jmbg, phoneNumber, username, password, userId, role, pool, salt, result;
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) switch (_context5.prev = _context5.next) {
         case 0:
           _context5.prev = 0;
           _req$body2 = req.body, nameSurename = _req$body2.nameSurename, address = _req$body2.address, birthDate = _req$body2.birthDate, jmbg = _req$body2.jmbg, phoneNumber = _req$body2.phoneNumber, username = _req$body2.username;
-          _req$body3 = req.body, password = _req$body3.password, role = _req$body3.role;
+          password = req.body.password;
           userId = '';
+          role = _role["default"].User;
           if (!(nameSurename == null || jmbg == null || phoneNumber == null || username == null || password == null)) {
-            _context5.next = 6;
+            _context5.next = 7;
             break;
           }
           return _context5.abrupt("return", res.status(400).json({
             msg: "Bad Request. Please fill all fields"
           }));
-        case 6:
-          _context5.next = 8;
+        case 7:
+          _context5.next = 9;
           return (0, _database.getConnection)();
-        case 8:
+        case 9:
           pool = _context5.sent;
-          _context5.next = 11;
+          _context5.next = 12;
           return bcrypt.genSalt(_config.HASH_SALT);
-        case 11:
+        case 12:
           salt = _context5.sent;
-          _context5.next = 14;
+          _context5.next = 15;
           return bcrypt.hash(password, salt);
-        case 14:
+        case 15:
           password = _context5.sent;
-          _context5.next = 17;
+          _context5.next = 18;
           return pool.request().input("nameSurename", _database.sql.VarChar, nameSurename).input("address", _database.sql.VarChar, address).input("birthDate", _database.sql.Date, birthDate).input("jmbg", _database.sql.VarChar, jmbg).input("phoneNumber", _database.sql.VarChar, phoneNumber).input("role", _database.sql.VarChar, role).input("username", _database.sql.VarChar, username).input("password", _database.sql.VarChar, password).query(_database.query.postUser);
-        case 17:
+        case 18:
           if (res) {
-            _context5.next = 19;
+            _context5.next = 20;
             break;
           }
           throw new Error('Sig up error. Please try again.');
-        case 19:
-          _context5.next = 21;
+        case 20:
+          _context5.next = 22;
           return pool.request().input("username", _database.sql.VarChar, username).query(_database.query.findUserId);
-        case 21:
+        case 22:
           result = _context5.sent;
           userId = result.recordset[0].userId;
           createSendToken({
             id: userId,
             username: username
-          }, res);
-          _context5.next = 30;
+          }, user.role, res);
+          _context5.next = 31;
           break;
-        case 26:
-          _context5.prev = 26;
+        case 27:
+          _context5.prev = 27;
           _context5.t0 = _context5["catch"](0);
           console.log("\u26D4\u26D4\u26D4 SIGNUP: ".concat(_context5.t0.message));
           res.status(404).json({
             status: 'fail',
             message: _context5.t0.message
           });
-        case 30:
+        case 31:
         case "end":
           return _context5.stop();
       }
-    }, _callee5, null, [[0, 26]]);
+    }, _callee5, null, [[0, 27]]);
   }));
   return function postUser(_x9, _x10) {
     return _ref5.apply(this, arguments);
@@ -255,12 +259,12 @@ var postUser = /*#__PURE__*/function () {
 exports.postUser = postUser;
 var login = /*#__PURE__*/function () {
   var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
-    var _req$body4, username, password, pool, result, user;
+    var _req$body3, username, password, pool, result, _user;
     return _regeneratorRuntime().wrap(function _callee6$(_context6) {
       while (1) switch (_context6.prev = _context6.next) {
         case 0:
           _context6.prev = 0;
-          _req$body4 = req.body, username = _req$body4.username, password = _req$body4.password;
+          _req$body3 = req.body, username = _req$body3.username, password = _req$body3.password;
           if (!(!username || !password)) {
             _context6.next = 4;
             break;
@@ -275,14 +279,14 @@ var login = /*#__PURE__*/function () {
           return pool.request().input("username", _database.sql.VarChar, username).input("password", _database.sql.VarChar, password).query(_database.query.loginUser);
         case 9:
           result = _context6.sent;
-          user = result.recordset[0];
-          _context6.t0 = !user;
+          _user = result.recordset[0];
+          _context6.t0 = !_user;
           if (_context6.t0) {
             _context6.next = 16;
             break;
           }
           _context6.next = 15;
-          return correctPassword(password, user.password);
+          return correctPassword(password, _user.password);
         case 15:
           _context6.t0 = !_context6.sent;
         case 16:
@@ -294,7 +298,7 @@ var login = /*#__PURE__*/function () {
         case 18:
           // 401: Error for user not found
 
-          createSendToken(user, res);
+          createSendToken(_user, _user.role, res);
           _context6.next = 25;
           break;
         case 21:
@@ -316,8 +320,8 @@ var login = /*#__PURE__*/function () {
   };
 }();
 exports.login = login;
-function createSendToken(user, res) {
-  var token = signToken(user.userId);
+function createSendToken(user, role, res) {
+  var token = signToken(user.userId, role);
   // Cookie to store the jwt for future to verify protected routes
   var cookieOptions = {
     expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
@@ -335,13 +339,15 @@ function createSendToken(user, res) {
     status: 'success',
     token: token,
     data: {
-      user: user
+      user: user,
+      role: role
     }
   });
 }
-function signToken(id) {
+function signToken(id, role) {
   var payload = {
-    "id": id
+    "id": id,
+    "role": role
   };
   //let token = jwt.sign( payload,'secret',  { noTimestamp:true, expiresIn: '1h' })
 
@@ -378,7 +384,7 @@ var protect = /*#__PURE__*/function () {
           _context7.prev = 0;
           // 1) Getting token and check if it's there.
           if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-            token = req.headers.authorization.split(' ')[2];
+            token = req.headers.authorization.split(' ')[1];
           } else if (req.cookie.jwt) {
             token = req.cookie.jwt;
           }

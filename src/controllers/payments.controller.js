@@ -27,7 +27,7 @@ export const getPayments = async (req, res) => {
 }
 
 export const postPayment = async (req, res) => {
-    const { paid, details, orderId} = req.body
+    const { paid, details, orderId, status} = req.body
 
     if (paid == null || details == null || orderId == null) {
         return res.status(400).json({ msg: "Bad Request. Please fill all fields" })
@@ -39,9 +39,10 @@ export const postPayment = async (req, res) => {
         .input("paid", sql.Date, paid)
         .input("details", sql.VarChar, details)
         .input("orderId", sql.Int, orderId)
-            .query(query.postPayment)
+        .input("status", sql.VarChar, status)
+        .query(query.postPayment)
 
-            res.json({ paid, details, orderId})
+            res.json({ paid, details, orderId, status})
     } catch (error) {
         res.status(500)
         res.send(error.message)
