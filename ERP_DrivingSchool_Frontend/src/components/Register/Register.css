@@ -1,0 +1,16 @@
+.register-form{
+    background-color: #a86a23;
+    margin: 4.5rem 2rem;
+    padding: 2rem;
+}
+
+.register-form>button{
+    background-color: white;
+    color: black;
+    font-weight: bold;
+}
+
+.register-form>button:hover{
+    opacity: 0.9;
+    background-color: white;
+}

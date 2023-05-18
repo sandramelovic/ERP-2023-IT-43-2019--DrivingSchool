@@ -1,0 +1,90 @@
+.login{
+    background-color: var(--darkGray);
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.loginCol{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.left-l{
+    padding: 2rm;
+    padding-top: 1.5rm;
+    flex: 1.5;
+    display: flex;
+    gap: 2rem;
+    flex-direction: column;
+
+}
+
+.right-l{
+    flex: 1;
+    position: relative;
+    background-color: var(--orange);
+    margin-bottom: -0.45rem;
+}
+
+
+
+.login label, .login h1{
+    color: white !important;
+    opacity: 0.6;
+}
+
+.login-form{
+    background-color: #a86a23;
+    margin: 11rem 2rem;
+    padding: 2rem;
+}
+
+.login-form>button{
+    background-color: white;
+    color: black;
+    font-weight: bold;
+   
+}
+
+.login-form>button:hover{
+    opacity: 0.9;
+    background-color: white;
+}
+
+.car_login{
+    position: absolute;
+    top: 10rem;
+    left: 2rem;
+    width: 50rem;
+}
+
+@media screen and (max-width: 768px) {
+    .car_login{
+        flex-direction: column;
+        width: 20rem;
+        left: 2rem;
+    }
+    
+    .loginCol{
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        padding-bottom: 15rem;
+    }
+
+    .right-l{
+    top: 15rem;
+    }
+
+    .login-form{
+        margin: 2rem 2rem;
+        padding: 2rem;
+    }
+}
+
+
+
+
+
