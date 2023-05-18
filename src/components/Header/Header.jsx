@@ -2,13 +2,10 @@ import React, {useState} from 'react'
 import './Header.css'
 import Logo from '../../assets/logo.png'
 import Bars from '../../assets/bars.png'
-import { Link } from 'react-scroll'
-import Login from '../Login/Login'
-import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
 import {useNavigate} from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
 const Header = () => {
-
     const mobile = window.innerWidth <= 768 ? true : false
     const [menuOpened, setMenuOpened] = useState(false)
 
@@ -20,7 +17,9 @@ const Header = () => {
 
     return (
         <div className='header'>
+            <Link to='/'>
             <img src={Logo} alt="" className='logo' />
+            </Link>
             {menuOpened === false && mobile === true ? (
                 <div
                     style={{ backgroundColor: 'var(--appColor)', padding: '0.5rem', borderRadius: '5px' }}
@@ -30,28 +29,33 @@ const Header = () => {
                 <ul className='header-menu'>
                     <li><Link
                     onClick={()=> setMenuOpened(false)}
-                    to='home'
+                    to='/'
                     span={true}
                     smooth={true}
+                    className="subnav_link"
                     >Pocetna</Link></li>
                     <li><Link
                     onClick={routeChange}
+                    to='/cars'
                     span={true}
                     smooth={true}
-                    activeClass="active" spy={true} 
-                    >O nama</Link></li>
-                    <li><Link
-                    onClick={routeChange}
-                    to='cars'
-                    span={true}
-                    smooth={true}
+                    className="subnav_link"
                     >Vozni park</Link></li>
                     <li><Link
                     onClick={()=> setMenuOpened(false)}
-                    to='plans'
+                    to='/programs'
                     span={true}
                     smooth={true}
-                    >Kategorije</Link></li>
+                    className="subnav_link"
+                    >Programi</Link></li>
+                    <li><Link
+                    onClick={routeChange}
+                    to='/contact'
+                    span={true}
+                    smooth={true}
+                    activeClass="active" spy={true} 
+                    className="subnav_link"
+                    >Kontakt</Link></li>
                 </ul>
             )}
         </div>

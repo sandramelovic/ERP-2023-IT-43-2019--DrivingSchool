@@ -1,0 +1,9 @@
+.btn-add-to-cart{
+    background-color: orange;
+    font-weight: 400px;
+}
+
+.btn-add-to-cart:hover{
+    background-color: orange;
+    opacity: 0.7;
+}

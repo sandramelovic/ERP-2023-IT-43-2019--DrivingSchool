@@ -1,23 +1,46 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk'
-import { carsReducer } from './reducers/carsReducer';
-import { alertsReducer } from './reducers/alertsReducer';
-const composeEnhancers = composeWithDevTools({
-  // Specify here name, actionsBlacklist, actionsCreators and other options
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+import { composeWithDevTools } from "redux-devtools-extension";
+import { productDetailsReducer, productsReducer, productReducer, newProductReducer } from "./reducers/productReducer";
+import { allUsersReducer, profileReducer, userDetailsReducer, userReducer } from "./reducers/userReducer";
+import { allOrdersReducer, newOrderReducer, orderDetailsReducer } from "./reducers/orderReducer";
+import { orderItemReducer, shippingReducer } from "./reducers/orderItemReducer";
+import { allOrderItemReducer } from "./reducers/orderItemsReducer";
+
+const reducer = combineReducers({
+  orderItemReducer: orderItemReducer,
+  products: productsReducer,
+  productDetails: productDetailsReducer,
+  product: productReducer,
+  newProduct: newProductReducer,
+  allUsers: allUsersReducer,
+  userDetails: userDetailsReducer,
+  profile: profileReducer,
+  orderDetails: orderDetailsReducer,
+  allOrders: allOrdersReducer,
+ // user: userReducer,
+  newOrder: newOrderReducer,
+  allOrderItems: allOrderItemReducer,
+  shippingInfo: shippingReducer,
 });
 
-const rootReducer = combineReducers({
-    carsReducer,
-    alertsReducer
-})
+let initialState = {
+  cart: {
+    cartItems: localStorage.getItem("cartItems")
+      ? localStorage.getItem("cartItems")
+      : [],
+    shippingInfo: localStorage.getItem("shippingInfo")
+      ? JSON.parse(localStorage.getItem("shippingInfo"))
+      : {},
+  },
+};
+
+const middleware = [thunk];
 
 const store = createStore(
-  rootReducer,
-  composeEnhancers(
-    applyMiddleware(thunk)
-    // other store enhancers if any
-  )
+  reducer,
+  initialState,
+  composeWithDevTools(applyMiddleware(...middleware))
 );
 
-export default store
+export default store;

@@ -2,22 +2,48 @@ import React from "react";
 import './Login.css'
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
-import { Row, Col, Form, Input } from 'antd'
+import { Form, Input } from 'antd'
 import car_login from "../../assets/car_login.png"
-import {useSelector} from "react-redux"
+import {useDispatch} from "react-redux"
+import { useEffect } from "react";
 import AOS from 'aos';
 import 'aos/dist/aos.css'; 
+import  {userLogin}  from "../../redux/actions/userActions";
+import {Link} from 'react-router-dom'
+import { useSelector } from "react-redux";
+import { value } from "promisify";
+import { useState } from "react";
+
 AOS.init();
 
 
-const onFinish = (values) => {
-    console.log('Success:', values);
+function Login(){
+  const styleObj = {
+    color: "orange",
+    fontWeight: 'bold',
+    fontSize: 16,
+    textDecoration: 'none'
+}
+
+//const { user, loading, isAuthenticated } = useSelector((state) => state.user);
+const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+
+  const dispatch = useDispatch()
+
+  const loginSubmit = (e) => {
+    dispatch(userLogin(loginEmail, loginPassword));
   };
+/*
+const onFinish = (values) => {
+  dispatch(userLogin(values))
+  };*/
+
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
 
-const Login = () => {
+
     return (
 
         <div className="login" id="login">
@@ -42,19 +68,24 @@ const Login = () => {
                     initialValues={{
                       remember: true,
                     }}
-                    onFinish={onFinish}
+                 //   onFinish={onFinish}
+                 onFinish={loginSubmit}
                     onFinishFailed={onFinishFailed}
                     autoComplete="off">
-                    <h1>Login</h1>
+                    <h1>Prijava</h1>
                     <hr />
-                    <Form.Item name='username' label='username' rules={[{ required: true }]}>
-                        <Input />
+                    <Form.Item name='username' label='Korisnicko ime' rules={[{ required: true }]}>
+                        <Input pattern="^[A-Za-z0-9]{3,16}$" placeholder="[A-Z. a-z, 0-9], min: 3, max: 16" value={loginEmail}
+                    onChange={(e) => setLoginEmail(e.target.value)}/>
                     </Form.Item>
-                    <Form.Item name='password' label='password' rules={[{ required: true }]}>
-                        <Input.Password />
+                    <Form.Item name='password' label='Lozinka' rules={[{ required: true }]}>
+                        <Input.Password pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[.,=+?!@#$%^&*]).{8,}$" placeholder="(A-Z. a-z, 0-9, !...*) min: 8"  value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}/>
                     </Form.Item>
 
-                    <button className="btn">Login</button>
+                    <button className="btn">Prijavi se</button>
+                    <hr/>
+                        Nemaš nalog? <Link to="/register" style={styleObj} > Registruj se! </Link>
                 </Form>
 
             </div>

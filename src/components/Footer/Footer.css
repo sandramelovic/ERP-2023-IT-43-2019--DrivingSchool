@@ -76,3 +76,26 @@
     margin-top: 5rem;
 }
 
+@media screen and (max-width: 768px){
+    .footer-container{
+        gap: 3rem;
+        font-size: small;
+        flex-direction: column;
+       
+    }
+
+    .footer-container article:nth-child(4) {
+        width: 5rem;
+        
+    }
+
+    .footer-socials{
+        gap: 3rem;
+    }
+
+    .footer-container article {
+        align-items: center;
+        text-align: center;
+    }
+}
+

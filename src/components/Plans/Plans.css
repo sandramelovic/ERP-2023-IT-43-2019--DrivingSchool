@@ -69,9 +69,32 @@
     fill: white;
 }
 
+.plans>:nth-child(1)>button{
+    color: orange;
+    background-color: white;
+    font-weight: bold;
+}
+
 .plans>:nth-child(2)>button{
     color: orange;
+    background-color: white;
+    font-weight: bold;
 }
+
+.plans>:nth-child(3)>button{
+    color: orange;
+    background-color: white;
+    font-weight: bold;
+}
+.plans>:nth-child(1)>button:hover{
+    opacity: 0.9;
+}  
+.plans>:nth-child(2)>button:hover{
+    opacity: 0.9;
+}  
+.plans>:nth-child(3)>button:hover{
+    opacity: 0.9;
+}  
 
 .plans-blur-1{
     width: 32rem;
@@ -85,6 +108,12 @@
     height: 23rem;
     top: 10rem;
     right: 0rem;
+}
+
+.btn{
+    color: orange;
+    background-color: white;
+    font-weight: bold;
 }
 
 @media screen and (max-width: 768px){

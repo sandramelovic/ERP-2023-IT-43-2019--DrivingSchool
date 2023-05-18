@@ -1,0 +1,19 @@
+
+.cont{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+  flex-wrap: no-wrap;
+  background-color: var(--lightgray);
+}
+
+.text-programs{
+    padding-top: 10px;
+    text-align: left;
+}
+.cont img{
+       object-fit: cover;
+}
+
+

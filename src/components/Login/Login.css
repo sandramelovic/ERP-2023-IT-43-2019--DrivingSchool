@@ -41,10 +41,50 @@
     padding: 2rem;
 }
 
+.login-form>button{
+    background-color: white;
+    color: black;
+    font-weight: bold;
+   
+}
+
+.login-form>button:hover{
+    opacity: 0.9;
+    background-color: white;
+}
+
 .car_login{
     position: absolute;
     top: 10rem;
     left: 2rem;
     width: 50rem;
 }
+
+@media screen and (max-width: 768px) {
+    .car_login{
+        flex-direction: column;
+        width: 20rem;
+        left: 2rem;
+    }
+    
+    .loginCol{
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        padding-bottom: 15rem;
+    }
+
+    .right-l{
+    top: 15rem;
+    }
+
+    .login-form{
+        margin: 2rem 2rem;
+        padding: 2rem;
+    }
+}
+
+
+
+
 
