@@ -66,10 +66,29 @@
   
   .profileContainer > div:last-child > div > p {
     color: rgba(0, 0, 0, 0.418);
-    font: 400 1vmax cursive;
     margin: 0.2vmax;
+    border: 2px solid orange;
+    height: 30px;
+    width: 330px;
+    padding-left: 5px;
+  }
+
+  .profileContainer > div:last-child > div> span > p {
+    color: rgba(0, 0, 0, 0.418);
+    margin: 0.2vmax;
+    border: 2px solid orange;
+    height: 30px;
+    width: 330px;
+    padding-left: 5px;
   }
   
+  .profileContainer > div:last-child > div > span > a {
+    color: red;
+    font: 400 0.7vmax cursive;
+    margin: 0.2vmax;
+    text-decoration: none;
+    padding-left: 5px;
+  }
   .profileContainer > div:last-child > div:last-child {
     display: flex;
     flex-direction: column;

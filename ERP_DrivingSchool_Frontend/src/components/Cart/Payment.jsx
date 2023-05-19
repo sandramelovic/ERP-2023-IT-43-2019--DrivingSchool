@@ -21,6 +21,7 @@ import Footer from '../Footer/Footer'
 import { useNavigate } from "react-router-dom";
 import { createPayment } from '../../redux/actions/paymentAction';
 import { clearCart } from "../../redux/actions/orderItemAction";
+import { getOrderDetails } from "../../redux/actions/orderAction";
 
 const Payment = () => {
   const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
@@ -35,6 +36,7 @@ const Payment = () => {
   const shippingInfo = useSelector((state) => state.shippingInfo);
   //  const { shippingInfo, cartItems } = useSelector((state) => state.cart);
   const { cartItems } = useSelector((state) => state.orderItemReducer);
+  const { orderDetails } = useSelector((state) => state.orderDetails);
 
   //  const { user } = useSelector((state) => state.user);
   const userFromLocalS = JSON.parse(localStorage.getItem('user'))
@@ -106,12 +108,12 @@ const Payment = () => {
           };
 
           dispatch(createOrder(newOrder, userFromLocalS.token));
-
+     //     dispatch(getOrderDetails(order.orderId, userFromLocalS.token));
           setTimeout(() => {
             dispatch(createPayment(newOrder, userFromLocalS.token, order.orderId));
             navigate("/success");
             dispatch(clearCart());
-          }, 20000); 
+          }, 10000); 
 
         } else {
           alert.error("There's some issue while processing payment ");
@@ -124,6 +126,7 @@ const Payment = () => {
   };
 
   useEffect(() => {
+   
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
@@ -137,7 +140,7 @@ const Payment = () => {
         <CheckoutSteps activeStep={2} />
         <div className="paymentContainer">
           <form className="paymentForm" onSubmit={(e) => submitHandler(e)}>
-            <Typography>Card Info</Typography>
+            <Typography>Informacije o kartici</Typography>
             <div>
               <CreditCardIcon />
               <CardNumberElement className="paymentInput" />
@@ -153,7 +156,7 @@ const Payment = () => {
 
             <input
               type="submit"
-              value={`Pay - ₹${orderInfo && orderInfo.totalPrice}`}
+              value={`Za plaćanje - ${orderInfo && orderInfo.totalPrice} RSD`}
               ref={payBtn}
               className="paymentFormBtn"
             />

@@ -8,15 +8,16 @@ import { getProduct } from "../../redux/actions/productAction";
 import { useSelector, useDispatch } from 'react-redux'
 import { useAlert } from "react-alert";
 import { setCategory, setProgramType } from "../../redux/actions/categoryActions";
+import uploadPhotoWhiteBack from '../../assets/uploadPhotoWhiteBack.png'
 
 const Programs = () => {
 
     const { loading, error, products } = useSelector((state) => state.products)
     const dispatch = useDispatch()
     const [filter, setFilter] = useState(products)
-      
+
     useEffect(() => {
-        if (error){
+        if (error) {
             return alert.error(error)
         }
         dispatch(getProduct())
@@ -42,42 +43,49 @@ const Programs = () => {
         )
     }
 
-     const filterPrograms = (programType) => {
-         const updatedList = products.filter((x) => x.programTypeId === programType)
-         setFilter(updatedList)
-     }
+    const filterPrograms = (programType) => {
+        const updatedList = products.filter((x) => x.programTypeId === programType)
+        setFilter(updatedList)
+    }
 
 
     const ShowPrograms = () => {
-        
+
         return (
             <>
-               <div className="buttons d-flex justify-content-center mb-5 pb-5">
+                <div className="buttons d-flex justify-content-center mb-5 pb-5">
                     <button className="btn btn-outline-dark me-4" onClick={() => setFilter(products)}>Svi programi</button>
                     <button className="btn btn-outline-dark me-4" onClick={() => filterPrograms(1)}>Teorija</button>
                     <button className="btn btn-outline-dark me-4" onClick={() => filterPrograms(2)}>Praksa</button>
                 </div>
                 {filter?.map((program) => {
                     return (
-                       
                         <>
                             <div className="col-md-4 mb-5">
-                                <div class="cont h-100  p-4" key={program.programId}>
-                                    <img src={require(`../../assets/${program.programImage}`)} class="card-img-top" alt={program.programId} height="350px" />
+                                <div class="cont h-100  p-4" key={program.programId}>   
+                                        <img
+                                        src={program.programImage ? require(`../../assets/${program.programImage}`) : uploadPhotoWhiteBack}
+                                            class="card-img-top"
+                                            alt={program.programId}
+                                            height="300px"
+                                        />               
                                     <div class="text-programs">
-                                        
                                         <h4>Kategorija: {setCategory(program.categoryId)}</h4>
                                         <p>Tip: {setProgramType(program.programTypeId)}</p>
                                     </div>
-                                    <NavLink to={`/programs/${program.programId}`} className="btn btn-warning btn-read-more">
+                                    <NavLink
+                                        to={`/programs/${program.programId}`}
+                                        className="btn btn-warning btn-read-more"
+                                    >
                                         Procitaj vise
                                     </NavLink>
                                 </div>
                             </div>
                         </>
-                    )
+                    );
                 })}
             </>
+
         )
     }
 
@@ -89,10 +97,17 @@ const Programs = () => {
                     <div className="col-12 mb-5">
                         <h1 className="text-center"> <span className="stroke-text display-6 fw-bolder" style={{ color: 'var(--darkGrey)' }}>Dostupni</span><span className="display-6 fw-bolder text-light"> programi </span></h1>
                         <hr />
-                        <p className="car-text"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                            when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,
-                            but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
-                            sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                        <p className="car-text"> U autoskolama se obično nude različiti programi za obuku vozača, koji se prilagođavaju potrebama i ciljevima svakog pojedinca. Evo nekoliko uobičajenih programa koji se mogu pronaći u autoskolama:
+                            <br></br>
+                            <b>Program za početnike:</b> Ovaj program je namenjen osobama koje nemaju prethodno iskustvo u vožnji. Uključuje teorijsku obuku o saobraćajnim pravilima i sigurnosti, kao i praktičnu obuku vožnje sa instruktorom.
+                            <br></br>
+                            <b>Program za sticanje vozačke dozvole:</b> Ovaj program je usmeren na pripremu polaznika za polaganje vozačkog ispita. Obuhvata teorijsku obuku o propisima i pravilima saobraćaja, kao i praktičnu obuku vožnje. U sklopu ovog programa, polaznici se pripremaju za polaganje teorijskog i praktičnog ispita.
+                            <br></br>
+                            <b>Napredni programi vožnje:</b> Ovi programi su namenjeni vozačima koji već imaju vozačku dozvolu, ali žele poboljšati svoje veštine i znanje o vožnji. Mogu obuhvatati napredne tehnike vožnje, upravljanje u specifičnim uslovima, vožnju po auto-putu, vožnju u lošim vremenskim uslovima, itd.
+                            <br></br>
+                            <b>Programi defanzivne vožnje:</b> Ovi programi se fokusiraju na razvijanje veština defanzivne vožnje i bezbednosti na putu. Uče vozače kako da prepoznaju potencijalne opasnosti, izbegavaju rizične situacije i reaguju na nepredviđene situacije.
+                            <br></br>
+                            <b>Programi za specifične kategorije vozila:</b> Autoskole također mogu nuditi obuku za vožnju određenih kategorija vozila, poput motocikala, kamiona ili autobusa. Ovi programi obično imaju posebne zahteve i pravila zbog specifičnosti vozila.</p>
                     </div>
                 </div>
                 <div className="row justify-content-center">

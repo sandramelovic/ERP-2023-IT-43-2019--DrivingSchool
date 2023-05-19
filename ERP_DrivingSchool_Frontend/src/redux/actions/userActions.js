@@ -63,8 +63,7 @@ export const userRegister = (reqObj) => async dispatch => {
             birthDate: reqObj.birthDate,
             address: reqObj.address,
             username: reqObj.username,
-            password: reqObj.password,
-            token: reqObj.token
+            password: reqObj.password
         })
         setTimeout(() => {
             message.success('registration success')
@@ -128,7 +127,7 @@ export const getAllUsers = (token) => async (dispatch) => {
         }
       }
       const  data  = await axios.get(`http://localhost:4000/user/${id}`, config);
-  
+   console.log(data)
       dispatch({ type: USER_DETAILS_SUCCESS, payload: data.data });
     } catch (error) {
       dispatch({ type: USER_DETAILS_FAIL, payload: error.response.data.message });
@@ -142,12 +141,18 @@ export const updateUser = (id, userData, token) => async (dispatch) => {
   
       const config = { headers: { "Content-Type": "application/json",
       Authorization: `Bearer ${token}` } };
-  
+
       const { data } = await axios.put(
         `http://localhost:4000/user/${id}`,
-        userData,
+        {nameSurename: userData.get("nameSurename"),
+        phoneNumber: userData.get("phoneNumber"),
+        jmbg: parseInt(userData.get("jmbg")),
+        birthDate: userData.get("birthDate"),
+        address: userData.get("address"),
+        username: userData.get("username")},
         config
       ).then(res => {
+        console.log(res)
         dispatch({
           type: UPDATE_USER_SUCCESS,
           payload: res.data.success,
@@ -210,16 +215,25 @@ export const updateUser = (id, userData, token) => async (dispatch) => {
       const config = { headers: { "Content-Type": "multipart/form-data", 
       Authorization: `Bearer ${token}` } };
 
+      console.log(id);
+      console.log(userData.get("nameSurename"));
+      console.log(userData.get("phoneNumber"));
+      console.log(userData.get("jmbg"));
+      console.log(userData.get("birthDate"));
+      console.log(userData.get("address"));
+      console.log(userData.get("username"));
+      
+
       const data = await axios.put(`http://localhost:4000/user/${id}`, {
         nameSurename: userData.get("nameSurename"),
         phoneNumber: userData.get("phoneNumber"),
-        jmbg: userData.get("jmbg"),
+        jmbg: parseInt(userData.get("jmbg")),
         birthDate: userData.get("birthDate"),
         address: userData.get("address"),
         username: userData.get("username"),
-        role: userData.get("role")
        
     }, config).then(res => {
+      console.log(res)
         dispatch({
           type: UPDATE_PROFILE_SUCCESS,
           payload: res.data.success,

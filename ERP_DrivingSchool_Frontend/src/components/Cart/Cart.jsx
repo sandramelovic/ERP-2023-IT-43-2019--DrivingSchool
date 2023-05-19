@@ -13,6 +13,7 @@ import RemoveShoppingCartIcon from "@material-ui/icons/RemoveShoppingCart";
 import { Link } from "react-router-dom";
 import { Typography } from "@material-ui/core";
 import { setCategory, setProgramType } from "../../redux/actions/categoryActions";
+import uploadPhotoWhiteBack from '../../assets/uploadPhotoWhiteBack.png'
 
 const Cart = () => {
     const state = useSelector((state) => state.orderItemReducer)
@@ -30,8 +31,8 @@ const Cart = () => {
                 <div className="container py-4">
                     <button onClick={() => deleteSingleProgram(cartItem)} className="btn-close float-end" aria-label="Close"></button>
                     <div className="row justify-content-center">
-                        <div className="col-md-4">
-                            <img src="https://assets.thehansindia.com/h-upload/2022/07/18/1303611-pro.webp" alt={cartItem.price} height="200px" width="180px" />
+                        <div className="col-md-5 ">
+                            <img src={cartItem.programImage ? require(`../../assets/${cartItem.programImage}`) : uploadPhotoWhiteBack}  alt={cartItem.price} height="200px" width="250px" />
                         </div>
                         <div className="col-md-4">
                             <h3>
@@ -60,7 +61,7 @@ const Cart = () => {
                     <div className="emptyCart">
           <RemoveShoppingCartIcon />
 
-          <Typography>Nema proizvoda u vasoj korpi</Typography>
+          <Typography>Nema proizvoda u Vašoj korpi</Typography>
           <Link to="/programs">Pregledaj proizvode</Link>
         </div>
                     </div>
@@ -76,7 +77,7 @@ const Cart = () => {
                         <div>
 
                         <Link to="/checkout" className="btn btn-warning w-25 m-4">
-                            Placanje
+                            Plaćanje
                         </Link>
                         <Link to="/programs" className="btn btn-warning w-25 m-4">
                             Nastavi kupovinu
@@ -84,7 +85,7 @@ const Cart = () => {
                        </div>
                     ) : (
                         <Link to="/login" className="btn btn-warning mb-5 w-25">
-                            Prijavi se za placanje
+                            Prijavi se za plaćanje
                         </Link>
                     )}
                 </div>

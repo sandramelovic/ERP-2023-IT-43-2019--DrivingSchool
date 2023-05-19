@@ -32,6 +32,12 @@
     
 }
 
+.footer-container article a {
+    color: white;
+    text-decoration: none;
+    
+}
+
 .footer-container article:nth-child(4) {
     width: 10rem;
     

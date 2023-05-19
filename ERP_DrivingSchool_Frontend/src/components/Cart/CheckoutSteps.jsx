@@ -29,7 +29,7 @@ const CheckoutSteps = ({ activeStep }) => {
     <Fragment >
       <Stepper alternativeLabel activeStep={activeStep} style={stepStyles}style={{backgroundColor: "var(--darkGray)"}}>
         {steps.map((item, index) => (
-          <Step style={{color: "white"}}
+          <Step 
             key={index}
             active={activeStep === index ? true : false}
             completed={activeStep >= index ? true : false}
@@ -40,7 +40,13 @@ const CheckoutSteps = ({ activeStep }) => {
               }}
               icon={item.icon}
             >
+              <Typography
+                style={{
+                  color: activeStep >= index ? "white" : "rgba(0, 0, 0, 0.649)",
+                }}
+              >
               {item.label}
+              </Typography>
             </StepLabel>
           </Step>
         ))}

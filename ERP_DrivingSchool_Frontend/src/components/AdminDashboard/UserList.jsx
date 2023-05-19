@@ -56,14 +56,14 @@ const UsersList = () => {
     { field: "id", headerName: "User ID", minWidth: 180, flex: 0.8 },
 
     {
-      field: "email",
-      headerName: "Email",
+      field: "username",
+      headerName: "Korisničko ime",
       minWidth: 150,
-      flex: 1,
+      flex: 0.5,
     },
     {
       field: "name",
-      headerName: "Name",
+      headerName: "Ime i prezime",
       minWidth: 150,
       flex: 0.5,
     },
@@ -84,7 +84,7 @@ const UsersList = () => {
     {
       field: "actions",
       flex: 0.3,
-      headerName: "Actions",
+      headerName: "Akcije",
       minWidth: 150,
       type: "number",
       sortable: false,
@@ -115,8 +115,8 @@ const UsersList = () => {
       rows.push({
         id: item.userId,
         role: item.role,
-        email: item.email,
-        name: item.username,
+        username: item.username,
+        name: item.nameSurename,
       });
     });
 
@@ -127,7 +127,7 @@ const UsersList = () => {
       <div className="dashboard">
         <SideBar />
         <div className="productListContainer">
-          <h1 id="productListHeading">ALL USERS</h1>
+          <h1 id="productListHeading">SVI KANDIDATI</h1>
 
           <DataGrid
             rows={rows}

@@ -42,16 +42,16 @@ var query = {
   deleteVehicle: 'DELETE FROM [DrivingSchool].[dbo].[Vehicle] WHERE vehicleId = @id',
   putVehicle: 'UPDATE Vehicle SET vin = @vin, ccm = @ccm, color = @color, type = @type, categoryId = @categoryId, description = @description,yearOfProduction = @yearOfProduction, carImage=@carImage, name=@name WHERE vehicleId = @id',
   getPayments: 'SELECT * FROM Payment',
-  postPayment: 'INSERT INTO Payment (paid, details, orderId) VALUES (@paid, @details, @orderId)',
+  postPayment: 'INSERT INTO Payment (paid, details, orderId, status) VALUES (@paid, @details, @orderId, @status)',
   getPaymentById: 'SELECT * FROM Payment WHERE paymentId = @id',
   deletePayment: 'DELETE FROM [DrivingSchool].[dbo].[Payment] WHERE paymentId = @id',
-  putPayment: 'UPDATE Payment SET paid = @paid, details = @details, orderId = @orderId WHERE paymentId = @id',
+  putPayment: 'UPDATE Payment SET paid = @paid, details = @details, orderId = @orderId, status = @status WHERE paymentId = @id',
   getUsers: 'SELECT * FROM Users',
   postUser: 'INSERT INTO Users (nameSurename, address, birthDate, jmbg, phoneNumber, role, username, password) VALUES (@nameSurename, @address, @birthDate, @jmbg, @phoneNumber, @role, @username, @password)',
   getUserById: 'SELECT * FROM Users WHERE userId = @id',
   deleteUser: 'DELETE FROM [DrivingSchool].[dbo].[Users] WHERE userId = @id',
   putUser: 'UPDATE Users SET nameSurename = @nameSurename, address = @address, birthDate = @birthDate, jmbg = @jmbg, phoneNumber = @phoneNumber, role = @role, username = @username WHERE userId = @id',
   loginUser: 'SELECT * FROM Users WHERE username = @username',
-  findUserId: 'SELECT userId from Users WHERE username = @username'
+  findUserId: 'SELECT MAX(userId) from Users WHERE username = @username'
 };
 exports.query = query;

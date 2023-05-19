@@ -95,6 +95,10 @@
 .plans>:nth-child(3)>button:hover{
     opacity: 0.9;
 }  
+#details{
+    color: white;
+    text-decoration: none;
+}
 
 .plans-blur-1{
     width: 32rem;

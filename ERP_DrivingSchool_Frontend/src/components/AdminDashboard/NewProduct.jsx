@@ -14,6 +14,7 @@ import { NEW_PRODUCT_RESET } from "../../redux/constants/productConstants";
 import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
 import { useNavigate } from 'react-router-dom'
+import { setCategoryIdByCategory, setProgramTypeIdByProgramType } from "../../redux/actions/categoryActions";
 
 
 const NewProduct = () => {
@@ -22,26 +23,31 @@ const NewProduct = () => {
 
   const { loading, error, success } = useSelector((state) => state.newProduct);
   const navigate = useNavigate();
-//  const [name, setName] = useState("");
-const [price, setPrice] = useState(0);
-// const [description, setDescription] = useState("");
- const [category, setCategory] = useState("");
-// const [Stock, setStock] = useState(0);
- //const [images, setImages] = useState([]);
- //const [oldImages, setOldImages] = useState([]);
- //const [imagesPreview, setImagesPreview] = useState([]);
+
+  const [price, setPrice] = useState();
+  const [description, setDescription] = useState();
+  const [categoryId, setCategoryId] = useState("");
+  const [programTypeId, setProgramTypeId] = useState(0);
+  const [programImage, setProgramImage] = useState([]);
+  const [oldImages, setOldImages] = useState([]);
+  //const [imagesPreview, setImagesPreview] = useState([]);
+
+
  const user = localStorage.getItem('user')
  const token = JSON.parse(user).token
 
-  const categories = [
-    "Laptop",
-    "Footwear",
-    "Bottom",
-    "Tops",
-    "Attire",
-    "Camera",
-    "SmartPhones",
-  ];
+ const categories = [
+  "A",
+  "B",
+  "C",
+  "AM",
+  "CE",
+];
+
+const programTypes = [
+  "Teorija",
+  "Praksa",
+];
 
   useEffect(() => {
     if (error) {
@@ -61,12 +67,11 @@ const [price, setPrice] = useState(0);
 
     const myForm = new FormData();
 
-    //   myForm.set("name", name);
     myForm.set("price", price);
-  //  myForm.set("description", description);
-    myForm.set("categoryId", 2);
-    myForm.set("programTypeId", 1);
-  //  myForm.set("Stock", Stock);
+    myForm.set("description", description);
+    myForm.set("categoryId", setCategoryIdByCategory(categoryId));
+    myForm.set("programTypeId", setProgramTypeIdByProgramType(programTypeId));
+   
 
   /*  images.forEach((image) => {
       myForm.append("images", image);
@@ -107,23 +112,13 @@ const [price, setPrice] = useState(0);
             encType="multipart/form-data"
             onSubmit={createProductSubmitHandler}
           >
-            <h1>Create Product</h1>
+            <h1>Kreiraj program</h1>
 
-            <div>
-              <SpellcheckIcon />
-              <input
-                type="text"
-                placeholder="Product Name"
-                required
-                value={"name"}
-           //     onChange={(e) => setName(e.target.value)}
-              />
-            </div>
             <div>
               <AttachMoneyIcon />
               <input
                 type="number"
-                placeholder="Price"
+                placeholder="Cena"
                 required
                 onChange={(e) => setPrice(e.target.value)}
               />
@@ -133,18 +128,21 @@ const [price, setPrice] = useState(0);
               <DescriptionIcon />
 
               <textarea
-                placeholder="Product Description"
-                value={"description"}
-           //     onChange={(e) => setDescription(e.target.value)}
+                placeholder="Opis proizvoda"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 cols="30"
-                rows="1"
+                rows="3"
               ></textarea>
             </div>
 
             <div>
               <AccountTreeIcon />
-              <select onChange={(e) => setCategory(e.target.value)}>
-                <option value="">Choose Category</option>
+              <select
+                value={categoryId}
+                onChange={(e) => setCategoryId(e.target.value)}
+              >
+                <option value="">Izaberi kategoriju</option>
                 {categories.map((cate) => (
                   <option key={cate} value={cate}>
                     {cate}
@@ -155,12 +153,17 @@ const [price, setPrice] = useState(0);
 
             <div>
               <StorageIcon />
-              <input
-                type="number"
-                placeholder="Stock"
-                required
-             //   onChange={(e) => setStock(e.target.value)}
-              />
+              <select
+                value={programTypeId}
+                onChange={(e) => setProgramTypeId(e.target.value)}
+              >
+                <option value="">Izaberi tip programa</option>
+                {programTypes.map((programType) => (
+                  <option key={programType} value={programType}>
+                    {programType}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div id="createProductFormFile">
@@ -180,7 +183,7 @@ const [price, setPrice] = useState(0);
               type="submit"
               disabled={loading ? true : false}
             >
-              Create
+              Kreiraj
             </Button>
           </form>
         </div>

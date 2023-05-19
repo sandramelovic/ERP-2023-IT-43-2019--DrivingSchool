@@ -7,6 +7,8 @@ import { Typography } from "@material-ui/core";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import { useNavigate } from "react-router-dom";
+import uploadPhotoGrayBack from '../../assets/uploadPhotoGrayBack.png'
+import {setCategory} from '../../redux/actions/categoryActions'
 
 const ConfirmOrder = ({ history }) => {
   const  shippingInfo  = useSelector((state) => state.shippingInfo);
@@ -62,32 +64,32 @@ const navigate = useNavigate();
       <div className="confirmOrderPage">
         <div>
           <div className="confirmshippingArea">
-            <Typography>Shipping Info</Typography>
+            <Typography >Podaci za isporuku</Typography>
             <div className="confirmshippingAreaBox">
               <div>
-                <p>Name:</p>
+                <p>Ime i prezime:</p>
                 <span>{user.nameSurename}</span>
               </div>
               <div>
-                <p>Phone:</p>
+                <p>Broj telefona:</p>
                 <span>{shippingInfo.phoneNo}</span>
               </div>
               <div>
-                <p>Address:</p>
+                <p>Adresa:</p>
                 <span>{address}</span>
               </div>
             </div>
           </div>
           <div className="confirmCartItems">
-            <Typography>Your Cart Items:</Typography>
+            <Typography>Programi u korpi:</Typography>
             <div className="confirmCartItemsContainer">
               {cartItems &&
                 cartItems.map((item) => (
                     itemList(item),
                   <div key={item.programId}>
-                    <img src={require(`../../assets/${item.programImage}`)} alt="Product" />
-                    <Link to={`/product/${item.product}`}>
-                      {item.categoryId}
+                    <img src={item.programImage ? require(`../../assets/${item.programImage}`) : uploadPhotoGrayBack} alt="Product" />
+                    <Link to={`/programs/${item.programId}`}>
+                      {setCategory(item.categoryId)}
                     </Link>{" "}
                     <span>
                       <b>{item.price} RSD</b>
@@ -100,30 +102,30 @@ const navigate = useNavigate();
         {/*  */}
         <div>
           <div className="orderSummary">
-            <Typography>Order Summery</Typography>
+            <Typography>Pregled porudžbine</Typography>
             <div>
               <div>
-                <p>Subtotal:</p>
+                <p>Međuzbir:</p>
                 <span>{subtotal} RSD</span>
               </div>
               <div>
-                <p>Shipping Charges:</p>
-                <span>₹{shippingCharges}</span>
+                <p>Dostava:</p>
+                <span>{shippingCharges} RSD</span>
               </div>
               <div>
-                <p>GST:</p>
-                <span>₹{tax}</span>
+                <p>Takse:</p>
+                <span>{tax} RSD</span>
               </div>
             </div>
 
             <div className="orderSummaryTotal">
               <p>
-                <b>Total:</b>
+                <b>Ukupno:</b>
               </p>
               <span>{subtotal + shippingCharges + tax} RSD</span>
             </div>
 
-            <button onClick={proceedToPayment}>Idi na placanje</button>
+            <button onClick={proceedToPayment}>Idi na plaćanje</button>
           </div>
         </div>
       </div>

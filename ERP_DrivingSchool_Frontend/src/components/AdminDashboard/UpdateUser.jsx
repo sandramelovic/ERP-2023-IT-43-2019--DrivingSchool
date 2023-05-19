@@ -12,6 +12,7 @@ import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const UpdateUser = () => {
   const dispatch = useDispatch();
@@ -20,25 +21,37 @@ const UpdateUser = () => {
   const navigate = useNavigate();
   const { loading, error, user } = useSelector((state) => state.userDetails);
 
+  const userFromLocalS = JSON.parse(localStorage.getItem('user'))
+  const token = userFromLocalS.token
+
   const {
     loading: updateLoading,
     error: updateError,
     isUpdated,
   } = useSelector((state) => state.profile);
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
+  const [nameSurename, setNameSurename] = useState(user.nameSurename);
+  const [username, setUsername] = useState(user.username);
+  const [address, setAddress] = useState(user.address);
+  const [avatar, setAvatar] = useState(user.userImage);
+  const [avatarPreview, setAvatarPreview] = useState("");
+  const [jmbg, setJmbg] = useState(user.jmbg);
+  const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
+  const [birthDate, setBirthDate] = useState(user.birthDate);
+  const [role, setRole] = useState(user.birthDate);
 
   const userId = id;
 
   useEffect(() => {
-    if (user && user.userId !== userId) {
-      dispatch(getUserDetails(userId));
-    } else {
-      setName(user.name);
-      setEmail(user.email);
+    
+    if (user && user.userId === userId) {
+      dispatch(getUserDetails(userId, token));
+      console.log(user)
+      setNameSurename(user.nameSurename);
+      setUsername(user.username);
       setRole(user.role);
+    } else {
+      
     }
     if (error) {
       alert.error(error);
@@ -62,55 +75,63 @@ const UpdateUser = () => {
 
     const myForm = new FormData();
 
-    myForm.set("name", name);
-    myForm.set("email", email);
+    myForm.set("nameSurename", nameSurename);
+    myForm.set("address", address);
+    myForm.set("jmbg", jmbg);
+    myForm.set("phoneNumber", phoneNumber)
+    myForm.set("birthDate", birthDate);
+    myForm.set("username", username);
     myForm.set("role", role);
 
-    dispatch(updateUser(userId, myForm));
+    dispatch(updateUser(userId, myForm, token));
   };
 
   return (
     <div>
-        <Header/>
-    <Fragment>
-      <div className="dashboard">
-        <SideBar />
-        <div className="newProductContainer">
+      <Header />
+      <Fragment>
+        <div className="dashboard">
+          <SideBar />
+          <div className="newProductContainer">
             <form
               className="createProductForm"
               onSubmit={updateUserSubmitHandler}
             >
-              <h1>Update User</h1>
+              <h1>Izmeni korisnika</h1>
 
               <div>
                 <PersonIcon />
                 <input
                   type="text"
-                  placeholder="Name"
+                  placeholder="Ime i prezime"
                   required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  name="nameSurename"
+                  value={nameSurename}
+                  onChange={(e) => setNameSurename(e.target.value)}
                 />
               </div>
               <div>
-                <MailOutlineIcon />
+                <AccountCircleIcon />
                 <input
-                  type="email"
-                  placeholder="Email"
+                  type="text"
+                  placeholder="Korisnicko ime"
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  name="username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
 
               <div>
                 <VerifiedUserIcon />
                 <select value={role} onChange={(e) => setRole(e.target.value)}>
-                  <option value="">Choose Role</option>
+                  <option value="">Izaberi ulogu</option>
                   <option value="admin">Admin</option>
-                  <option value="user">User</option>
+                  <option value="user">Korisnik</option>
                 </select>
               </div>
+
+
 
               <Button
                 id="createProductBtn"
@@ -119,16 +140,16 @@ const UpdateUser = () => {
                   updateLoading ? true : false || role === "Admin" ? true : false
                 }*/
               >
-                Update
+                Izmeni
               </Button>
             </form>
-          
+
+          </div>
         </div>
+      </Fragment>
+      <div style={{ marginTop: "51rem" }}>
+        <Footer />
       </div>
-    </Fragment>
-    <div style={{ marginTop: "51rem" }}>
-            <Footer/>
-    </div>
     </div>
   );
 };

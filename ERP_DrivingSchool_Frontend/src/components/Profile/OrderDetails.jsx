@@ -43,13 +43,13 @@ const OrderDetails = () => {
                         <Typography>Shipping Info</Typography>
                         <div className="orderDetailsContainerBox">
                             <div>
-                                <p>Name:</p>
+                                <p>Ime i prezime:</p>
                                 <span>order.user && order.user.name</span>
                             </div>
                             <div>
-                                <p>Phone:</p>
+                                <p>Broj telefona:</p>
                                 <span>
-                                    order.shippingInfo && order.shippingInfo.phoneNo
+                                    user.data.data.user.phoneNumber && order.shippingInfo.phoneNo
                                 </span>
                             </div>
                             <div>

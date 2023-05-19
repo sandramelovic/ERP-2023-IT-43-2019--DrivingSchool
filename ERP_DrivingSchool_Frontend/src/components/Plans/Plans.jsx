@@ -2,9 +2,16 @@ import React from "react";
 import './Plans.css'
 import {plansData} from '../../data/plansData'
 import whiteTick from '../../assets/whiteTick.png'
-
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Plans = () => {
+
+    const navigate = useNavigate()
+
+    const programs = () => {
+        navigate('/programs')
+    }
     return (
         <div className="plans-container" id="plans">
             <div className="blur plans-blur-1"></div>
@@ -21,7 +28,7 @@ const Plans = () => {
                     <div className="plan" key={i}>
                         {plan.icon}
                         <span>{plan.name}</span>
-                        <span>$ {plan.price}</span>
+                        <span>{plan.price} RSD</span>
 
                         <div className="features">
                             {plan.features.map((feature, i) =>(
@@ -33,9 +40,11 @@ const Plans = () => {
                         </div>
 
                         <div>
-                            <span>Pogledaj više detalja</span>
+                            <span><Link to={`/programs/${i}`} className="btn">
+                            Pogledaj više detalja
+                            </Link></span>
                         </div>
-                        <button className="btn">Pridruži se</button>
+                        <button className="btn" onClick={programs}>Istraži</button>
                     </div>
                 ))}
             </div>

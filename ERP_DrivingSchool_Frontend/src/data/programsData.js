@@ -16,7 +16,7 @@ export const programsData = [
     ),
     heading: "Teorijska obuka",
     details:
-      "In this program, you are trained to improve your strength through many exercises.",
+      "Teorijska obuka vožnje obično počinje sa serijom predavanja koje pružaju osnovna znanja o saobraćajnim propisima, pravilima vožnje, signalizaciji, prioritetima, bezbednosti u saobraćaju i drugim relevantnim temama. Ovi časovi se održavaju u učionici ili nekom drugom pogodnom prostoru.",
   },
   {
     image: <svg width="16" height="17" viewBox="0 0 16 17"  xmlns="http://www.w3.org/2000/svg">
@@ -29,7 +29,7 @@ export const programsData = [
     </svg>,
     heading: "Teorijski ispit",
     details:
-      "In this program, you are trained to do sequential moves in range of 20 until 30 minutes.",
+      "Nakon predavanja, polaznici su obično podvrgnuti testiranju kako bi se proverilo koliko su razumeli predstavljene informacije. Testovi mogu biti pismeni ili elektronski i obuhvataju pitanja koja se odnose na saobraćajna pravila, propise i situacije koje se mogu javiti tokom vožnje.",
   },
   {
     image: <svg width="12" height="16" viewBox="0 0 12 16"  xmlns="http://www.w3.org/2000/svg">
@@ -38,7 +38,7 @@ export const programsData = [
     ,
     heading: "Praktična obuka",
     details:
-      "This program is suitable for you who wants to get rid of your fat and lose their weight.",
+      "Praktična obuka vožnje je ključni deo procesa sticanja vozačke dozvole. Ova obuka se fokusira na razvijanje praktičnih veština vožnje, kao i na primenu teorijskih znanja u realnom saobraćajnom okruženju. Za više informacija nastavi na link:",
   },
   {
     image: <svg width="20" height="16" viewBox="0 0 20 16"  xmlns="http://www.w3.org/2000/svg">
@@ -47,7 +47,7 @@ export const programsData = [
     ,
     heading: "Polaganje vožnje",
     details:
-      "This programs is designed for those who exercises only for their body fitness not body building.",
+      "Ispit iz vožnje je deo procesa sticanja vozačke dozvole, koji ima za cilj procenu praktičnih veština i znanja kandidata u vožnji vozila. ",
   },
 ];
 

@@ -54,11 +54,13 @@ export const deleteUser = async (req, res) => {
 }
 
 export const putUser = async (req, res) => {
-    const { nameSurename, address, birthDate, jmbg, phoneNumber, username, role } = req.body
-    
+    const { nameSurename, address, birthDate, jmbg, phoneNumber, username } = req.body
+    let {role} = req.body
 
     const { id } = req.params
-
+    if (role == null){
+         role = Role.User
+    }
     if (nameSurename == null || jmbg == null || phoneNumber == null || username == null) {
         return res.status(400).json({ msg: "Bad Request. Please fill all fields" })
     }
@@ -120,7 +122,7 @@ export const postUser = async (req, res) => {
             .input("password", sql.VarChar, password)
             .query(query.postUser)
 
-        if (!res) throw new Error('Sig up error. Please try again.');
+        if (!res) throw new Error('Sign up error. Please try again.');
 
         const result = await pool.request()
             .input("username", sql.VarChar, username)
@@ -128,7 +130,7 @@ export const postUser = async (req, res) => {
 
         userId = result.recordset[0].userId
 
-        createSendToken({ id: userId, username }, user.role, res);
+        createSendToken({ id: userId, username }, role, res);
     } catch (err) {
         console.log(`⛔⛔⛔ SIGNUP: ${err.message}`);
         res.status(404).json({

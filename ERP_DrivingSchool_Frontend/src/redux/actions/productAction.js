@@ -107,12 +107,16 @@ export const updateProduct = (id, productData, token) => async (dispatch) => {
         Authorization: `Bearer ${token}`
       }
     }
-
+    for (const value of productData.values()) {
+      console.log(value);
+    }
     const { data } = await axios.put(
       `http://localhost:4000/programs/${id}`,
       productData,
       config
     ).then(res => {
+      console.log(res)
+
       dispatch({
         type: UPDATE_PRODUCT_SUCCESS,
         payload: res.data.success,
@@ -182,11 +186,18 @@ export const createProduct = (productData, token) => async (dispatch) => {
         Authorization: `Bearer ${token}`
       }
     }
-    const { data } = await axios.post(
+    for (const value of productData.values()) {
+      console.log(value);
+    }
+    console.log(token);
+
+    const  data  = await axios.post(
       'http://localhost:4000/programs',
       productData,
       config
     ).then(res => {
+      console.log(res);
+
       dispatch({
         type: NEW_PRODUCT_SUCCESS,
         payload: res.data,
@@ -201,7 +212,7 @@ export const createProduct = (productData, token) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: NEW_PRODUCT_FAIL,
-      payload: error.response.data.message,
+      payload: error.response.data?.message,
     });
   }
 };

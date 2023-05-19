@@ -15,6 +15,7 @@ import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import '../AdminDashboard/UpdateProduct.css'
 import { useNavigate } from "react-router-dom";
+import { setCategoryIdByCategory, setProgramTypeIdByProgramType } from "../../redux/actions/categoryActions";
 
 const UpdateProduct = () => {
   const dispatch = useDispatch();
@@ -32,38 +33,39 @@ const UpdateProduct = () => {
     isUpdated,
   } = useSelector((state) => state.product);
 
-//  const [name, setName] = useState("");
-  const [price, setPrice] = useState(0);
- // const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
- // const [Stock, setStock] = useState(0);
-  //const [images, setImages] = useState([]);
-  //const [oldImages, setOldImages] = useState([]);
+  const [price, setPrice] = useState(product?.price);
+  const [description, setDescription] = useState(product?.description);
+  const [categoryId, setCategoryId] = useState("");
+  const [programTypeId, setProgramTypeId] = useState(0);
+  const [programImage, setProgramImage] = useState([]);
+  const [oldImages, setOldImages] = useState([]);
   //const [imagesPreview, setImagesPreview] = useState([]);
 
   const categories = [
-    "Laptop",
-    "Footwear",
-    "Bottom",
-    "Tops",
-    "Attire",
-    "Camera",
-    "SmartPhones",
+    "A",
+    "B",
+    "C",
+    "AM",
+    "CE",
+  ];
+
+  const programTypes = [
+    "Teorija",
+    "Praksa",
   ];
 
   const productId = id;
   
   useEffect(() => {
-    if (product && product.programId !== productId) {
-      dispatch(getProductDetails(productId));
-    } else {
-   //   setName(product.name);
-   //   setDescription(product.description);
-      setPrice(product?.price);
-      setCategory(product?.categoryId);
-  //    setStock(product.Stock);
-   //   setOldImages(product.images);
-    }
+    dispatch(getProductDetails(productId));
+
+  if (product) {
+    setDescription(product.description);
+    setPrice(product.price);
+    setCategoryId(product.categoryId);
+    setProgramTypeId(product.programTypeId);
+    setOldImages(product.productImage);
+  }
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
@@ -85,26 +87,26 @@ const UpdateProduct = () => {
     alert,
     error,
     updateError,
-    isUpdated
+    isUpdated,
+    product
   ]);
-
+console.log(product)
   const updateProductSubmitHandler = (e) => {
     e.preventDefault();
 
     const myForm = new FormData();
 
- //   myForm.set("name", name);
     myForm.set("price", price);
-  //  myForm.set("description", description);
-    myForm.set("categoryId", 2);
-    myForm.set("programTypeId", 1);
+    myForm.set("description", description);
+    myForm.set("categoryId", setCategoryIdByCategory(categoryId));
+    myForm.set("programTypeId", setProgramTypeIdByProgramType(programTypeId));
     myForm.set("user", JSON.parse(user).data.user)
-  //  myForm.set("Stock", Stock);
 
  /*   images.forEach((image) => {
       myForm.append("images", image);
     });*/
-    dispatch(updateProduct(productId, myForm, token));
+    
+    dispatch(updateProduct(productId, myForm, token, product));
   };
 
 /*  const updateProductImagesChange = (e) => {
@@ -141,23 +143,13 @@ const UpdateProduct = () => {
             encType="multipart/form-data"
             onSubmit={updateProductSubmitHandler}
           >
-            <h1>Create Product</h1>
-
-            <div>
-              <SpellcheckIcon />
-              <input
-                type="text"
-                placeholder="Product Name"
-                required
-                value="Name"
-           //     onChange={(e) => setName(e.target.value)}
-              />
-            </div>
+            <h1>Izmeni program</h1>
+    
             <div>
               <AttachMoneyIcon />
               <input
                 type="number"
-                placeholder="Price"
+                placeholder="Cena"
                 required
                 onChange={(e) => setPrice(e.target.value)}
                 value={price}
@@ -168,21 +160,21 @@ const UpdateProduct = () => {
               <DescriptionIcon />
 
               <textarea
-                placeholder="Product Description"
-                value="Opis"
-            //    onChange={(e) => setDescription(e.target.value)}
+                placeholder="Opis"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 cols="30"
-                rows="1"
+                rows="3"
               ></textarea>
             </div>
 
             <div>
               <AccountTreeIcon />
               <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                value={categoryId}
+                onChange={(e) => setCategoryId(e.target.value)}
               >
-                <option value="">Choose Category</option>
+                <option value="">Izaberi kategoriju</option>
                 {categories.map((cate) => (
                   <option key={cate} value={cate}>
                     {cate}
@@ -191,15 +183,20 @@ const UpdateProduct = () => {
               </select>
             </div>
 
+
             <div>
               <StorageIcon />
-              <input
-                type="number"
-                placeholder="Stock"
-                required
-            //    onChange={(e) => setStock(e.target.value)}
-                value="10"
-              />
+              <select
+                value={programTypeId}
+                onChange={(e) => setProgramTypeId(e.target.value)}
+              >
+                <option value="">Izaberi tip programa</option>
+                {programTypes.map((programType) => (
+                  <option key={programType} value={programType}>
+                    {programType}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div id="createProductFormFile">
@@ -218,7 +215,7 @@ const UpdateProduct = () => {
               type="submit"
               disabled={loading ? true : false}
             >
-              Create
+              Izmeni
             </Button>
           </form>
         </div>

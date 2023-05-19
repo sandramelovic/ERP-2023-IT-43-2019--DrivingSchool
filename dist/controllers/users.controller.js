@@ -132,28 +132,32 @@ var putUser = /*#__PURE__*/function () {
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
-          _req$body = req.body, nameSurename = _req$body.nameSurename, address = _req$body.address, birthDate = _req$body.birthDate, jmbg = _req$body.jmbg, phoneNumber = _req$body.phoneNumber, username = _req$body.username, role = _req$body.role;
+          _req$body = req.body, nameSurename = _req$body.nameSurename, address = _req$body.address, birthDate = _req$body.birthDate, jmbg = _req$body.jmbg, phoneNumber = _req$body.phoneNumber, username = _req$body.username;
+          role = req.body.role;
           id = req.params.id;
+          if (role == null) {
+            role = _role["default"].User;
+          }
           if (!(nameSurename == null || jmbg == null || phoneNumber == null || username == null)) {
-            _context4.next = 4;
+            _context4.next = 6;
             break;
           }
           return _context4.abrupt("return", res.status(400).json({
             msg: "Bad Request. Please fill all fields"
           }));
-        case 4:
-          _context4.prev = 4;
-          _context4.next = 7;
+        case 6:
+          _context4.prev = 6;
+          _context4.next = 9;
           return (0, _database.getConnection)();
-        case 7:
+        case 9:
           pool = _context4.sent;
-          _context4.next = 10;
+          _context4.next = 12;
           return bcrypt.genSalt(_config.HASH_SALT);
-        case 10:
+        case 12:
           salt = _context4.sent;
-          _context4.next = 13;
+          _context4.next = 15;
           return pool.request().input("nameSurename", _database.sql.VarChar, nameSurename).input("address", _database.sql.VarChar, address).input("birthDate", _database.sql.Date, birthDate).input("jmbg", _database.sql.VarChar, jmbg).input("phoneNumber", _database.sql.VarChar, phoneNumber).input("role", _database.sql.Bit, role).input("username", _database.sql.VarChar, username).input("id", _database.sql.Int, id).query(_database.query.putUser);
-        case 13:
+        case 15:
           res.status(200).json({
             success: true,
             data: {
@@ -167,20 +171,20 @@ var putUser = /*#__PURE__*/function () {
             }
           });
           //     res.json({ nameSurename, address, birthDate, jmbg, phoneNumber, role, username, password })
-          _context4.next = 19;
+          _context4.next = 21;
           break;
-        case 16:
-          _context4.prev = 16;
-          _context4.t0 = _context4["catch"](4);
+        case 18:
+          _context4.prev = 18;
+          _context4.t0 = _context4["catch"](6);
           res.status(500).json({
             success: false,
             message: "User not found"
           });
-        case 19:
+        case 21:
         case "end":
           return _context4.stop();
       }
-    }, _callee4, null, [[4, 16]]);
+    }, _callee4, null, [[6, 18]]);
   }));
   return function putUser(_x7, _x8) {
     return _ref4.apply(this, arguments);
@@ -225,7 +229,7 @@ var postUser = /*#__PURE__*/function () {
             _context5.next = 20;
             break;
           }
-          throw new Error('Sig up error. Please try again.');
+          throw new Error('Sign up error. Please try again.');
         case 20:
           _context5.next = 22;
           return pool.request().input("username", _database.sql.VarChar, username).query(_database.query.findUserId);
@@ -235,7 +239,7 @@ var postUser = /*#__PURE__*/function () {
           createSendToken({
             id: userId,
             username: username
-          }, user.role, res);
+          }, role, res);
           _context5.next = 31;
           break;
         case 27:
@@ -259,7 +263,7 @@ var postUser = /*#__PURE__*/function () {
 exports.postUser = postUser;
 var login = /*#__PURE__*/function () {
   var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
-    var _req$body3, username, password, pool, result, _user;
+    var _req$body3, username, password, pool, result, user;
     return _regeneratorRuntime().wrap(function _callee6$(_context6) {
       while (1) switch (_context6.prev = _context6.next) {
         case 0:
@@ -279,14 +283,14 @@ var login = /*#__PURE__*/function () {
           return pool.request().input("username", _database.sql.VarChar, username).input("password", _database.sql.VarChar, password).query(_database.query.loginUser);
         case 9:
           result = _context6.sent;
-          _user = result.recordset[0];
-          _context6.t0 = !_user;
+          user = result.recordset[0];
+          _context6.t0 = !user;
           if (_context6.t0) {
             _context6.next = 16;
             break;
           }
           _context6.next = 15;
-          return correctPassword(password, _user.password);
+          return correctPassword(password, user.password);
         case 15:
           _context6.t0 = !_context6.sent;
         case 16:
@@ -298,7 +302,7 @@ var login = /*#__PURE__*/function () {
         case 18:
           // 401: Error for user not found
 
-          createSendToken(_user, _user.role, res);
+          createSendToken(user, user.role, res);
           _context6.next = 25;
           break;
         case 21:

@@ -2,6 +2,11 @@ import React, { Fragment, useState, useEffect } from "react";
 import "./UpdateProfile.css";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import FaceIcon from "@material-ui/icons/Face";
+import HomeIcon from '@mui/icons-material/Home';
+import FingerprintIcon from '@mui/icons-material/Fingerprint';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { useDispatch, useSelector } from "react-redux";
 import { updateProfile, clearErrors } from "../../redux/actions/userActions";
 import { useAlert } from "react-alert";
@@ -18,27 +23,32 @@ const UpdateProfile = () => {
     const navigate = useNavigate();
    // const { user } = useSelector((state) => state.user);
     const { error, isUpdated, loading } = useSelector((state) => state.profile);
+    
     const userFromLocalS = JSON.parse(localStorage.getItem('user'))
     const token =userFromLocalS.token
     const id = userFromLocalS.data.user.userId
 
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [avatar, setAvatar] = useState();
+    const [nameSurename, setNameSurename] = useState(userFromLocalS.data.user.nameSurename);
+    const [username, setUsername] = useState(userFromLocalS.data.user.username);
+    const [address, setAddress] = useState(userFromLocalS.data.user.address);
+    const [avatar, setAvatar] = useState(userFromLocalS.data.user.userImage);
     const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
+    const [jmbg, setJmbg] = useState(userFromLocalS.data.user.jmbg);
+    const [phoneNumber, setPhoneNumber] = useState(userFromLocalS.data.user.phoneNumber);
+    const [birthDate, setBirthDate] = useState(userFromLocalS.data.user.birthDate);
 
     const updateProfileSubmit = (e) => {
         e.preventDefault();
 
         const myForm = new FormData();
 
-        myForm.set("nameSurename", name);
-        myForm.set("address", userFromLocalS.data.user.address);
-        myForm.set("jmbg", userFromLocalS.data.user.jmbg);
-        myForm.set("phoneNumber", userFromLocalS.data.user.phoneNumber)
-        myForm.set("birthDate", userFromLocalS.data.user.birthDate);
-        myForm.set("username", email);
-        myForm.set("role", userFromLocalS.data.user.role);
+        myForm.set("nameSurename", nameSurename);
+        myForm.set("address", address);
+        myForm.set("jmbg", jmbg);
+        myForm.set("phoneNumber", phoneNumber)
+        myForm.set("birthDate", birthDate);
+        myForm.set("username", username);
+     
 
         dispatch(updateProfile(id, myForm, token));
     };
@@ -57,11 +67,11 @@ const UpdateProfile = () => {
     };
 
     useEffect(() => {
-        if (userFromLocalS) {
-            setName(userFromLocalS.name);
-            setEmail(userFromLocalS.email);
+      /*  if (userFromLocalS) {
+            setNameSurename(userFromLocalS.nameSurename);
+            setUsername(userFromLocalS.username);
             setAvatarPreview("https://i.pinimg.com/originals/6d/e8/ad/6de8ad5eca1b8686e9ca946545194062.jpg");
-        }
+        }*/
 
         if (error) {
             alert.error(error);
@@ -84,8 +94,8 @@ const UpdateProfile = () => {
                 <Fragment>
                     <div className="updateProfileContainer">
                         <div className="updateProfileBox">
-                            <h2 className="updateProfileHeading">Update Profile</h2>
-
+                            <h2 className="updateProfileHeading">Izmeni profil</h2>
+        
                             <form
                                 className="updateProfileForm"
                                 encType="multipart/form-data"
@@ -95,22 +105,64 @@ const UpdateProfile = () => {
                                     <FaceIcon />
                                     <input
                                         type="text"
-                                        placeholder="Name"
+                                        placeholder="Ime i prezime"
                                         required
-                                        name="name"
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
+                                        name="nameSurename"
+                                        value={nameSurename}
+                                        onChange={(e) => setNameSurename(e.target.value)}
                                     />
                                 </div>
                                 <div className="updateProfileEmail">
-                                    <MailOutlineIcon />
+                                    <AccountCircleIcon />
+                                    <input
+                                type="text"
+                                        placeholder="Korisnicko ime"
+                                        required
+                                        name="username"
+                                        value={username}
+                                        onChange={(e) => setUsername(e.target.value)}
+                                    />
+                                </div>
+                                <div className="updateProfileAddress">
+                                    <HomeIcon />
+                                    <input
+                                type="text"
+                                        placeholder="Adresa"
+                                        name="address"
+                                        value={address}
+                                        onChange={(e) => setAddress(e.target.value)}
+                                    />
+                                </div>
+                                <div className="updateProfileAddress">
+                                    <FingerprintIcon />
                                     <input
                                 
-                                        placeholder="Email"
+                                        placeholder="JMBG"
                                         required
-                                        name="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        name="jmbg"
+                                        value={jmbg}
+                                        onChange={(e) => setJmbg(e.target.value)}
+                                    />
+                                </div>
+                                <div className="updateProfilePhoneNumber">
+                                    <PhoneInTalkIcon />
+                                    <input
+                                
+                                        placeholder="Broj telefona"
+                                        required
+                                        name="phoneNumber"
+                                        value={phoneNumber}
+                                        onChange={(e) => setPhoneNumber(e.target.value)}
+                                    />
+                                </div>
+                                <div className="updateProfileAddress">
+                                    <CalendarMonthIcon />
+                                    <input
+                                type="date"
+                                        placeholder="Datum rodjenja"
+                                        name="birthDate"
+                                        value={birthDate}
+                                        onChange={(e) => setBirthDate(e.target.value)}
                                     />
                                 </div>
 
@@ -125,7 +177,7 @@ const UpdateProfile = () => {
                                 </div>
                                 <input
                                     type="submit"
-                                    value="Update"
+                                    value="Izmeni"
                                     className="updateProfileBtn"
                                 />
                             </form>

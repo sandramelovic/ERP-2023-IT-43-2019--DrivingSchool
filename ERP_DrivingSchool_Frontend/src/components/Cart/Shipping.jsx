@@ -21,9 +21,6 @@ const Shipping = ({ history }) => {
   const alert = useAlert();
   const  shippingInfo  = useSelector((state) => state.shippingInfo);
 
- // const { address, city, state: shippingState, country, pinCode, phoneNo } = useSelector((state) => state.shippingInfo);
-
-
   const [address, setAddress] = useState(shippingInfo.address);
   const [city, setCity] = useState(shippingInfo.city);
   const [state, setShippingState] = useState(shippingInfo.shippingState);
@@ -55,7 +52,7 @@ const Shipping = ({ history }) => {
 
         <div className="shippingContainer">
           <div className="shippingBox">
-            <h2 className="shippingHeading">Shipping Details</h2>
+            <h2 className="shippingHeading">Detalji za slanje</h2>
 
             <form
               className="shippingForm"
@@ -66,7 +63,7 @@ const Shipping = ({ history }) => {
                 <HomeIcon />
                 <input
                   type="text"
-                  placeholder="Address"
+                  placeholder="Adresa"
                   required
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
@@ -77,7 +74,7 @@ const Shipping = ({ history }) => {
                 <LocationCityIcon />
                 <input
                   type="text"
-                  placeholder="City"
+                  placeholder="Grad"
                   required
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
@@ -88,7 +85,7 @@ const Shipping = ({ history }) => {
                 <PinDropIcon />
                 <input
                   type="number"
-                  placeholder="Pin Code"
+                  placeholder="Pin kod"
                   required
                   value={pinCode}
                   onChange={(e) => setPinCode(e.target.value)}
@@ -99,7 +96,7 @@ const Shipping = ({ history }) => {
                 <PhoneIcon />
                 <input
                   type="number"
-                  placeholder="Phone Number"
+                  placeholder="Broj telefona"
                   required
                   value={phoneNo}
                   onChange={(e) => setPhoneNo(e.target.value)}

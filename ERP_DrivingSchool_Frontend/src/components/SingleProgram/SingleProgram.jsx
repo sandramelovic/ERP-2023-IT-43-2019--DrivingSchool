@@ -7,10 +7,11 @@ import Footer from '../Footer/Footer';
 import Skeleton from "react-loading-skeleton";
 import '../SingleProgram/SingleProgram.css'
 import { message } from 'antd'
-import { getProductDetails } from "../../redux/actions/productAction";
+import { getProductDetails, getProduct } from "../../redux/actions/productAction";
 import useSelection from "antd/es/table/hooks/useSelection";
 import { setCategory, setProgramType } from "../../redux/actions/categoryActions";
 import image from '../../assets/CarTheory.png'
+import uploadPhotoGrayBack from '../../assets/uploadPhotoGrayBack.png'
 
 const SingleProgram = () => {
 
@@ -19,6 +20,7 @@ const SingleProgram = () => {
 
     const { id } = useParams();
     const { product, loading, error } = useSelector((state) => state.productDetails)
+    const { products } = useSelector((state) => state.products)
 
     const addSingleProgram = (singleProgram) => {
         const hasDuplicates = state.some((obj) => {
@@ -34,8 +36,10 @@ const SingleProgram = () => {
 
 
     useEffect(() => {
-        dispatch(getProductDetails(id))
-
+        dispatch(getProduct())
+        if (id) {
+            dispatch(getProductDetails(id));
+          }
     }, [dispatch, id])
 
     const Loading = () => {
@@ -60,13 +64,23 @@ const SingleProgram = () => {
     }
 
     const ShowSingleProduct = () => {
-      //  console.log(product.programImage)
-       // let image = require(`../../assets/${product.programImage}`);
-      //  console.log(image)
+        if (!product) {
+            return null; 
+          }
+        let imgString = products.find((item) => item.programId === product.programId)?.programImage
+
+        const imagePath = imgString ? require(`../../assets/${imgString}`) : uploadPhotoGrayBack;
+
         return (
             <>
                 <div className="col-md-6">
-                    <img src="https://img.freepik.com/premium-photo/man-driving-car-road_39704-846.jpg?size=626&ext=jpg&ga=GA1.1.1387875020.1669902428&semt=ais" class="border border-warning border-5" alt="{singleProgram.programId}" height="400px" width="500px" />
+
+                    <img
+                        src={imagePath ? imagePath : uploadPhotoGrayBack}
+                        class="border border-warning border-5"
+                        alt={product.programId}
+                        height="400px"
+                        width="500px" />
                 </div>
                 <div className="col-md-6">
                     <h4 className="text-uppercase text-light">

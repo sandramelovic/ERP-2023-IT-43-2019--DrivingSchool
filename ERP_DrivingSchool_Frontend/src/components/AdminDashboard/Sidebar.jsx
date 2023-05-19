@@ -20,7 +20,7 @@ const Sidebar = () => {
       </Link>
       <Link to="/adminDashboard">
         <p>
-          <DashboardIcon /> Dashboard
+          <DashboardIcon /> Panel
         </p>
       </Link>
       <Link>
@@ -28,13 +28,13 @@ const Sidebar = () => {
           defaultCollapseIcon={<ExpandMoreIcon />}
           defaultExpandIcon={<ImportExportIcon />}
         >
-          <TreeItem nodeId="1" label="Products">
+          <TreeItem nodeId="1" label="Programi">
             <Link to="/admin/products">
-              <TreeItem nodeId="2" label="All" icon={<PostAddIcon />} />
+              <TreeItem nodeId="2" label="Svi programi" icon={<PostAddIcon />} />
             </Link>
 
             <Link to="/admin/product">
-              <TreeItem nodeId="3" label="Create" icon={<AddIcon />} />
+              <TreeItem nodeId="3" label="Kreiraj program" icon={<AddIcon />} />
             </Link>
           </TreeItem>
         </TreeView>
@@ -42,12 +42,12 @@ const Sidebar = () => {
       <Link to="/admin/orders">
         <p>
           <ListAltIcon />
-          Orders
+          Porudžbine
         </p>
       </Link>
       <Link to="/admin/users">
         <p>
-          <PeopleIcon /> Users
+          <PeopleIcon /> Korisnici
         </p>
       </Link>
       

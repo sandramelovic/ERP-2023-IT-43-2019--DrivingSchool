@@ -79,11 +79,11 @@ const Cars = () => {
                     </p>
                   </div>
                   <div>
-                    <h5 style={{width:"400px"}}>{car.name}</h5>
+                    <h5 style={{ width: "400px" }}>{car.name}</h5>
                     <h1 class=" text-center lead fw-bold">
                       Tip: {car.type.substring(0, 12)}
                     </h1>
-                    </div>
+                  </div>
                 </div>
               </div>
             </>
@@ -101,10 +101,25 @@ const Cars = () => {
           <div className="col-12 mb-5">
             <h1 className="text-center"> <span className="stroke-text display-6 fw-bolder" style={{ color: 'var(--darkGrey)' }}>Vozni</span><span className="display-6 fw-bolder text-light"> park </span></h1>
             <hr />
-            <p className="car-text"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-              when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,
-              but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
-              sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+            <p className="car-text">Naš vozni park sastoji se od raznolikog skupa vozila koji zadovoljavaju naše potrebe i zahtjeve.
+              Imamo široku paletu vozila uključujući osobna vozila, kombije, kamione i motocikle. Svako vozilo je pažljivo odabrano kako bi osiguralo pouzdanost, udobnost i sigurnost naših korisnika.
+              <br />
+              Naš vozni park redovito se održava kako bi vozila bila u najboljem stanju i spremna za upotrebu.
+              Pridržavamo se strogih sigurnosnih standarda i provodimo redovite provjere tehničke ispravnosti. Naša vozila su opremljena suvremenim tehnologijama i
+              dodatnom opremom koja poboljšava performanse i udobnost vožnje. Dostupnost vozila za zaposlene ili korisnike može varirati u zavisnosti od organizacije i njenih politika upravljanja vozilima. Evo nekoliko uobičajenih scenarija:
+              <br />
+              <br />
+              <b>   1. </b>    Vozni park za zaposlene: U nekim firmama ili organizacijama postoji poseban vozni park namenjen isključivo zaposlenima. U takvim slučajevima, zaposleni mogu imati pristup vozilima za službene ili privatne svrhe, u skladu sa politikom kompanije. Ta vozila mogu biti u vlasništvu kompanije ili se mogu iznajmljivati od trećih lica.
+              <br />
+              <br />
+              <b>   2. </b>    Deljenje vozila ili iznajmljivanje: Organizacije mogu uspostaviti dogovor sa kompanijama za deljenje vozila ili iznajmljivanje kako bi omogućile svojim zaposlenima ili korisnicima pristup vozilima po potrebi. Ovo se često koristi u gradskim područjima gde je posedovanje sopstvenog vozila nepraktično ili skupo.
+              <br />
+              <br />
+              <b>   3. </b>     Deljenje vozila unutar organizacije: U nekim slučajevima, organizacije mogu koristiti model deljenja vozila unutar sopstvenog voznog parka. To znači da više zaposlenih ili korisnika deli isto vozilo u različitim vremenskim periodima. Ovo može biti efikasan način optimizacije korišćenja vozila i smanjenja troškova.
+              <br />
+              <br />
+              <b>   4. </b>     Dostupnost vozila za zaposlene ili korisnike može biti regulisana određenim pravilima, kao što su potrebna vozačka dozvola, starosna ograničenja ili druge uslove koje je postavila organizacija. Ove politike obično uključuju i sistem rezervacija vozila kako bi se osiguralo da su vozila dostupna kada su potrebna.</p>
+
           </div>
         </div>
         <div className="row justify-content-center">

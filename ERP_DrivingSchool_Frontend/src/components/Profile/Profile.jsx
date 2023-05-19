@@ -6,6 +6,7 @@ import { Navigate } from "react-router-dom";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import { getUserDetails } from "../../redux/actions/userActions";
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 const Profile = () => {
   
@@ -24,29 +25,54 @@ const dispatch = useDispatch()
       <Header />
       <Fragment>
         <Fragment>
-        <h1 className="text-center"> <span className="stroke-text display-6 fw-bolder text-warning" style={{ color: 'var(--darkGrey)' }}>{`${user.nameSurename}`}</span><span className="display-6 fw-bolder text-warning"> 's profile </span></h1>
+        <h1 className="text-center"> <span className="stroke-text display-6 fw-bolder text-warning" style={{ color: 'var(--darkGrey)' }}>{`${user.nameSurename}`}</span><span className="display-6 fw-bolder text-warning"> profil </span></h1>
           <div className="profileContainer">
             <div>
-              <h1 className="text-warning">My Profile</h1>
-              <img src="https://cdn3.iconfinder.com/data/icons/flatastic-4-1/256/user_orange-512.png" alt={user.name} />
-              <Link to="/me/update">Edit Profile</Link>
+              <h1 className="text-warning">Moj profil</h1>
+              <img src={user.userImage} alt={user.name} />
+              <Link to="/me/update">Izmeni profil</Link>
             </div>
             <div>
               <div>
-                <h4 className="text-warning">Full Name</h4>
-                <p className="text-warning">{user.nameSurename}</p>
+                <h4 className="text-warning">Ime i prezime:</h4>
+                <p className="text-light ">{user.nameSurename}</p>
               </div>
               <div>
-                <h4 className="text-warning">Username</h4>
-                <p className="text-warning">{user.username}</p>
+                <h4 className="text-warning">Korisničko ime:</h4>
+                <p className="text-light">{user.username}</p>
               </div>
               <div>
-                <h4 className="text-warning">Joined On</h4>
-                <p className="text-warning">{String(user.createdAt).substr(0, 10)}</p>
+                <h4 className="text-warning">Broj telefona:</h4>
+                <p className="text-light">{user.phoneNumber}</p>
               </div>
+              <div>
+                <h4 className="text-warning">JMBG:</h4>
+                <p className="text-light">{user.jmbg}</p>
+              </div>
+              <div>
+                <h4 className="text-warning">Adresa:</h4>
+                {user.address !== 'undefined' && user.address !== 'null' ? (
+                  <span>
+                    <p className="text-danger" >Adresa nije uneta </p> <Link to="/me/update"><WarningAmberIcon></WarningAmberIcon> Unesi adresu</Link>
+                    </span>
+                ) : (
+                  <p className="text-light">{user.address}</p>
+                )}
+              </div>
+              <div>
+                <h4 className="text-warning">Datum rođenja:</h4>
+                {user.birthOfDate !== 'undefined' && user.birthOfDate !== 'null' ? (
+                  <span>
+                    <p className="text-danger">Datum rođenja nije unet </p> <Link to="/me/update"><WarningAmberIcon></WarningAmberIcon> Unesi datum rođenja</Link>
+                    </span>
+                ) : (
+                  <p className="text-light">{user.birthOfDate}</p>
+                )}
+              </div>
+              
 
               <div>
-                <Link to="/orders">My Orders</Link>
+                <Link to="/orders">Moje porudžbine</Link>
               </div>
             </div>
           </div>

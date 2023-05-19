@@ -1,14 +1,15 @@
 .paymentContainer {
     display: grid;
     place-items: center;
-    background-color: rgb(255, 255, 255);
     height: 65vh;
     margin: 2vmax;
   }
   
   .paymentForm {
-    width: 22%;
+    width: 30%;
     height: 100%;
+    background-color: white;
+    padding: 3vmax;
   }
   
   .paymentForm > p {

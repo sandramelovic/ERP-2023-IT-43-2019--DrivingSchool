@@ -1,7 +1,7 @@
 .newProductContainer {
     width: 100%;
     box-sizing: border-box;
-    background-color: rgb(221, 221, 221);
+    background-color: var(--darkGray);
     border-left: 1px solid rgba(0, 0, 0, 0.158);
     display: flex;
     flex-direction: column;
@@ -9,7 +9,6 @@
   }
   .newProductContainer h1 {
     color: rgba(0, 0, 0, 0.733);
-    font: 300 2rem "Roboto";
     text-align: center;
   }
   
@@ -21,7 +20,7 @@
     padding: 3vmax;
     justify-content: space-evenly;
     height: 70%;
-    width: 40vh;
+    width: 70vh;
     background-color: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.267);
   }

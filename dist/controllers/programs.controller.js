@@ -66,12 +66,16 @@ var postProgram = /*#__PURE__*/function () {
           _context2.next = 9;
           return pool.request().input("programTypeId", _database.sql.Int, programTypeId).input("categoryId", _database.sql.Int, categoryId).input("price", _database.sql.Int, price).input("description", _database.sql.VarChar, description).input("programImage", _database.sql.VarChar, programImage).query(_database.query.postProgram);
         case 9:
-          res.json({
-            programTypeId: programTypeId,
-            categoryId: categoryId,
-            price: price,
-            description: description,
-            programImage: programImage
+          //  res.json({ programTypeId, categoryId, price, description, programImage })
+          res.status(200).json({
+            success: true,
+            data: {
+              programTypeId: programTypeId,
+              categoryId: categoryId,
+              price: price,
+              description: description,
+              programImage: programImage
+            }
           });
           _context2.next = 16;
           break;

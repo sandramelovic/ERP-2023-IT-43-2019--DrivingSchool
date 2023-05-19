@@ -28,7 +28,16 @@ export const postProgram = async (req, res) => {
             .input("programImage", sql.VarChar, programImage)
             .query(query.postProgram)
 
-        res.json({ programTypeId, categoryId, price, description, programImage })
+      //  res.json({ programTypeId, categoryId, price, description, programImage })
+      res.status(200).json({
+        success: true,
+        data: {
+          programTypeId,
+          categoryId,
+          price,
+          description,
+          programImage
+        }})
     } catch (error) {
         res.status(500)
         res.send(error.message)

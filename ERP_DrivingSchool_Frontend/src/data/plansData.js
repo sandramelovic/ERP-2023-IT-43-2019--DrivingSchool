@@ -11,11 +11,11 @@ export const plansData = [
       </svg>
     ),
     name: "NAJBOLJA PONUDA",
-    price: "25",
+    price: "25.000",
     features: [
       "A kategorija",
-      "Free consultaion to coaches",
-      "Access to The Community",
+      "Teorija + Praksa",
+      "Izbor motora",
     ],
   },
   {
@@ -30,11 +30,11 @@ export const plansData = [
       </svg>
     ),
     name: "NAJPOPULARNIJA PONUDA",
-    price: "30",
+    price: "65.000",
     features: [
       "B kategorija",
-      "Free consultaion of Coaches",
-      "Accessto minibar",
+      "Teorija + praksa",
+      "Izbor automobila",
     ],
   },
   {
@@ -49,11 +49,11 @@ export const plansData = [
       </svg>
     ),
     name: "NAJJEFTINIJA PONUDA",
-    price: "45",
+    price: "15.000",
     features: [
       "C kategorija",
-      "Consultation of Private Coach",
-      "Free Fitness Merchandises",
+      "Teorija",
+      "Besplatan lekarski pregled",
     ],
   },
 ];

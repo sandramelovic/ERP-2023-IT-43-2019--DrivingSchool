@@ -14,17 +14,18 @@ import { getAllOrders, clearErrors } from "../../redux/actions/orderAction";
 import { DELETE_ORDER_RESET } from "../../redux/constants/orderConstants";
 //import { deleteOrder, getAllOrders, clearErrors} from "../../actions/orderAction";
 import { Navigate } from "react-router-dom";
+import { getAllUsers } from "../../redux/actions/userActions";
 
 const OrderList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const alert = useAlert();
 
-  const user = localStorage.getItem('user')
-  const token = JSON.parse(user).token
+  const token = JSON.parse(localStorage.getItem('user')).token
 
    const { error, orders } = useSelector((state) => state.allOrders);
- 
+   const { users } = useSelector((state) => state.allUsers);
+
   /* const { error: deleteError, isDeleted } = useSelector((state) => state.order);
  
    const deleteOrderHandler = (id) => {
@@ -49,67 +50,53 @@ const OrderList = () => {
      }
  */
      dispatch(getAllOrders(token));
+     dispatch(getAllUsers(token));
  //  }, [dispatch, alert, error, deleteError, history, isDeleted]);
   }, [dispatch, alert, error]);
 
   const columns = [
-    { field: "id", headerName: "Order ID", minWidth: 300, flex: 1 },
+    { field: "id", headerName: "Order ID", minWidth: 300, flex: 0.5 },
 
     {
-      field: "status",
-      headerName: "Status",
+      field: "username",
+      headerName: "Username",
+      minWidth: 100,
+      flex: 0.5,
+    },
+    {
+      field: "date",
+      headerName: "Datum",
+      minWidth: 100,
+      flex: 0.5,
+    },
+
+    {
+      field: "total",
+      headerName: "Ukupno",
+      type: "number",
       minWidth: 100,
       flex: 0.5,
       cellClassName: (params) => {
-        return params.getValue(params.id, "status") === "Delivered"
+        return params.getValue(params.id, "total") > 50000
           ? "greenColor"
           : "redColor";
       },
     },
-    {
-      field: "itemsQty",
-      headerName: "Items Qty",
-      type: "number",
-      minWidth: 100,
-      flex: 0.4,
-    },
 
-    {
-      field: "amount",
-      headerName: "Amount",
-      type: "number",
-      minWidth: 100,
-      flex: 0.5,
-    },
-
-    {
-      field: "actions",
-      flex: 0.3,
-      headerName: "Actions",
-      minWidth: 100,
-      type: "number",
-      sortable: false,
-      renderCell: (params) => {
-        return (
-          <Fragment>
-            <Link to={`/admin/order/${params.getValue(params.id, "id")}`}>
-              <EditIcon />
-            </Link>
-          </Fragment>
-        );
-      },
-    },
+    
   ];
-
+  
   const rows = [];
 
     orders &&
       orders.forEach((item) => {
+        const user = users.find((user) => user.userId === item.userId);
+  const username = user ? user.username : 'Nepoznat';
         rows.push({
           id: item.orderId,
-          itemsQty: item.userId,
-          amount: item.total,
-          status: item.date,
+          username: username,
+          total: item.total,
+          date: item.date,
         });
       });
   
@@ -121,7 +108,7 @@ const OrderList = () => {
         <div className="dashboard">
           <SideBar />
           <div className="productListContainer">
-            <h1 id="productListHeading">ALL ORDERS</h1>
+            <h1 id="productListHeading">SVE PORUDŽBINE</h1>
 
             <DataGrid
               rows={rows}

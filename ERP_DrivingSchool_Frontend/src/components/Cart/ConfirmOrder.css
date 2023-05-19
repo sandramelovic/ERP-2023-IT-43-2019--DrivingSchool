@@ -1,6 +1,5 @@
 .confirmOrderPage {
     height: 100vh;
-    background-color: white;
     display: grid;
     grid-template-columns: 6fr 3fr;
   }
@@ -15,7 +14,9 @@
   }
   
   .confirmshippingArea > p {
-    font: 400 1.8vmax "Roboto";
+    font: 400 2vmax "Roboto";
+    border-bottom: 1px solid rgba(0, 0, 0, 0.267);
+    color: orange;
   }
   
   .confirmshippingAreaBox,
@@ -29,17 +30,20 @@
   }
   
   .confirmshippingAreaBox > div > p {
-    font: 400 1vmax "Roboto";
-    color: black;
+    font: 500 1.5vmax "Roboto";
+    color: orange;
   }
   .confirmshippingAreaBox > div > span {
     margin: 0 1vmax;
+    margin-top: 6px;
     font: 100 1vmax "Roboto";
-    color: #575757;
+    color: white;
   }
   
   .confirmCartItems > p {
-    font: 400 1.8vmax "Roboto";
+    font: 400 2vmax "Roboto";
+    border-bottom: 1px solid rgba(0, 0, 0, 0.267);
+    color: orange;
   }
   
   .confirmCartItems {
@@ -58,46 +62,52 @@
     align-items: center;
     justify-content: space-between;
     margin: 2vmax 0;
+ 
   }
   
   .confirmCartItemsContainer > div > img {
     width: 8vmax;
+    border: 1px solid orange;
+
   }
   
   .confirmCartItemsContainer > div > a {
-    color: #575757;
     margin: 0 2vmax;
     width: 60%;
     text-decoration: none;
+    color: white;
   }
   
   .confirmCartItemsContainer > div > span {
     font: 100 1vmax "Roboto";
-    color: #5e5e5e;
-  }
+    color: white;  }
   
   .orderSummary {
-    padding: 7vmax;
+    padding: 3vmax;
+    margin: 3vmax;
+    background-color: var(--lightgray);
   }
   
   .orderSummary > p {
     text-align: center;
-    font: 400 1.8vmax "Roboto";
+    font: 400 2vmax "Roboto";
     border-bottom: 1px solid rgba(0, 0, 0, 0.267);
     padding: 1vmax;
     width: 100%;
     margin: auto;
     box-sizing: border-box;
+ 
   }
   
   .orderSummary > div > div {
     display: flex;
-    font: 300 1vmax "Roboto";
+    font: 300 1.5vmax "Roboto";
     justify-content: space-between;
     margin: 2vmax 0;
+  
   }
   .orderSummary > div > div > span {
-    color: rgba(0, 0, 0, 0.692);
+    color: black;
   }
   
   .orderSummaryTotal {
@@ -106,6 +116,7 @@
     justify-content: space-between;
     border-top: 1px solid rgba(0, 0, 0, 0.363);
     padding: 2vmax 0;
+    
   }
   
   .orderSummary > button {

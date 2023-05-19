@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-scroll";
+import { Link } from 'react-router-dom';
 import Logo from '../../assets/logo.png'
 import {FaLinkedin} from 'react-icons/fa'
 import {FaFacebook} from 'react-icons/fa'
@@ -27,25 +27,24 @@ const Footer = () => {
                     </div>
                 </article>
                 <article>
-                    <h4>Permalinks</h4>
-                    <Link to="/about">About</Link>
-                    <Link to="/plans">Plans</Link>
-                    <Link to="/programs">Programs</Link>
-                    <Link to="/testimonials">Testimonials</Link>
-                    <Link to="/reasons">Reasons</Link>
+                    <h4>Linkovi</h4>
+                    <Link to='/reasons'>Zašto baš mi?</Link>
+                    <Link to="/plans">Planovi</Link>
+                    <Link to="/programs">Programi</Link>
+                    <Link to="/testimonials">Recenzije</Link>
+                    <Link to="/contact">Pošalji email</Link>
                 </article>
                 <article>
-                    <h4>Insights</h4>
-                    <Link to="/about">Blog</Link>
-                    <Link to="/plans">Case studies</Link>
-                    <Link to="/programs">Events</Link>
-                    <Link to="/testimonials">Communities</Link>
-                    <Link to="/reasons">FAQs</Link>
+                    <h4>Predlozi</h4>
+                    <Link to="/cars">Vozni park</Link>
+                    <Link to="/programs">Kupuj kod nas</Link>
+                    <Link to="/cart">Pregledaj korpu</Link>
+                    <Link to="/orders">Tvoje narudzbine</Link>
                 </article>
                 <article>
-                    <h4>Get in touch</h4>
-                    <Link to="/about">Contact us</Link>
-                    <Link to="/plans">Support</Link>
+                    <h4>Kontakt</h4>
+                    <Link to="/contact">Kontaktiraj nas</Link>
+                    <Link to="/profile">Profil</Link>
 
                 </article>
             </div>

@@ -23,15 +23,6 @@ const AdminDashboard = () => {
 
   const { orders } = useSelector((state) => state.allOrders);
 
-  /*    let outOfStock = 0;
-    
-      products &&
-        products.forEach((item) => {
-          if (item.Stock === 0) {
-            outOfStock += 1;
-          }
-        });
-    */
   useEffect(() => {
     dispatch(getAdminProduct());
     dispatch(getAllOrders(token));
@@ -45,24 +36,13 @@ const AdminDashboard = () => {
     });
 
   const lineState = {
-    labels: ["Initial Amount", "Amount Earned"],
+    labels: ["Početni iznos", "Trenutna zarada"],
     datasets: [
       {
-        label: "TOTAL AMOUNT",
-        backgroundColor: ["tomato"],
+        label: "ZARADA",
+        backgroundColor: ["orange"],
         hoverBackgroundColor: ["rgb(197, 72, 49)"],
         data: [0, totalAmount],
-      },
-    ],
-  };
-
-  const doughnutState = {
-    labels: ["Out of Stock", "InStock"],
-    datasets: [
-      {
-        backgroundColor: ["#00A6B4", "#6800B4"],
-        hoverBackgroundColor: ["#4B5000", "#35014F"],
-        data: [2, 10],
       },
     ],
   };
@@ -70,6 +50,8 @@ const AdminDashboard = () => {
   return (
     <div className="adminDashboard">
       <Header />
+      <h1 className="text-center"> <span className="stroke-text display-6 fw-bolder" style={{ color: 'var(--darkGrey)' }}>Admin</span><span className="display-6 fw-bolder text-light"> panel </span></h1>
+
       <div className="dashboard">
 
         <Sidebar />
@@ -78,20 +60,20 @@ const AdminDashboard = () => {
           <div className="dashboardSummary">
             <div>
               <p>
-                Total Amount <br /> <span>{totalAmount}</span>
+                Ukupna zarada <br /> <span>{totalAmount},00 RSD</span>
               </p>
             </div>
             <div className="dashboardSummaryBox2">
               <Link to="/admin/products">
-                <p>Product</p>
+                <p>Programi</p>
                 <p>{products?.length}</p>
               </Link>
               <Link to="/admin/orders">
-                <p>Orders</p>
+                <p>Porudžbine</p>
                 <p>{orders?.length}</p>
               </Link>
               <Link to="/admin/users">
-                <p>Users</p>
+                <p>Kandidati</p>
                 <p>{users?.length}</p>
               </Link>
             </div>
@@ -99,13 +81,10 @@ const AdminDashboard = () => {
           <div className="lineChart">
             <Line data={lineState} />
           </div>
-          <div className="doughnutChart">
-            <Doughnut data={doughnutState} />
-          </div>
 
         </div>
       </div>
-      <div style={{ marginTop: "91rem" }}>
+      <div style={{ marginTop: "60rem" }}>
         <Footer />
       </div>
     </div>

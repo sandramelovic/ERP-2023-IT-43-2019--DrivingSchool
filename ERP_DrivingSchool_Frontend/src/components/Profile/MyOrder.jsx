@@ -10,44 +10,44 @@ import LaunchIcon from "@material-ui/icons/Launch";
 import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
 import { getUserDetails } from "../../redux/actions/userActions";
+import { getAllPayments } from "../../redux/actions/paymentAction";
 
 const MyOrders = () => {
     const dispatch = useDispatch();
 
     const alert = useAlert();
-
+    const { payments } = useSelector((state) => state.allPayments);
     const { loading, error, orders } = useSelector((state) => state.allOrders);
     const { user } = useSelector((state) => state.userDetails);
     const userFromLocalS = JSON.parse(localStorage.getItem('user'))
     const token = userFromLocalS.token
     const columns = [
-        { field: "id", headerName: "Order ID", minWidth: 300, flex: 1 },
+        { field: "id", headerName: "Order ID", minWidth: 300, flex: 0.3 },
 
+        {
+            field: "date",
+            headerName: "Datum",
+            minWidth: 250,
+            flex: 0.5,
+        },
         {
             field: "status",
             headerName: "Status",
             minWidth: 250,
-            flex: 0.5,
+            flex: 0.3,
             cellClassName: (params) => {
-                return params.getValue(params.id, "status") === "Delivered"
+                return params.getValue(params.id, "status") === "succeeded"
                     ? "greenColor"
                     : "redColor";
             },
         },
-        {
-            field: "itemsQty",
-            headerName: "Items Qty",
-            type: "number",
-            minWidth: 250,
-            flex: 0.3,
-        },
 
         {
-            field: "amount",
-            headerName: "Amount",
+            field: "total",
+            headerName: "Ukupno",
             type: "number",
             minWidth: 370,
-            flex: 0.5,
+            flex: 0.4,
         },
 
         {
@@ -71,20 +71,23 @@ const MyOrders = () => {
     if (orders) {
         orders?.forEach((item, index) => {
             if (item.orderId) {
+                const paymentArray = payments.find(paymentArr => paymentArr.length > 0 && paymentArr[0].orderId === item.orderId);
+                const payment = paymentArray ? paymentArray[0] : null;
+                const status = payment ? payment.status : "Unknown";
                 rows.push({
                     id: item.orderId,
                     orderId: item.orderId,
-                    itemsQty: item.userId,
-                    amount: item.total,
-                    status: item.date,
+                    status: status,
+                    total: item.total,
+                    date: item.date,
                 });
             } else {
                 rows.push({
                     id: index,
                     orderId: item.orderId,
-                    itemsQty: item.userId,
-                    amount: item.total,
-                    status: item.date,
+                    status: payments.find(payment => payment.orderId === item.orderId)?.status,
+                    total: item.total,
+                    date: item.date,
                 });
             }
         });
@@ -97,12 +100,16 @@ const MyOrders = () => {
             alert.error(error);
             dispatch(clearErrors());
         }
-
+        dispatch(getAllPayments(token))
         dispatch(getAllOrders(token));
     }, [dispatch, alert, error]);
 
     if (!orders) {
-        return null; 
+        return null;
+    }
+
+    if (!payments) {
+        return null;
     }
 
     return (
@@ -110,7 +117,7 @@ const MyOrders = () => {
             <Header />
             <Fragment>
 
-                <h1 className="text-center"> <span className="stroke-text display-6 fw-bolder text-warning" style={{ color: 'var(--darkGrey)' }}>{`${user.nameSurename}`}</span><span className="display-6 fw-bolder text-warning">'s porudzbine </span></h1>
+                <h1 className="text-center"> <span className="stroke-text display-6 fw-bolder text-warning" style={{ color: 'var(--darkGrey)' }}>{`${user.nameSurename}`}</span><span className="display-6 fw-bolder text-warning"> porudzbine </span></h1>
 
                 <div className="myOrdersPage">
                     <DataGrid

@@ -5,7 +5,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--darkGray);
     position: absolute;
     top: 10%;
     left: 0;
@@ -13,8 +12,8 @@
   
   .updateProfileBox {
     background-color: white;
-    width: 50vw;
-    height: 85vh;
+    width: 40vw;
+    height: 95vh;
     box-sizing: border-box;
     overflow: hidden;
   }
@@ -55,6 +54,7 @@
     border-radius: 4px;
     font: 300 0.9vmax cursive;
     outline: none;
+    margin: 10px;
   }
   
   .updateProfileForm > div > svg {

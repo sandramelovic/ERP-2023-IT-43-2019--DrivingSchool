@@ -13,8 +13,8 @@ const OrderSuccess = () => {
             <div className="orderSuccess">
                 <CheckCircleIcon />
 
-                <Typography>Your Order has been Placed successfully </Typography>
-                <Link to="/orders">View Orders</Link>
+                <Typography>Vaša porudžbina je uspešno obavljena </Typography>
+                <Link to="/orders">Pogledaj porudžbine</Link>
             </div>
             <Footer />
         </div>

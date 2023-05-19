@@ -6,6 +6,7 @@ import { allUsersReducer, profileReducer, userDetailsReducer, userReducer } from
 import { allOrdersReducer, newOrderReducer, orderDetailsReducer } from "./reducers/orderReducer";
 import { orderItemReducer, shippingReducer } from "./reducers/orderItemReducer";
 import { allOrderItemReducer } from "./reducers/orderItemsReducer";
+import { paymentsReducer } from "./reducers/paymentReducer";
 
 const reducer = combineReducers({
   orderItemReducer: orderItemReducer,
@@ -22,6 +23,7 @@ const reducer = combineReducers({
   newOrder: newOrderReducer,
   allOrderItems: allOrderItemReducer,
   shippingInfo: shippingReducer,
+  allPayments: paymentsReducer,
 });
 
 let initialState = {

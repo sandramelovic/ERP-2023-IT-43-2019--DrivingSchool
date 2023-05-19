@@ -17,7 +17,7 @@ import { useDispatch } from 'react-redux';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Person2Icon from '@mui/icons-material/Person2';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
 
@@ -123,8 +123,21 @@ const Hero = () => {
 
                 {/* hero buttons */}
                 <div className="hero-buttons">
-                    <buttons className='btn'>Kreni sada!</buttons>
-                    <buttons className='btn'>Saznaj više</buttons>
+                    {localStorage.getItem('user') !== 'undefined' && localStorage.getItem('user') != null ? (
+                        <div>
+                            <Link to="/programs" className="btn">
+                                Kreni sada!
+                            </Link>
+                        </div>
+                    ) : (
+                        <Link to="/login" className="btn">
+                            Kreni sada!
+                        </Link>
+                    )}
+
+                    <Link to="/cars" className="btn">
+                        Saznaj više
+                    </Link>
                 </div>
             </div>
 
@@ -154,7 +167,15 @@ const Hero = () => {
                         </>
                     )
                 ) : (
-                    <button onClick={routeChange} className='btn'>Pridruži se</button>
+                    <>
+                        <span>
+                            <button onClick={routeChange1} className='btn' style={{ marginTop: "2rem" }}>
+                                <ShoppingCartIcon fontSize='large' /><b>({state?.length})</b>
+                            </button>
+                        </span>
+
+                        <button onClick={routeChange} className='btn'>Pridruži se</button>
+                    </>
                 )}
 
                 <motion.div

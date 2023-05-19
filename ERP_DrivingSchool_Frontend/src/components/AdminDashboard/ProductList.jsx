@@ -14,7 +14,7 @@ import { getAdminProduct, clearErrors, deleteProduct } from "../../redux/actions
 import { DELETE_PRODUCT_RESET } from "../../redux/constants/productConstants";
 import { token } from "morgan";
 import { useNavigate } from 'react-router-dom'
-
+import { setCategory, setProgramType } from "../../redux/actions/categoryActions";
 
 const ProductList = () => {
   const dispatch = useDispatch();
@@ -57,33 +57,30 @@ const ProductList = () => {
 
   const columns = [
     { field: "id", headerName: "Product ID", minWidth: 200, flex: 0.5 },
-
     {
-      field: "name",
-      headerName: "Name",
-      minWidth: 250,
-      flex: 1,
+      field: "category",
+      headerName: "Kategorija",
+      minWidth: 170,
+      flex: 0.5,
     },
     {
-      field: "stock",
-      headerName: "Stock",
+      field: "programType",
+      headerName: "Tip programa",
+      minWidth: 250,
+      flex: 0.5,
+    },
+    {
+      field: "price",
+      headerName: "Cena",
       type: "number",
       minWidth: 150,
       flex: 0.3,
     },
 
     {
-      field: "price",
-      headerName: "Price",
-      type: "number",
-      minWidth: 170,
-      flex: 0.5,
-    },
-
-    {
       field: "actions",
       flex: 0.3,
-      headerName: "Actions",
+      headerName: "Akcije",
       minWidth: 150,
       type: "number",
       sortable: false,
@@ -113,9 +110,9 @@ const ProductList = () => {
     products.forEach((item) => {
       rows.push({
         id: item.programId,
-        stock: item.price,
-        price: item.categoryId,
-        name: item.programTypeId,
+        price: item.price,
+        category: setCategory(item.categoryId),
+        programType: setProgramType(item.programTypeId),
       });
     });
 
@@ -127,7 +124,7 @@ const ProductList = () => {
       <div className="dashboard">
         <SideBar />
         <div className="productListContainer">
-          <h1 id="productListHeading">ALL PRODUCTS</h1>
+          <h1 id="productListHeading">SVI PROGRAMI</h1>
 
           <DataGrid
             rows={rows}
