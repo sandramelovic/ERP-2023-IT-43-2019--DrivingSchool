@@ -10,6 +10,8 @@ const Cars = () => {
   const [data, setData] = useState([])
   const [filter, setFilter] = useState(data)
   const [loading, setLoading] = useState(false)
+  const [searchField, setSearchField] = useState("");
+
   let componentMounted = true
 
   useEffect(() => {
@@ -45,10 +47,20 @@ const Cars = () => {
     )
   }
 
+
   const filterCars = (type) => {
     const updatedList = data.filter((x) => x.type === type)
     setFilter(updatedList)
   }
+
+  const handleChange = (event) => {
+    const query = event.target.value;
+    const updatedList = data.filter((item) => item.name.toLowerCase().includes(query.toLowerCase()))
+    setSearchField(query)
+    setFilter(updatedList);
+  };
+
+
   const ShowCars = () => {
     return (
       <>
@@ -58,6 +70,12 @@ const Cars = () => {
           <button className="btn btn-outline-dark me-4" onClick={() => filterCars("Kamion")}>Kamioni</button>
           <button className="btn btn-outline-dark me-4" onClick={() => filterCars("Motor")}>Motori</button>
         </div>
+
+        <div id="search-header">
+          <div id="search-text">Pretraga:</div>
+          <input id="search-box" value={searchField} placeholder="Pretraži vozila koja posedujemo" onChange={handleChange} />
+        </div>
+
         {filter.map((car) => {
           return (
             <>

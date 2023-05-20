@@ -8,13 +8,24 @@ import { useAlert } from "react-alert";
 import { useParams } from "react-router-dom";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import { getOrderDetails } from "../../redux/actions/orderAction";
+import { getAllPayments } from "../../redux/actions/paymentAction";
+import { setCategory, setProgramType } from "../../redux/actions/categoryActions";
+import { getProduct } from "../../redux/actions/productAction";
+import uploadPhotoGrayBack from '../../assets/uploadPhotoGrayBack.png'
 
 const OrderDetails = () => {
-    const { orderItems, error, loading } = useSelector((state) => state.allOrderItems);
+    const { orderItems } = useSelector((state) => state.allOrderItems);
+    const { products } = useSelector((state) => state.products)
+
+    const { order, error, loading } = useSelector((state) => state.orderDetails);
+    const {payments} = useSelector((state) => state.allPayments)
 
     const id = useParams()
     const dispatch = useDispatch();
     const alert = useAlert();
+
     const user = JSON.parse(localStorage.getItem('user'))
     const token = user.token
     const orderId = id
@@ -25,11 +36,24 @@ const OrderDetails = () => {
             alert.error(error);
             dispatch(clearErrors());
         }
+        dispatch(getOrderDetails(token, orderId.id));
+        dispatch(getAllPayments(token))
         dispatch(getAllOrderItems(token, orderId));
 
 
-    }, [dispatch, alert, error, orderId]);
+    }, [dispatch, alert, error, orderId.id]);
 
+    const paymentArray = payments.find(paymentArr => paymentArr.length > 0 && paymentArr[0].orderId === order.orderId);
+    const payment = paymentArray ? paymentArray[0] : null;
+    const status = payment ? payment.status : "Unknown";
+
+    useEffect(() => {
+        if (error) {
+            return alert.error(error)
+        }
+        dispatch(getProduct())
+       
+    }, [dispatch, error])
     return (
         <div>
 
@@ -37,50 +61,53 @@ const OrderDetails = () => {
             <Fragment>
                 <div className="orderDetailsPage">
                     <div className="orderDetailsContainer">
+      
                         <Typography component="h1">
-                            Order #order && order._id
+                        Porudžbina br. #{order && order.orderId}
                         </Typography>
-                        <Typography>Shipping Info</Typography>
+                        <Typography>Podaci isporuke</Typography>
                         <div className="orderDetailsContainerBox">
                             <div>
                                 <p>Ime i prezime:</p>
-                                <span>order.user && order.user.name</span>
+                                <span>{user.data.user.nameSurename}</span>
                             </div>
                             <div>
                                 <p>Broj telefona:</p>
                                 <span>
-                                    user.data.data.user.phoneNumber && order.shippingInfo.phoneNo
+                                    {user.data.user.phoneNumber}
                                 </span>
                             </div>
                             <div>
-                                <p>Address:</p>
+                                <p>Datum isporuke:</p>
                                 <span>
-                                    order.shippingInfo &&
-                                    `$order.shippingInfo.address, $order.shippingInfo.city, $order.shippingInfo.state, $order.shippingInfo.pinCode, $order.shippingInfo.country`
+                                   {order.date}
                                 </span>
                             </div>
                         </div>
-                        <Typography>Payment</Typography>
+                        <Typography>Plaćanje</Typography>
                         <div className="orderDetailsContainerBox">
                             <div>
+                                
                                 <p
                                     className={
-                                        orderItems?.amount &&
-                                            orderItems?.amount > 20000
+                                        status &&
+                                        status === 'succeeded'
                                             ? "greenColor"
                                             : "redColor"
                                     }
-                                >
-                                    {orderItems?.amount &&
-                                        orderItems?.amount > 20000
-                                        ? "PAID"
-                                        : "NOT PAID"}
+                                > <span>
+                                    { status &&
+                                        status === 'succeeded'
+                                        ? "PLAĆENO"
+                                        : "NIJE PLAĆENO"}
+                                </span>
+                                   
                                 </p>
                             </div>
 
                             <div>
-                                <p>Amount:</p>
-                                <span>{orderItems?.amount && orderItems?.amount}</span>
+                                <p>Ukupno:</p>
+                                <span>{order.total},00 RSD</span>
                             </div>
                         </div>
 
@@ -88,21 +115,22 @@ const OrderDetails = () => {
                     </div>
 
                     <div className="orderDetailsCartItems">
-                        <Typography>Order Items:</Typography>
+                        <Typography>Stavke porudžbine:</Typography>
                         <div className="orderDetailsCartItemsContainer">
                             {orderItems && Array.isArray(orderItems) && orderItems.length > 0 ? (
                                 orderItems.map((item) => (
                                     <div key={item.orderItemId}>
-                                        <img src="https://cdn-icons-png.flaticon.com/128/3500/3500833.png" alt="Product" />
-                                        <Link to={`/programs/${item.programId}`}>{item.programId}</Link>{" "}
-                                        <span>{item.orderId}</span>
+                                        <img src={(products.find(program => program.programId === item.programId).programImage) ? require(`../../assets/${products.find(program => program.programId === item.programId).programImage}`) : uploadPhotoGrayBack } alt="Product" />
+
+                                        <Link to={`/programs/${item.programId}`}>{setCategory(products.find(program => program.programId === item.programId).categoryId)} - {setProgramType(products.find(program => program.programId === item.programId).programTypeId)}</Link>{" "}
+                                        
                                         <span>
-                                            <b>RSD {item.amount}</b>
+                                            <b> {item.amount},00 RSD</b>
                                         </span>
                                     </div>
                                 ))
                             ) : (
-                                <p>No order items found.</p>
+                                <p className="text-danger"><WarningAmberIcon></WarningAmberIcon><span>Nisu pronađene stavke porudžbine.</span></p>
                             )}
                         </div>
                     </div>

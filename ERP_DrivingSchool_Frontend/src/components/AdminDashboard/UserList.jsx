@@ -33,6 +33,7 @@ const UsersList = () => {
   };
 
   useEffect(() => {
+    
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
@@ -71,7 +72,6 @@ const UsersList = () => {
     {
       field: "role",
       headerName: "Role",
-      type: "number",
       minWidth: 100,
       flex: 0.3,
       cellClassName: (params) => {

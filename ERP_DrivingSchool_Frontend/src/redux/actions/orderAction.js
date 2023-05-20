@@ -14,6 +14,12 @@ import {
     CLEAR_ERRORS,
   } from "../constants/orderConstants";
 import axios from "axios";
+import {CREATE_PAYMENT_FAIL,
+  CREATE_PAYMENT_REQUEST,
+  CREATE_PAYMENT_SUCCESS,} from '../constants/paymentConstants'
+import { createPayment } from "./paymentAction";
+import { createOrderItem } from "./orderItemsAction";
+import { clearCart } from "./orderItemAction";
 
 
   // Get All Orders 
@@ -40,7 +46,7 @@ export const getAllOrders = (token) => async (dispatch) => {
   };
 
   // Get Order Details
-export const getOrderDetails = (id, token) => async (dispatch) => {
+export const getOrderDetails = (token, id) => async (dispatch) => {
     try {
       dispatch({ type: ORDER_DETAILS_REQUEST });
   
@@ -50,9 +56,10 @@ export const getOrderDetails = (id, token) => async (dispatch) => {
           Authorization: `Bearer ${token}`
         }
       }
+   
+      const data  = await axios.get(`http://localhost:4000/order/${id}`, config)
+      
 
-      const data  = await axios.get(`http://localhost:4000/order/${id}`, config);
-  
       dispatch({ type: ORDER_DETAILS_SUCCESS, payload: data.data });
     } catch (error) {
       dispatch({
@@ -67,6 +74,9 @@ export const createOrder = (order, token) => async (dispatch) => {
   try {
     dispatch({ type: CREATE_ORDER_REQUEST });
 
+    console.log(order)
+    console.log(order.cartItems)
+    const cartItems = order.orderItems
     const userFromLocalS = JSON.parse(localStorage.getItem('user'))
 const user = userFromLocalS.data.user
 
@@ -78,10 +88,19 @@ const user = userFromLocalS.data.user
     }
    
     const  data  = await axios.post("http://localhost:4000/order", {
-      total:order.itemsPrice,
+      total:order.totalPrice,
       date: new Date().toISOString().split("T")[0],
       userId: user.userId
-    }, config).then(res => {
+    }, config).then(async (res) => {
+
+      // Create payment
+    await  dispatch(createPayment(order,token,res.data.orderId))
+
+      // Create order items
+      for (const item of cartItems) {
+        await dispatch(createOrderItem(item, token, res.data.orderId));
+      }
+      dispatch(clearCart())
       dispatch({ 
         type: CREATE_ORDER_SUCCESS, 
         payload: res.data 

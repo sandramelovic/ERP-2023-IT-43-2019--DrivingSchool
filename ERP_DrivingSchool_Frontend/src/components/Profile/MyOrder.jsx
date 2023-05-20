@@ -22,19 +22,19 @@ const MyOrders = () => {
     const userFromLocalS = JSON.parse(localStorage.getItem('user'))
     const token = userFromLocalS.token
     const columns = [
-        { field: "id", headerName: "Order ID", minWidth: 300, flex: 0.3 },
+        { field: "id", headerName: "Order ID", minWidth: 300, flex: 0.2 },
 
         {
             field: "date",
             headerName: "Datum",
             minWidth: 250,
-            flex: 0.5,
+            flex: 0.4,
         },
         {
             field: "status",
             headerName: "Status",
-            minWidth: 250,
-            flex: 0.3,
+            minWidth: 200,
+            flex: 0.4,
             cellClassName: (params) => {
                 return params.getValue(params.id, "status") === "succeeded"
                     ? "greenColor"
@@ -46,15 +46,15 @@ const MyOrders = () => {
             field: "total",
             headerName: "Ukupno",
             type: "number",
-            minWidth: 370,
+            minWidth: 200,
             flex: 0.4,
         },
 
         {
             field: "actions",
-            flex: 0.3,
+            flex: 0.4,
             headerName: "Actions",
-            minWidth: 150,
+            minWidth: 350,
             type: "number",
             sortable: false,
             renderCell: (params) => {

@@ -6,10 +6,13 @@ import {
     ALL_PAYMENT_REQUEST,
     ALL_PAYMENT_SUCCESS,
     CLEAR_ERRORS,
+    PAYMENT_DETAILS_FAIL,
+    PAYMENT_DETAILS_REQUEST,
+    PAYMENT_DETAILS_SUCCESS
 } from '../constants/paymentConstants'
 import axios from 'axios';
 
-export const newOrderReducer = (state = {}, action) => {
+export const newPaymentReducer = (state = {}, action) => {
     switch (action.type) {
         case CREATE_PAYMENT_REQUEST:
             return {
@@ -76,3 +79,36 @@ export const paymentsReducer = (state = initialState, action) => {
             return state;
     }
 }
+
+export const paymentDetailsReducer = (state = { payment: {} }, action) => {
+    switch (action.type) {
+      case PAYMENT_DETAILS_REQUEST:
+        return {
+          ...state,
+          loading: true,
+        };
+  
+      case PAYMENT_DETAILS_SUCCESS:
+        
+        return {
+          ...state,
+          loading: false,
+          payment: action.payload,
+        };
+  
+      case PAYMENT_DETAILS_FAIL:
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      case CLEAR_ERRORS:
+        return {
+          ...state,
+          error: null,
+        };
+  
+      default:
+        return state;
+    }
+  };

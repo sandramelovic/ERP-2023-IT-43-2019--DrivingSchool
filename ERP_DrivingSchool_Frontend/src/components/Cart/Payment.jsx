@@ -21,7 +21,7 @@ import Footer from '../Footer/Footer'
 import { useNavigate } from "react-router-dom";
 import { createPayment } from '../../redux/actions/paymentAction';
 import { clearCart } from "../../redux/actions/orderItemAction";
-import { getOrderDetails } from "../../redux/actions/orderAction";
+import { getAllOrders } from "../../redux/actions/orderAction";
 
 const Payment = () => {
   const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
@@ -34,11 +34,9 @@ const Payment = () => {
   const payBtn = useRef(null);
 
   const shippingInfo = useSelector((state) => state.shippingInfo);
-  //  const { shippingInfo, cartItems } = useSelector((state) => state.cart);
-  const { cartItems } = useSelector((state) => state.orderItemReducer);
-  const { orderDetails } = useSelector((state) => state.orderDetails);
+  const  state  = useSelector((state) => state.orderItemReducer);
+  const { orders } = useSelector((state) => state.allOrders);
 
-  //  const { user } = useSelector((state) => state.user);
   const userFromLocalS = JSON.parse(localStorage.getItem('user'))
   const user = userFromLocalS.data.user
 
@@ -50,12 +48,14 @@ const Payment = () => {
 
   const newOrder = {
     shippingInfo,
-    orderItems: cartItems,
+    orderItems: state,
     itemsPrice: orderInfo.subtotal,
     taxPrice: orderInfo.tax,
     shippingPrice: orderInfo.shippingCharges,
     totalPrice: orderInfo.totalPrice,
+    
   };
+
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -108,12 +108,10 @@ const Payment = () => {
           };
 
           dispatch(createOrder(newOrder, userFromLocalS.token));
-     //     dispatch(getOrderDetails(order.orderId, userFromLocalS.token));
-          setTimeout(() => {
-            dispatch(createPayment(newOrder, userFromLocalS.token, order.orderId));
+  
             navigate("/success");
-            dispatch(clearCart());
-          }, 10000); 
+           
+   
 
         } else {
           alert.error("There's some issue while processing payment ");

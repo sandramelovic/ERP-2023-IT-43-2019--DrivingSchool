@@ -58,14 +58,14 @@ const UpdateProduct = () => {
   
   useEffect(() => {
     dispatch(getProductDetails(productId));
-
+/*
   if (product) {
-    setDescription(product.description);
-    setPrice(product.price);
+    setDescription(product.description );
+    setPrice(product.price );
     setCategoryId(product.categoryId);
     setProgramTypeId(product.programTypeId);
     setOldImages(product.productImage);
-  }
+  }*/
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
@@ -90,7 +90,7 @@ const UpdateProduct = () => {
     isUpdated,
     product
   ]);
-console.log(product)
+
   const updateProductSubmitHandler = (e) => {
     e.preventDefault();
 
@@ -152,7 +152,7 @@ console.log(product)
                 placeholder="Cena"
                 required
                 onChange={(e) => setPrice(e.target.value)}
-                value={price}
+                defaultValue={product?.price}
               />
             </div>
 
@@ -161,7 +161,7 @@ console.log(product)
 
               <textarea
                 placeholder="Opis"
-                value={description}
+                defaultValue={product?.description}
                 onChange={(e) => setDescription(e.target.value)}
                 cols="30"
                 rows="3"
@@ -171,7 +171,7 @@ console.log(product)
             <div>
               <AccountTreeIcon />
               <select
-                value={categoryId}
+                defaultValue={setCategoryIdByCategory(product?.categoryId)}
                 onChange={(e) => setCategoryId(e.target.value)}
               >
                 <option value="">Izaberi kategoriju</option>
@@ -187,7 +187,7 @@ console.log(product)
             <div>
               <StorageIcon />
               <select
-                value={programTypeId}
+                defaultValue={setProgramTypeIdByProgramType(product?.programTypeId)}
                 onChange={(e) => setProgramTypeId(e.target.value)}
               >
                 <option value="">Izaberi tip programa</option>

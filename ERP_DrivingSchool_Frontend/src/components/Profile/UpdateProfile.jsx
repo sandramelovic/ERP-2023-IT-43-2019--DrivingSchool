@@ -13,6 +13,7 @@ import { useAlert } from "react-alert";
 import { UPDATE_PROFILE_RESET } from '../../redux/constants/userConstants'
 import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
+import { getUserDetails } from "../../redux/actions/userActions";
 import {
     useNavigate
 } from "react-router-dom";
@@ -21,21 +22,21 @@ const UpdateProfile = () => {
     const dispatch = useDispatch();
     const alert = useAlert();
     const navigate = useNavigate();
-   // const { user } = useSelector((state) => state.user);
+    const { user } = useSelector((state) => state.userDetails);
     const { error, isUpdated, loading } = useSelector((state) => state.profile);
     
     const userFromLocalS = JSON.parse(localStorage.getItem('user'))
     const token =userFromLocalS.token
     const id = userFromLocalS.data.user.userId
 
-    const [nameSurename, setNameSurename] = useState(userFromLocalS.data.user.nameSurename);
-    const [username, setUsername] = useState(userFromLocalS.data.user.username);
-    const [address, setAddress] = useState(userFromLocalS.data.user.address);
-    const [avatar, setAvatar] = useState(userFromLocalS.data.user.userImage);
+    const [nameSurename, setNameSurename] = useState(user.nameSurename);
+    const [username, setUsername] = useState(user.username);
+    const [address, setAddress] = useState(user.address);
+    const [avatar, setAvatar] = useState(user.userImage);
     const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
-    const [jmbg, setJmbg] = useState(userFromLocalS.data.user.jmbg);
-    const [phoneNumber, setPhoneNumber] = useState(userFromLocalS.data.user.phoneNumber);
-    const [birthDate, setBirthDate] = useState(userFromLocalS.data.user.birthDate);
+    const [jmbg, setJmbg] = useState(user.jmbg);
+    const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
+    const [birthDate, setBirthDate] = useState(user.birthDate);
 
     const updateProfileSubmit = (e) => {
         e.preventDefault();
@@ -67,6 +68,8 @@ const UpdateProfile = () => {
     };
 
     useEffect(() => {
+        dispatch(getUserDetails(userFromLocalS.data.user.userId, userFromLocalS.token))
+
       /*  if (userFromLocalS) {
             setNameSurename(userFromLocalS.nameSurename);
             setUsername(userFromLocalS.username);
@@ -108,7 +111,7 @@ const UpdateProfile = () => {
                                         placeholder="Ime i prezime"
                                         required
                                         name="nameSurename"
-                                        value={nameSurename}
+                                        defaultValue={nameSurename}
                                         onChange={(e) => setNameSurename(e.target.value)}
                                     />
                                 </div>
@@ -119,39 +122,39 @@ const UpdateProfile = () => {
                                         placeholder="Korisnicko ime"
                                         required
                                         name="username"
-                                        value={username}
+                                        defaultValue={username}
                                         onChange={(e) => setUsername(e.target.value)}
                                     />
                                 </div>
                                 <div className="updateProfileAddress">
                                     <HomeIcon />
                                     <input
-                                type="text"
+                              
                                         placeholder="Adresa"
                                         name="address"
-                                        value={address}
+                                        defaultValue={address}
                                         onChange={(e) => setAddress(e.target.value)}
                                     />
                                 </div>
                                 <div className="updateProfileAddress">
                                     <FingerprintIcon />
                                     <input
-                                
+                                type="text"
                                         placeholder="JMBG"
                                         required
                                         name="jmbg"
-                                        value={jmbg}
+                                        defaultValue={jmbg}
                                         onChange={(e) => setJmbg(e.target.value)}
                                     />
                                 </div>
                                 <div className="updateProfilePhoneNumber">
                                     <PhoneInTalkIcon />
                                     <input
-                                
+                                type="text"
                                         placeholder="Broj telefona"
                                         required
                                         name="phoneNumber"
-                                        value={phoneNumber}
+                                        defaultValue={phoneNumber}
                                         onChange={(e) => setPhoneNumber(e.target.value)}
                                     />
                                 </div>
@@ -161,7 +164,7 @@ const UpdateProfile = () => {
                                 type="date"
                                         placeholder="Datum rodjenja"
                                         name="birthDate"
-                                        value={birthDate}
+                                        defaultValue={birthDate}
                                         onChange={(e) => setBirthDate(e.target.value)}
                                     />
                                 </div>

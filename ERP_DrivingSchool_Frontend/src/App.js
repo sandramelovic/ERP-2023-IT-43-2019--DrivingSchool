@@ -7,7 +7,6 @@ import Cars from './components/Cars/Cars';
 import Programs from './components/Programs/Programs';
 import SingleProgram from './components/SingleProgram/SingleProgram';
 import Cart from './components/Cart/Cart'
-import Checkout from './components/Checkout/Checkout';
 import Contact from './components/Contact/Contact'
 import AdminDashboard from './components/AdminDashboard/AdminDashboard'
 import Sidebar from './components/AdminDashboard/Sidebar';
@@ -36,6 +35,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import OrderSuccess from './components/Cart/OrderSuccess';
 import Reasons from './components/Reasons/Reasons';
 import PrivateRoutes from './components/Route';
+import Search from './components/Search/Search';
 
 const App = () => {
 
@@ -74,6 +74,7 @@ const App = () => {
           <Route exact path="/programs/:id" element={<SingleProgram />} />
           <Route exact path="/cart" element={<Cart />} />
           <Route exact path='/contact' element={<Contact />} />
+          <Route exact path="/search" element={<Search/>} />
 
           <Route element={<PrivateRoutes isAdmin={false} />}>
             <Route exact path='/checkout' element={<Shipping />} />

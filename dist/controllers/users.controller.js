@@ -135,7 +135,7 @@ var putUser = /*#__PURE__*/function () {
           _req$body = req.body, nameSurename = _req$body.nameSurename, address = _req$body.address, birthDate = _req$body.birthDate, jmbg = _req$body.jmbg, phoneNumber = _req$body.phoneNumber, username = _req$body.username;
           role = req.body.role;
           id = req.params.id;
-          if (role == null) {
+          if (role === null) {
             role = _role["default"].User;
           }
           if (!(nameSurename == null || jmbg == null || phoneNumber == null || username == null)) {
@@ -156,7 +156,7 @@ var putUser = /*#__PURE__*/function () {
         case 12:
           salt = _context4.sent;
           _context4.next = 15;
-          return pool.request().input("nameSurename", _database.sql.VarChar, nameSurename).input("address", _database.sql.VarChar, address).input("birthDate", _database.sql.Date, birthDate).input("jmbg", _database.sql.VarChar, jmbg).input("phoneNumber", _database.sql.VarChar, phoneNumber).input("role", _database.sql.Bit, role).input("username", _database.sql.VarChar, username).input("id", _database.sql.Int, id).query(_database.query.putUser);
+          return pool.request().input("nameSurename", _database.sql.VarChar, nameSurename).input("address", _database.sql.VarChar, address).input("birthDate", _database.sql.Date, birthDate).input("jmbg", _database.sql.VarChar, jmbg).input("phoneNumber", _database.sql.VarChar, phoneNumber).input("role", _database.sql.VarChar, role).input("username", _database.sql.VarChar, username).input("id", _database.sql.Int, id).query(_database.query.putUser);
         case 15:
           res.status(200).json({
             success: true,
@@ -171,16 +171,17 @@ var putUser = /*#__PURE__*/function () {
             }
           });
           //     res.json({ nameSurename, address, birthDate, jmbg, phoneNumber, role, username, password })
-          _context4.next = 21;
+          _context4.next = 22;
           break;
         case 18:
           _context4.prev = 18;
           _context4.t0 = _context4["catch"](6);
+          console.log(_context4.t0);
           res.status(500).json({
             success: false,
             message: "User not found"
           });
-        case 21:
+        case 22:
         case "end":
           return _context4.stop();
       }

@@ -58,7 +58,7 @@ export const putUser = async (req, res) => {
     let {role} = req.body
 
     const { id } = req.params
-    if (role == null){
+    if (role === null){
          role = Role.User
     }
     if (nameSurename == null || jmbg == null || phoneNumber == null || username == null) {
@@ -76,7 +76,7 @@ export const putUser = async (req, res) => {
             .input("birthDate", sql.Date, birthDate)
             .input("jmbg", sql.VarChar, jmbg)
             .input("phoneNumber", sql.VarChar, phoneNumber)
-            .input("role", sql.Bit, role)
+            .input("role", sql.VarChar, role)
             .input("username", sql.VarChar, username)
             .input("id", sql.Int, id)
             .query(query.putUser)
@@ -87,6 +87,7 @@ export const putUser = async (req, res) => {
                 data: { nameSurename, address, birthDate, jmbg, phoneNumber, role, username }})
    //     res.json({ nameSurename, address, birthDate, jmbg, phoneNumber, role, username, password })
     } catch (error) {
+        console.log(error)
         res.status(500).json({
             success:false,
             message: "User not found"

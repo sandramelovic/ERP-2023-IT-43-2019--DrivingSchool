@@ -5,7 +5,10 @@ import {
     ORDERITEM_DETAILS_FAIL,
     ORDERITEM_DETAILS_REQUEST,
     ORDERITEM_DETAILS_SUCCESS,
-    CLEAR_ERRORS
+    CLEAR_ERRORS,
+    CREATE_ORDERITEM_FAIL,
+    CREATE_ORDERITEM_REQUEST,
+    CREATE_ORDERITEM_SUCCESS
 } from '../constants/orderItemsConstants'
 
 export const allOrderItemReducer = (state = { orderItems: [] }, action) => {
@@ -35,3 +38,33 @@ export const allOrderItemReducer = (state = { orderItems: [] }, action) => {
         return state;
     }
   };
+
+  export const newOrderItemReducer = (state = {}, action) => {
+    switch (action.type) {
+        case CREATE_ORDERITEM_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+
+        case CREATE_ORDERITEM_SUCCESS:
+            return {
+                loading: false,
+                orderItem: action.payload,
+            };
+
+        case CREATE_ORDERITEM_FAIL:
+            return {
+                loading: false,
+                error: action.payload,
+            };
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null,
+            };
+
+        default:
+            return state;
+    }
+};

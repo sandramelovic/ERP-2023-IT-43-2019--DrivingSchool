@@ -30,29 +30,22 @@ const UpdateUser = () => {
     isUpdated,
   } = useSelector((state) => state.profile);
 
-  const [nameSurename, setNameSurename] = useState(user.nameSurename);
-  const [username, setUsername] = useState(user.username);
-  const [address, setAddress] = useState(user.address);
-  const [avatar, setAvatar] = useState(user.userImage);
+  const [nameSurename, setNameSurename] = useState();
+  const [username, setUsername] = useState();
+  const [address, setAddress] = useState();
+  const [avatar, setAvatar] = useState();
   const [avatarPreview, setAvatarPreview] = useState("");
-  const [jmbg, setJmbg] = useState(user.jmbg);
-  const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
-  const [birthDate, setBirthDate] = useState(user.birthDate);
-  const [role, setRole] = useState(user.birthDate);
+  const [jmbg, setJmbg] = useState();
+  const [phoneNumber, setPhoneNumber] = useState();
+  const [birthDate, setBirthDate] = useState();
+  const [role, setRole] = useState();
 
   const userId = id;
 
   useEffect(() => {
     
-    if (user && user.userId === userId) {
-      dispatch(getUserDetails(userId, token));
-      console.log(user)
-      setNameSurename(user.nameSurename);
-      setUsername(user.username);
-      setRole(user.role);
-    } else {
-      
-    }
+    dispatch(getUserDetails(userId, token));
+    
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
@@ -106,7 +99,7 @@ const UpdateUser = () => {
                   placeholder="Ime i prezime"
                   required
                   name="nameSurename"
-                  value={nameSurename}
+                  defaultValue={nameSurename}
                   onChange={(e) => setNameSurename(e.target.value)}
                 />
               </div>
@@ -117,17 +110,17 @@ const UpdateUser = () => {
                   placeholder="Korisnicko ime"
                   required
                   name="username"
-                  value={username}
+                  defaultValue={username}
                   onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
 
               <div>
                 <VerifiedUserIcon />
-                <select value={role} onChange={(e) => setRole(e.target.value)}>
+                <select defaultValue={role} onChange={(e) => setRole(e.target.value)}>
                   <option value="">Izaberi ulogu</option>
-                  <option value="admin">Admin</option>
-                  <option value="user">Korisnik</option>
+                  <option value="Admin">Admin</option>
+                  <option value="User">Korisnik</option>
                 </select>
               </div>
 

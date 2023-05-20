@@ -6,10 +6,13 @@ import {
   ALL_PAYMENT_REQUEST,
   ALL_PAYMENT_SUCCESS,
   CLEAR_ERRORS,
+  PAYMENT_DETAILS_FAIL,
+  PAYMENT_DETAILS_REQUEST,
+  PAYMENT_DETAILS_SUCCESS
 } from '../constants/paymentConstants'
 import axios from 'axios';
 
-// Create Order
+// Create Payment
 export const createPayment = (order, token, orderId) => async (dispatch) => {
   try {
     dispatch({ type: CREATE_PAYMENT_REQUEST });
@@ -24,8 +27,7 @@ export const createPayment = (order, token, orderId) => async (dispatch) => {
         Authorization: `Bearer ${token}`
       }
     }
-    console.log(order.paymentInfo.status)
-    const data = await axios.post("http://localhost:4000/payment", {
+      const data = await axios.post("http://localhost:4000/payment", {
       paid: new Date().toISOString().split("T")[0],
       details: JSON.stringify(order.shippingInfo),
       status: order.paymentInfo.status,
@@ -86,4 +88,28 @@ export const getAllPayments =
         });
       }
     };
+
+    // Get Payment Details
+export const getPaymentDetails = (token, id) => async (dispatch) => {
+  try {
+    dispatch({ type: PAYMENT_DETAILS_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      }
+    }
+ 
+    const data  = await axios.get(`http://localhost:4000/payment/${id}`, config)
+    
+
+    dispatch({ type: PAYMENT_DETAILS_SUCCESS, payload: data.data });
+  } catch (error) {
+    dispatch({
+      type: PAYMENT_DETAILS_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
 

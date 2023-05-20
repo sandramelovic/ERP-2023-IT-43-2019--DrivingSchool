@@ -1,4 +1,28 @@
-.cars{
+#search-header {
+    display: flex;
+    margin-top: -2vmax;
+    margin-bottom: 4vmax ;
+    justify-content: center;
+  }
+  #search-text {
+    margin-right: 10px;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: orange;
+    font-weight: bold;
+  }
+  #search-box {
+    height: 35px;
+    min-width: 20vmax;
+    background-color: var(--lightgray);
+  }
+  #search-box[placeholder] {
+    line-height: 15px;
+    font-size: 15px;
+  }
+  .cars{
     background-color: var(--darkGrey);
     margin-left: 1rem;
 }

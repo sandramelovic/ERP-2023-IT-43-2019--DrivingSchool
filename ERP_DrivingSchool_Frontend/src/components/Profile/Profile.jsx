@@ -9,23 +9,25 @@ import { getUserDetails } from "../../redux/actions/userActions";
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 const Profile = () => {
-  
-  const { user, loading } = useSelector((state) => state.userDetails);
-const userr = localStorage.getItem('user')
 
-const dispatch = useDispatch()
+  const { user, loading } = useSelector((state) => state.userDetails);
+  const userr = localStorage.getItem('user')
+
+  const dispatch = useDispatch()
   const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getUserDetails(JSON.parse(userr).data.user.userId, JSON.parse(userr).token))
-    
+
   }, [dispatch]);
+
+  const formattedDate = user.birthDate ? new Date(user.birthDate).toLocaleDateString() : null;
   return (
     <div>
       <Header />
       <Fragment>
         <Fragment>
-        <h1 className="text-center"> <span className="stroke-text display-6 fw-bolder text-warning" style={{ color: 'var(--darkGrey)' }}>{`${user.nameSurename}`}</span><span className="display-6 fw-bolder text-warning"> profil </span></h1>
+          <h1 className="text-center"> <span className="stroke-text display-6 fw-bolder text-warning" style={{ color: 'var(--darkGrey)' }}>{`${user.nameSurename}`}</span><span className="display-6 fw-bolder text-warning"> profil </span></h1>
           <div className="profileContainer">
             <div>
               <h1 className="text-warning">Moj profil</h1>
@@ -51,25 +53,28 @@ const dispatch = useDispatch()
               </div>
               <div>
                 <h4 className="text-warning">Adresa:</h4>
-                {user.address !== 'undefined' && user.address !== 'null' ? (
+                {!user.address ? (
                   <span>
-                    <p className="text-danger" >Adresa nije uneta </p> <Link to="/me/update"><WarningAmberIcon></WarningAmberIcon> Unesi adresu</Link>
-                    </span>
+                    <p className="text-danger">Adresa nije uneta</p>
+                    <Link to="/me/update">
+                      <WarningAmberIcon /> Unesi adresu
+                    </Link>
+                  </span>
                 ) : (
                   <p className="text-light">{user.address}</p>
                 )}
               </div>
               <div>
                 <h4 className="text-warning">Datum rođenja:</h4>
-                {user.birthOfDate !== 'undefined' && user.birthOfDate !== 'null' ? (
+                {!user.birthDate ? (
                   <span>
                     <p className="text-danger">Datum rođenja nije unet </p> <Link to="/me/update"><WarningAmberIcon></WarningAmberIcon> Unesi datum rođenja</Link>
-                    </span>
+                  </span>
                 ) : (
-                  <p className="text-light">{user.birthOfDate}</p>
+                  <p className="text-light">{formattedDate}</p>
                 )}
               </div>
-              
+
 
               <div>
                 <Link to="/orders">Moje porudžbine</Link>

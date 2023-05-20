@@ -127,7 +127,7 @@ export const getAllUsers = (token) => async (dispatch) => {
         }
       }
       const  data  = await axios.get(`http://localhost:4000/user/${id}`, config);
-   console.log(data)
+
       dispatch({ type: USER_DETAILS_SUCCESS, payload: data.data });
     } catch (error) {
       dispatch({ type: USER_DETAILS_FAIL, payload: error.response.data.message });
@@ -142,14 +142,18 @@ export const updateUser = (id, userData, token) => async (dispatch) => {
       const config = { headers: { "Content-Type": "application/json",
       Authorization: `Bearer ${token}` } };
 
-      const { data } = await axios.put(
+      console.log(userData.get('role'))
+      const  data  = await axios.put(
         `http://localhost:4000/user/${id}`,
-        {nameSurename: userData.get("nameSurename"),
-        phoneNumber: userData.get("phoneNumber"),
-        jmbg: parseInt(userData.get("jmbg")),
-        birthDate: userData.get("birthDate"),
-        address: userData.get("address"),
-        username: userData.get("username")},
+        {
+          nameSurename: userData.get("nameSurename"),
+          phoneNumber: userData.get("phoneNumber"),
+          jmbg: userData.get("jmbg"),
+          address: userData.get("address"),
+          username: userData.get("username"),
+          role: userData.get('role')
+         
+      },
         config
       ).then(res => {
         console.log(res)
@@ -201,6 +205,7 @@ export const updateUser = (id, userData, token) => async (dispatch) => {
   })
 
     } catch (error) {
+      console.log(error)
       dispatch({
         type: DELETE_USER_FAIL,
         payload: error.response.data?.message,
@@ -212,22 +217,13 @@ export const updateUser = (id, userData, token) => async (dispatch) => {
     try {
       dispatch({ type: UPDATE_PROFILE_REQUEST });
   
-      const config = { headers: { "Content-Type": "multipart/form-data", 
+      const config = { headers: { "Content-Type": "application/json", 
       Authorization: `Bearer ${token}` } };
-
-      console.log(id);
-      console.log(userData.get("nameSurename"));
-      console.log(userData.get("phoneNumber"));
-      console.log(userData.get("jmbg"));
-      console.log(userData.get("birthDate"));
-      console.log(userData.get("address"));
-      console.log(userData.get("username"));
-      
 
       const data = await axios.put(`http://localhost:4000/user/${id}`, {
         nameSurename: userData.get("nameSurename"),
         phoneNumber: userData.get("phoneNumber"),
-        jmbg: parseInt(userData.get("jmbg")),
+        jmbg: userData.get("jmbg"),
         birthDate: userData.get("birthDate"),
         address: userData.get("address"),
         username: userData.get("username"),
