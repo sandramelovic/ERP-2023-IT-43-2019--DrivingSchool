@@ -9,12 +9,15 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useAlert } from "react-alert";
 import { setCategory, setProgramType } from "../../redux/actions/categoryActions";
 import uploadPhotoWhiteBack from '../../assets/uploadPhotoWhiteBack.png'
+import SweetPagination from "sweetpagination";
 
 const Programs = () => {
 
     const { loading, error, products } = useSelector((state) => state.products)
     const dispatch = useDispatch()
     const [filter, setFilter] = useState(products)
+
+    const [currentPageData, setCurrentPageData] = useState(products);
 
     useEffect(() => {
         if (error) {
@@ -58,17 +61,17 @@ const Programs = () => {
                     <button className="btn btn-outline-dark me-4" onClick={() => filterPrograms(1)}>Teorija</button>
                     <button className="btn btn-outline-dark me-4" onClick={() => filterPrograms(2)}>Praksa</button>
                 </div>
-                {filter?.map((program) => {
+                {currentPageData?.map((program) => {
                     return (
                         <>
                             <div className="col-md-4 mb-5">
-                                <div class="cont h-100  p-4" key={program.programId}>   
-                                        <img
+                                <div class="cont h-100  p-4" key={program.programId}>
+                                    <img
                                         src={program.programImage ? require(`../../assets/${program.programImage}`) : uploadPhotoWhiteBack}
-                                            class="card-img-top"
-                                            alt={program.programId}
-                                            height="300px"
-                                        />               
+                                        class="card-img-top"
+                                        alt={program.programId}
+                                        height="300px"
+                                    />
                                     <div class="text-programs">
                                         <h4>Kategorija: {setCategory(program.categoryId)}</h4>
                                         <p>Tip: {setProgramType(program.programTypeId)}</p>
@@ -113,6 +116,12 @@ const Programs = () => {
                 <div className="row justify-content-center">
                     {loading ? <Loading /> : <ShowPrograms />}
                 </div>
+                <SweetPagination
+                    currentPageData={setCurrentPageData}
+                    dataPerPage={6}
+                    getData={filter}
+                    navigation={true}
+                />
             </div>
             <Footer />
         </div>
