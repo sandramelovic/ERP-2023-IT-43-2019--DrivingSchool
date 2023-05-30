@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import axios from "axios";
 import CheckoutSteps from "../Cart/CheckoutSteps";
 import { useSelector } from "react-redux";
 import "./ConfirmOrder.css";
@@ -9,11 +10,17 @@ import Footer from "../Footer/Footer";
 import { useNavigate } from "react-router-dom";
 import uploadPhotoGrayBack from '../../assets/uploadPhotoGrayBack.png'
 import { setCategory } from '../../redux/actions/categoryActions'
+import { setProgramType } from "../../redux/actions/categoryActions";
+import { useDispatch } from "react-redux";
+import { createOrder, clearErrors } from "../../redux/actions/orderAction";
 
 const ConfirmOrder = ({ history }) => {
   const shippingInfo = useSelector((state) => state.shippingInfo);
   const cartItems = useSelector((state) => state.orderItemReducer);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
   const userFromLocalS = localStorage.getItem('user')
   const user = JSON.parse(userFromLocalS).data.user
 
@@ -41,6 +48,7 @@ const ConfirmOrder = ({ history }) => {
   const totalPrice = subtotal + tax + shippingCharges;
 
   const address = `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.state}, ${shippingInfo.pinCode}, ${shippingInfo.country}`;
+
   const proceedToPayment = () => {
     const data = {
       subtotal,
@@ -48,11 +56,42 @@ const ConfirmOrder = ({ history }) => {
       tax,
       totalPrice,
     };
-
-    sessionStorage.setItem("orderInfo", JSON.stringify(data));
-
-    navigate("/process/payment");
-  };
+    const paymentData = {
+      amount: Math.round(data.totalPrice * 100),
+      userId: user.userId,
+      cartItems: cartItems,
+      token: JSON.parse(userFromLocalS).token
+    };
+  
+    //   sessionStorage.setItem("orderInfo", JSON.stringify(data));
+    //  navigate("/process/payment");
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userFromLocalS.token}`
+        },
+      };
+      axios.post(
+        "http://localhost:4000/order/confirm",
+        paymentData,
+        config
+      ).then((response) => {
+        console.log(response)
+        if (response.data.url) {
+        //  dispatch(createOrder(response.data.newOrder, userFromLocalS.token));
+          
+          window.location.href = response.data.url;
+        }
+      })
+        .catch((err) => console.log(err.message));
+    }
+  
+  catch (error) {
+    //  payBtn.current.disabled = false;
+    alert.error(error.response.data?.message);
+  }
+}
 
   return (
     <div>
@@ -107,21 +146,13 @@ const ConfirmOrder = ({ history }) => {
                   <p>Međuzbir:</p>
                   <span>{subtotal} RSD</span>
                 </div>
-                <div>
-                  <p>Dostava:</p>
-                  <span>{shippingCharges} RSD</span>
-                </div>
-                <div>
-                  <p>Takse:</p>
-                  <span>{tax} RSD</span>
-                </div>
               </div>
 
               <div className="orderSummaryTotal">
                 <p>
                   <b>Ukupno:</b>
                 </p>
-                <span>{subtotal + shippingCharges + tax} RSD</span>
+                <span>{subtotal} RSD</span>
               </div>
 
               <button onClick={proceedToPayment}>Idi na plaćanje</button>

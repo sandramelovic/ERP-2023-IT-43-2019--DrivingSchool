@@ -40,10 +40,13 @@ const Payment = () => {
   const userFromLocalS = JSON.parse(localStorage.getItem('user'))
   const user = userFromLocalS.data.user
 
+
   const { error, order } = useSelector((state) => state.newOrder);
 
   const paymentData = {
     amount: Math.round(orderInfo.totalPrice * 100),
+    userId: user.userId,
+    cartItems: state
   };
 
   const newOrder = {
@@ -61,7 +64,7 @@ const Payment = () => {
     e.preventDefault();
 
     payBtn.current.disabled = true;
-
+    console.log("response")
     try {
       const config = {
         headers: {
@@ -69,13 +72,21 @@ const Payment = () => {
           Authorization: `Bearer ${userFromLocalS.token}`
         },
       };
-      const { data } = await axios.post(
+      const  data  = await axios.post(
         "http://localhost:4000/payment/process",
         paymentData,
         config
-      );
+      ).then((response) => {
+        console.log(response)
+        if (response.data.url) {
+          dispatch(createOrder(newOrder, userFromLocalS.token));
+          window.location.href = response.data.url;
+        }
+      })
+      .catch((err) => console.log(err.message));
+    }
 
-      const client_secret = data.client_secret;
+   /*   const client_secret = data.client_secret;
 
       if (!stripe || !elements) return;
 
@@ -115,10 +126,9 @@ const Payment = () => {
 
         } else {
           alert.error("There's some issue while processing payment ");
-        }
-      }
-    } catch (error) {
-      payBtn.current.disabled = false;
+        }*/
+      catch (error) {
+    //  payBtn.current.disabled = false;
       alert.error(error.response.data?.message);
     }
   };

@@ -133,31 +133,33 @@ var putUser = /*#__PURE__*/function () {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
           _req$body = req.body, nameSurename = _req$body.nameSurename, address = _req$body.address, birthDate = _req$body.birthDate, jmbg = _req$body.jmbg, phoneNumber = _req$body.phoneNumber, username = _req$body.username;
-          role = req.body.role;
+          role = null;
           id = req.params.id;
+          console.log(role);
           if (role === null) {
             role = _role["default"].User;
           }
+          console.log(role);
           if (!(nameSurename == null || jmbg == null || phoneNumber == null || username == null)) {
-            _context4.next = 6;
+            _context4.next = 8;
             break;
           }
           return _context4.abrupt("return", res.status(400).json({
             msg: "Bad Request. Please fill all fields"
           }));
-        case 6:
-          _context4.prev = 6;
-          _context4.next = 9;
+        case 8:
+          _context4.prev = 8;
+          _context4.next = 11;
           return (0, _database.getConnection)();
-        case 9:
+        case 11:
           pool = _context4.sent;
-          _context4.next = 12;
+          _context4.next = 14;
           return bcrypt.genSalt(_config.HASH_SALT);
-        case 12:
+        case 14:
           salt = _context4.sent;
-          _context4.next = 15;
+          _context4.next = 17;
           return pool.request().input("nameSurename", _database.sql.VarChar, nameSurename).input("address", _database.sql.VarChar, address).input("birthDate", _database.sql.Date, birthDate).input("jmbg", _database.sql.VarChar, jmbg).input("phoneNumber", _database.sql.VarChar, phoneNumber).input("role", _database.sql.VarChar, role).input("username", _database.sql.VarChar, username).input("id", _database.sql.Int, id).query(_database.query.putUser);
-        case 15:
+        case 17:
           res.status(200).json({
             success: true,
             data: {
@@ -171,21 +173,21 @@ var putUser = /*#__PURE__*/function () {
             }
           });
           //     res.json({ nameSurename, address, birthDate, jmbg, phoneNumber, role, username, password })
-          _context4.next = 22;
+          _context4.next = 24;
           break;
-        case 18:
-          _context4.prev = 18;
-          _context4.t0 = _context4["catch"](6);
+        case 20:
+          _context4.prev = 20;
+          _context4.t0 = _context4["catch"](8);
           console.log(_context4.t0);
           res.status(500).json({
             success: false,
             message: "User not found"
           });
-        case 22:
+        case 24:
         case "end":
           return _context4.stop();
       }
-    }, _callee4, null, [[6, 18]]);
+    }, _callee4, null, [[8, 20]]);
   }));
   return function putUser(_x7, _x8) {
     return _ref4.apply(this, arguments);

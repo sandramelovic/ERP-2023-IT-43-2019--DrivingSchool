@@ -36,7 +36,7 @@ const MyOrders = () => {
             minWidth: 200,
             flex: 0.4,
             cellClassName: (params) => {
-                return params.getValue(params.id, "status") === "succeeded"
+                return params.getValue(params.id, "status") === "paid"
                     ? "greenColor"
                     : "redColor";
             },
@@ -44,11 +44,19 @@ const MyOrders = () => {
 
         {
             field: "total",
+            headerName: "+ ostali troskovi",
+            type: "number",
+            minWidth: 200,
+            flex: 0.4,
+        },
+        {
+            field: "subtotal",
             headerName: "Ukupno",
             type: "number",
             minWidth: 200,
             flex: 0.4,
         },
+
 
         {
             field: "actions",
@@ -71,22 +79,23 @@ const MyOrders = () => {
     if (orders) {
         orders?.forEach((item, index) => {
             if (item.orderId) {
-                const paymentArray = payments.find(paymentArr => paymentArr.length > 0 && paymentArr[0].orderId === item.orderId);
-                const payment = paymentArray ? paymentArray[0] : null;
-                const status = payment ? payment.status : "Unknown";
+                const status = item.payment_status ? item.payment_status : "Unknown";
+
                 rows.push({
                     id: item.orderId,
                     orderId: item.orderId,
                     status: status,
-                    total: item.total,
+                    total: item.total / 100,
+                    subtotal: item.subtotal / 100,
                     date: item.date,
                 });
             } else {
                 rows.push({
                     id: index,
                     orderId: item.orderId,
-                    status: payments.find(payment => payment.orderId === item.orderId)?.status,
-                    total: item.total,
+                    status: item.payment_status,
+                    total: item.total / 100,
+                    subtotal: item.subtotal / 100,
                     date: item.date,
                 });
             }

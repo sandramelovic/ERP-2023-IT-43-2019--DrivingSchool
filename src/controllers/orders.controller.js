@@ -53,7 +53,7 @@ export const postOrder = async (req, res) => {
 }*/
 
 export const postOrder = async (req, res) => {
-    const { userId, total, date } = req.body;
+    const { userId, total, date, shipping, payment_status, subtotal } = req.body;
   
     if (userId == null || total == null || date == null) {
       return res.status(400).json({ msg: "Bad Request. Please fill all fields" });
@@ -67,6 +67,9 @@ export const postOrder = async (req, res) => {
         .input("userId", sql.Int, userId)
         .input("total", sql.Int, total)
         .input("date", sql.Date, date)
+        .input("shipping", sql.VarChar, shipping)
+        .input("payment_status", sql.VarChar, payment_status)
+        .input("subtotal", sql.Int, subtotal)
         .query(query.postOrder);
 
         const orderId = await pool
@@ -74,10 +77,11 @@ export const postOrder = async (req, res) => {
         .input("userId", sql.Int, userId)
         .input("total", sql.Int, total)
         .input("date", sql.Date, date)
+        
         .query(query.getOrderId);
        
   
-        res.json({ userId, total, date, orderId:orderId.recordset[0][""] })
+        res.json({ userId, total, date, shipping, payment_status, subtotal, orderId:orderId.recordset[0][""] })
 
     } catch (error) {
       res.status(500).send(error.message);
@@ -120,7 +124,7 @@ export const deleteOrder = async (req, res) => {
 }
 
 export const putOrder = async (req, res) => {
-    const { userId, total, date } = req.body
+    const { userId, total, date, shipping, payment_status, subtotal }  = req.body
     const { id } = req.params
 
     if (userId == null || total == null || date == null) {
@@ -133,13 +137,16 @@ export const putOrder = async (req, res) => {
             .input("userId", sql.Int, userId)
             .input("total", sql.Int, total)
             .input("date", sql.Date, date)
+            .input("shipping", sql.VarChar, shipping)
+            .input("payment_status", sql.VarChar, payment_status)
+            .input("subtotal", sql.Int, subtotal)
             .input("id", sql.Int, id)
             .query(query.putOrder)
 
       //  res.json({ userId, total, date })
         res.status(200).json({
             success: true,
-            data: { userId, total, date }})
+            data: { userId, total, date, shipping, payment_status, subtotal }})
     } catch (error) {
         res.status(500)
         res.send(error.message)

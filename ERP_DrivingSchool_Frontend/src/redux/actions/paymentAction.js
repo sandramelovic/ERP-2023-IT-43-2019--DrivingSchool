@@ -29,8 +29,8 @@ export const createPayment = (order, token, orderId) => async (dispatch) => {
     }
       const data = await axios.post("http://localhost:4000/payment", {
       paid: new Date().toISOString().split("T")[0],
-      details: JSON.stringify(order.shippingInfo),
-      status: order.paymentInfo.status,
+      details: JSON.stringify(order.shipping),
+      status: order.payment_status,
       orderId: orderId,
     }, config).then(res => {
       dispatch({
@@ -48,7 +48,7 @@ export const createPayment = (order, token, orderId) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: CREATE_PAYMENT_FAIL,
-      payload: error.response.data.message,
+      payload: error.response.data?.message,
     });
   }
 };

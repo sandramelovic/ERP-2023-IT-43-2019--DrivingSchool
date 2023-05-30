@@ -53,10 +53,6 @@ const App = () => {
   }
 
   useEffect(() => {
-
-
-    // store.dispatch(loadUser());
-
     getStripeApiKey();
   }, []);
 

@@ -24,10 +24,10 @@ export const query = {
     putInstructor: 'UPDATE Instructor SET nameSurename = @nameSurename, vehicleId = @vehicleId WHERE instructorId = @id',
 
     getOrders: 'SELECT * FROM Orders',
-    postOrder: 'INSERT INTO Orders (userId, total, date) VALUES (@userId, @total, @date)',
+    postOrder: 'INSERT INTO Orders (userId, total, date, shipping, payment_status, subtotal) VALUES (@userId, @total, @date, @shipping, @payment_status, @subtotal)',
     getOrderById: 'SELECT * FROM Orders WHERE orderId = @id',
     deleteOrder: 'DELETE FROM [DrivingSchool].[dbo].[Orders] WHERE orderId = @id',
-    putOrder: 'UPDATE Orders SET userId = @userId, total = @total, date = @date WHERE orderId = @id',
+    putOrder: 'UPDATE Orders SET userId = @userId, total = @total, date = @date, shipping = @shipping, payment_status = @payment_status, subtotal = @subtotal WHERE orderId = @id',
     getOrderId: 'SELECT MAX(orderId) FROM Orders WHERE userId = @userId AND total = @total AND date = @date',
 
     getOrderItems: 'SELECT * FROM OrderItem',

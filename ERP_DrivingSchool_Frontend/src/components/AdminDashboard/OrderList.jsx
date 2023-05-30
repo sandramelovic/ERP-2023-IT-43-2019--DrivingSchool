@@ -55,33 +55,47 @@ const OrderList = () => {
   }, [dispatch, alert, error]);
 
   const columns = [
-    { field: "id", headerName: "Order ID", minWidth: 300, flex: 0.5 },
+    { field: "id", headerName: "Order ID", minWidth: 50, flex: 0.2 },
 
     {
       field: "username",
       headerName: "Username",
       minWidth: 100,
-      flex: 0.5,
+      flex: 0.3,
     },
     {
       field: "date",
       headerName: "Datum",
       minWidth: 100,
-      flex: 0.5,
+      flex: 0.4,
     },
 
     {
+      field: "status",
+      headerName: "Status",
+      minWidth: 100,
+      flex: 0.3,
+      cellClassName: (params) => {
+          return params.getValue(params.id, "status") === "paid"
+              ? "greenColor"
+              : "redColor";
+      },
+  },
+
+    {
       field: "total",
+      headerName: "+ ostali troskovi",
+      type: "number",
+      minWidth: 100,
+      flex: 0.3,
+  },
+  {
+      field: "subtotal",
       headerName: "Ukupno",
       type: "number",
       minWidth: 100,
-      flex: 0.5,
-      cellClassName: (params) => {
-        return params.getValue(params.id, "total") > 50000
-          ? "greenColor"
-          : "redColor";
-      },
-    },
+      flex: 0.4,
+  },
 
     
   ];
@@ -92,10 +106,15 @@ const OrderList = () => {
       orders.forEach((item) => {
         const user = users.find((user) => user.userId === item.userId);
   const username = user ? user.username : 'Nepoznat';
+  const status = item.payment_status ? item.payment_status : "Unknown";
+
         rows.push({
           id: item.orderId,
+          orderId: item.orderId,
           username: username,
-          total: item.total,
+          status: status,
+          total: item.total ,
+          subtotal: item.subtotal ,
           date: item.date,
         });
       });
@@ -117,6 +136,7 @@ const OrderList = () => {
               disableSelectionOnClick
               className="productListTable"
               autoHeight
+              
             />
           </div>
         </div>

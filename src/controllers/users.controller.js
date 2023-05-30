@@ -55,12 +55,15 @@ export const deleteUser = async (req, res) => {
 
 export const putUser = async (req, res) => {
     const { nameSurename, address, birthDate, jmbg, phoneNumber, username } = req.body
-    let {role} = req.body
+    let role = null
 
     const { id } = req.params
+    console.log(role)
     if (role === null){
          role = Role.User
     }
+    console.log(role)
+
     if (nameSurename == null || jmbg == null || phoneNumber == null || username == null) {
         return res.status(400).json({ msg: "Bad Request. Please fill all fields" })
     }

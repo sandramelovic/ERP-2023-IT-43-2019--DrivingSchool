@@ -33,7 +33,13 @@ app.set('port', _config["default"].port);
 
 //middlewares
 app.use((0, _cors["default"])(corsOptions));
-app.use(_express["default"].json());
+//app.use(express.json())
+app.use(_express["default"].json({
+  limit: '5mb',
+  verify: function verify(req, res, buf) {
+    req.rawBody = buf.toString();
+  }
+}));
 app.use(_express["default"].urlencoded({
   extended: false
 }));

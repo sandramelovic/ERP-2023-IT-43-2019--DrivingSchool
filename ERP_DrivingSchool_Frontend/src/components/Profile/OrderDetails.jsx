@@ -43,9 +43,8 @@ const OrderDetails = () => {
 
     }, [dispatch, alert, error, orderId.id]);
 
-    const paymentArray = payments.find(paymentArr => paymentArr.length > 0 && paymentArr[0].orderId === order.orderId);
-    const payment = paymentArray ? paymentArray[0] : null;
-    const status = payment ? payment.status : "Unknown";
+    
+    const status = order.payment_status ? order.payment_status : "Unknown";
 
     useEffect(() => {
         if (error) {
@@ -91,13 +90,13 @@ const OrderDetails = () => {
                                 <p
                                     className={
                                         status &&
-                                        status === 'succeeded'
+                                        status === 'paid'
                                             ? "greenColor"
                                             : "redColor"
                                     }
                                 > <span>
                                     { status &&
-                                        status === 'succeeded'
+                                        status === 'paid'
                                         ? "PLAĆENO"
                                         : "NIJE PLAĆENO"}
                                 </span>
@@ -107,7 +106,7 @@ const OrderDetails = () => {
 
                             <div>
                                 <p>Ukupno:</p>
-                                <span>{order.total},00 RSD</span>
+                                <span>{order.total / 100},00 RSD</span>
                             </div>
                         </div>
 

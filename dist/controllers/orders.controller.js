@@ -106,11 +106,11 @@ export const postOrder = async (req, res) => {
 exports.getOrders = getOrders;
 var postOrder = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
-    var _req$body, userId, total, date, pool, result, orderId;
+    var _req$body, userId, total, date, shipping, payment_status, subtotal, pool, result, orderId;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
-          _req$body = req.body, userId = _req$body.userId, total = _req$body.total, date = _req$body.date;
+          _req$body = req.body, userId = _req$body.userId, total = _req$body.total, date = _req$body.date, shipping = _req$body.shipping, payment_status = _req$body.payment_status, subtotal = _req$body.subtotal;
           if (!(userId == null || total == null || date == null)) {
             _context3.next = 3;
             break;
@@ -125,7 +125,7 @@ var postOrder = /*#__PURE__*/function () {
         case 6:
           pool = _context3.sent;
           _context3.next = 9;
-          return pool.request().input("userId", _database.sql.Int, userId).input("total", _database.sql.Int, total).input("date", _database.sql.Date, date).query(_database.query.postOrder);
+          return pool.request().input("userId", _database.sql.Int, userId).input("total", _database.sql.Int, total).input("date", _database.sql.Date, date).input("shipping", _database.sql.VarChar, shipping).input("payment_status", _database.sql.VarChar, payment_status).input("subtotal", _database.sql.Int, subtotal).query(_database.query.postOrder);
         case 9:
           result = _context3.sent;
           _context3.next = 12;
@@ -136,6 +136,9 @@ var postOrder = /*#__PURE__*/function () {
             userId: userId,
             total: total,
             date: date,
+            shipping: shipping,
+            payment_status: payment_status,
+            subtotal: subtotal,
             orderId: orderId.recordset[0][""]
           });
           _context3.next = 19;
@@ -229,11 +232,11 @@ var deleteOrder = /*#__PURE__*/function () {
 exports.deleteOrder = deleteOrder;
 var putOrder = /*#__PURE__*/function () {
   var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
-    var _req$body2, userId, total, date, id, pool;
+    var _req$body2, userId, total, date, shipping, payment_status, subtotal, id, pool;
     return _regeneratorRuntime().wrap(function _callee6$(_context6) {
       while (1) switch (_context6.prev = _context6.next) {
         case 0:
-          _req$body2 = req.body, userId = _req$body2.userId, total = _req$body2.total, date = _req$body2.date;
+          _req$body2 = req.body, userId = _req$body2.userId, total = _req$body2.total, date = _req$body2.date, shipping = _req$body2.shipping, payment_status = _req$body2.payment_status, subtotal = _req$body2.subtotal;
           id = req.params.id;
           if (!(userId == null || total == null || date == null)) {
             _context6.next = 4;
@@ -249,7 +252,7 @@ var putOrder = /*#__PURE__*/function () {
         case 7:
           pool = _context6.sent;
           _context6.next = 10;
-          return pool.request().input("userId", _database.sql.Int, userId).input("total", _database.sql.Int, total).input("date", _database.sql.Date, date).input("id", _database.sql.Int, id).query(_database.query.putOrder);
+          return pool.request().input("userId", _database.sql.Int, userId).input("total", _database.sql.Int, total).input("date", _database.sql.Date, date).input("shipping", _database.sql.VarChar, shipping).input("payment_status", _database.sql.VarChar, payment_status).input("subtotal", _database.sql.Int, subtotal).input("id", _database.sql.Int, id).query(_database.query.putOrder);
         case 10:
           //  res.json({ userId, total, date })
           res.status(200).json({
@@ -257,7 +260,10 @@ var putOrder = /*#__PURE__*/function () {
             data: {
               userId: userId,
               total: total,
-              date: date
+              date: date,
+              shipping: shipping,
+              payment_status: payment_status,
+              subtotal: subtotal
             }
           });
           _context6.next = 17;

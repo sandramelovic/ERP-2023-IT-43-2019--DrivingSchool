@@ -27,7 +27,13 @@ app.set('port', config.port)
 
 //middlewares
 app.use(cors(corsOptions)) 
-app.use(express.json())
+//app.use(express.json())
+app.use(express.json({
+    limit: '5mb',
+    verify: (req, res, buf) => {
+      req.rawBody = buf.toString();
+    }
+}));
 app.use(express.urlencoded({extended: false}))
 app.use(cookieParser())
 
@@ -42,5 +48,7 @@ app.use(paymentsRoutes)
 app.use(usersRoutes)
 app.use(paymentRoute)
 app.use(errorHandler)
+
+
 
 export default app

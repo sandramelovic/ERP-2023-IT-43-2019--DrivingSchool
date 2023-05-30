@@ -73,7 +73,7 @@ const Cars = () => {
 
         <div id="search-header">
           <div id="search-text">Pretraga:</div>
-          <input id="search-box" value={searchField} placeholder="Pretraži vozila koja posedujemo" onChange={handleChange} />
+          <input value={searchField} placeholder="Pretraži vozila koja posedujemo" onChange={handleChange} />
         </div>
 
         {filter.map((car) => {
