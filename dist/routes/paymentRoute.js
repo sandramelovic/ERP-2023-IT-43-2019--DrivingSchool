@@ -9,7 +9,7 @@ var _express = require("express");
 var _categoryActions = require("../../ERP_DrivingSchool_Frontend/src/redux/actions/categoryActions");
 var _orders = require("../controllers/orders.controller");
 var _axios = _interopRequireDefault(require("axios"));
-var _excluded = ["description"];
+var _excluded = ["programImage", "description"];
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
@@ -129,7 +129,8 @@ router.post('/order/confirm', /*#__PURE__*/function () {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
           updatedCartItems = req.body.cartItems.map(function (_ref5) {
-            var description = _ref5.description,
+            var programImage = _ref5.programImage,
+              description = _ref5.description,
               rest = _objectWithoutProperties(_ref5, _excluded);
             return rest;
           });

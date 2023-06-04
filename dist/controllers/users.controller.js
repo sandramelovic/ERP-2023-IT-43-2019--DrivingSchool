@@ -133,33 +133,32 @@ var putUser = /*#__PURE__*/function () {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
           _req$body = req.body, nameSurename = _req$body.nameSurename, address = _req$body.address, birthDate = _req$body.birthDate, jmbg = _req$body.jmbg, phoneNumber = _req$body.phoneNumber, username = _req$body.username;
-          role = null;
+          role = req.body.role;
           id = req.params.id;
-          console.log(role);
-          if (role === null) {
+          console.log(req.params.role);
+          if (!role) {
             role = _role["default"].User;
           }
-          console.log(role);
           if (!(nameSurename == null || jmbg == null || phoneNumber == null || username == null)) {
-            _context4.next = 8;
+            _context4.next = 7;
             break;
           }
           return _context4.abrupt("return", res.status(400).json({
             msg: "Bad Request. Please fill all fields"
           }));
-        case 8:
-          _context4.prev = 8;
-          _context4.next = 11;
+        case 7:
+          _context4.prev = 7;
+          _context4.next = 10;
           return (0, _database.getConnection)();
-        case 11:
+        case 10:
           pool = _context4.sent;
-          _context4.next = 14;
+          _context4.next = 13;
           return bcrypt.genSalt(_config.HASH_SALT);
-        case 14:
+        case 13:
           salt = _context4.sent;
-          _context4.next = 17;
+          _context4.next = 16;
           return pool.request().input("nameSurename", _database.sql.VarChar, nameSurename).input("address", _database.sql.VarChar, address).input("birthDate", _database.sql.Date, birthDate).input("jmbg", _database.sql.VarChar, jmbg).input("phoneNumber", _database.sql.VarChar, phoneNumber).input("role", _database.sql.VarChar, role).input("username", _database.sql.VarChar, username).input("id", _database.sql.Int, id).query(_database.query.putUser);
-        case 17:
+        case 16:
           res.status(200).json({
             success: true,
             data: {
@@ -173,21 +172,21 @@ var putUser = /*#__PURE__*/function () {
             }
           });
           //     res.json({ nameSurename, address, birthDate, jmbg, phoneNumber, role, username, password })
-          _context4.next = 24;
+          _context4.next = 23;
           break;
-        case 20:
-          _context4.prev = 20;
-          _context4.t0 = _context4["catch"](8);
+        case 19:
+          _context4.prev = 19;
+          _context4.t0 = _context4["catch"](7);
           console.log(_context4.t0);
           res.status(500).json({
             success: false,
             message: "User not found"
           });
-        case 24:
+        case 23:
         case "end":
           return _context4.stop();
       }
-    }, _callee4, null, [[8, 20]]);
+    }, _callee4, null, [[7, 19]]);
   }));
   return function putUser(_x7, _x8) {
     return _ref4.apply(this, arguments);
@@ -196,7 +195,7 @@ var putUser = /*#__PURE__*/function () {
 exports.putUser = putUser;
 var postUser = /*#__PURE__*/function () {
   var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
-    var _req$body2, nameSurename, address, birthDate, jmbg, phoneNumber, username, password, userId, role, pool, salt, result;
+    var _req$body2, nameSurename, address, birthDate, jmbg, phoneNumber, username, password, userId, role, pool, usernameExists, salt, result;
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) switch (_context5.prev = _context5.next) {
         case 0:
@@ -218,46 +217,58 @@ var postUser = /*#__PURE__*/function () {
         case 9:
           pool = _context5.sent;
           _context5.next = 12;
-          return bcrypt.genSalt(_config.HASH_SALT);
+          return pool.request().input("username", _database.sql.VarChar, username).query(_database.query.checkUsernameExists);
         case 12:
-          salt = _context5.sent;
-          _context5.next = 15;
-          return bcrypt.hash(password, salt);
+          usernameExists = _context5.sent;
+          if (!(usernameExists.recordset.length > 0)) {
+            _context5.next = 15;
+            break;
+          }
+          return _context5.abrupt("return", res.status(400).json({
+            msg: "Username already exists. Please choose a different username"
+          }));
         case 15:
+          _context5.next = 17;
+          return bcrypt.genSalt(_config.HASH_SALT);
+        case 17:
+          salt = _context5.sent;
+          _context5.next = 20;
+          return bcrypt.hash(password, salt);
+        case 20:
           password = _context5.sent;
-          _context5.next = 18;
+          _context5.next = 23;
           return pool.request().input("nameSurename", _database.sql.VarChar, nameSurename).input("address", _database.sql.VarChar, address).input("birthDate", _database.sql.Date, birthDate).input("jmbg", _database.sql.VarChar, jmbg).input("phoneNumber", _database.sql.VarChar, phoneNumber).input("role", _database.sql.VarChar, role).input("username", _database.sql.VarChar, username).input("password", _database.sql.VarChar, password).query(_database.query.postUser);
-        case 18:
+        case 23:
           if (res) {
-            _context5.next = 20;
+            _context5.next = 25;
             break;
           }
           throw new Error('Sign up error. Please try again.');
-        case 20:
-          _context5.next = 22;
+        case 25:
+          _context5.next = 27;
           return pool.request().input("username", _database.sql.VarChar, username).query(_database.query.findUserId);
-        case 22:
+        case 27:
           result = _context5.sent;
           userId = result.recordset[0].userId;
           createSendToken({
             id: userId,
             username: username
           }, role, res);
-          _context5.next = 31;
+          _context5.next = 36;
           break;
-        case 27:
-          _context5.prev = 27;
+        case 32:
+          _context5.prev = 32;
           _context5.t0 = _context5["catch"](0);
           console.log("\u26D4\u26D4\u26D4 SIGNUP: ".concat(_context5.t0.message));
           res.status(404).json({
             status: 'fail',
             message: _context5.t0.message
           });
-        case 31:
+        case 36:
         case "end":
           return _context5.stop();
       }
-    }, _callee5, null, [[0, 27]]);
+    }, _callee5, null, [[0, 32]]);
   }));
   return function postUser(_x9, _x10) {
     return _ref5.apply(this, arguments);

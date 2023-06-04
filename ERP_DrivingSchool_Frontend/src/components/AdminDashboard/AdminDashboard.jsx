@@ -18,6 +18,8 @@ const AdminDashboard = () => {
 
   const user = localStorage.getItem('user')
   const token = JSON.parse(user).token
+  const userJSON = JSON.parse(user).data
+  console.log(userJSON)
   const { products } = useSelector((state) => state.products);
   const { users } = useSelector((state) => state.allUsers);
 
@@ -57,26 +59,60 @@ const AdminDashboard = () => {
         <Sidebar />
         <div className="dashboardContainer">
 
+          <div class="p-4">
+            <div class="welcome">
+              <div class="content rounded-3 p-3 text-warning">
+                <h1 class="fs-3">Zdravo {userJSON.user.username}! </h1>
+                <p class="mb-0">Dobrodošao/la na admin panel!</p>
+              </div>
+            </div>
+          </div>
           <div className="dashboardSummary">
             <div>
               <p>
-                Ukupna zarada <br /> <span>{totalAmount},00 RSD</span>
+                Ukupna zarada:  <span>{totalAmount},00 RSD</span>
               </p>
             </div>
-            <div className="dashboardSummaryBox2">
-              <Link to="/admin/products">
-                <p>Programi</p>
-                <p>{products?.length}</p>
-              </Link>
-              <Link to="/admin/orders">
-                <p>Porudžbine</p>
-                <p>{orders?.length}</p>
-              </Link>
-              <Link to="/admin/users">
-                <p>Kandidati</p>
-                <p>{users?.length}</p>
-              </Link>
-            </div>
+            <section class="statistics mt-4">
+
+              <div class="row">
+               
+                <div class="col-lg-4">
+                  <div class="box d-flex rounded-2 align-items-center mb-4 mb-lg-0 p-3">
+                    <i class="uil-envelope-shield fs-2 text-center bg-primary rounded-circle"></i>
+                    <div class="ms-3">
+                      <div class="d-flex align-items-center text-warning">
+                        <h3 class="mb-0">{products?.length}</h3> <span class="d-block ms-2">Programi</span>
+                      </div>
+                      <Link to='/admin/products' style={{textDecoration: 'none', color: 'var(--darkgray)'}}> <p class="fs-normal mb-0">Klikni i pregledaj programe</p></Link>
+                    </div>
+                  </div>
+                </div>
+               
+                <div class="col-lg-4">
+                  <div class="box d-flex rounded-2 align-items-center mb-4 mb-lg-0 p-3">
+                    <i class="uil-file fs-2 text-center bg-danger rounded-circle"></i>
+                    <div class="ms-3">
+                      <div class="d-flex align-items-center text-warning">
+                        <h3 class="mb-0">{users?.length}</h3> <span class="d-block ms-2">Kupci</span>
+                      </div>
+                      <Link to='/admin/users' style={{textDecoration: 'none', color: 'var(--darkgray)'}}> <p class="fs-normal mb-0">Klikni i pregledaj kupce</p></Link>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="box d-flex rounded-2 align-items-center p-3">
+                    <i class="uil-users-alt fs-2 text-center bg-success rounded-circle"></i>
+                    <div class="ms-3">
+                      <div class="d-flex align-items-center text-warning">
+                        <h3 class="mb-0">{orders?.length}</h3> <span class="d-block ms-2">Porudzbine</span>
+                      </div>
+                      <Link to='/admin/orders' style={{textDecoration: 'none', color: 'var(--darkgray)'}}> <p class="fs-normal mb-0">Klikni i pregledaj porudzbine</p></Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
           </div>
           <div className="lineChart">
             <Line data={lineState} />
@@ -84,7 +120,7 @@ const AdminDashboard = () => {
 
         </div>
       </div>
-      <div style={{ marginTop: "60rem" }}>
+      <div style={{ marginTop: "63rem" }}>
         <Footer />
       </div>
     </div>

@@ -53,6 +53,7 @@ export const query = {
     getUserById: 'SELECT * FROM Users WHERE userId = @id',
     deleteUser: 'DELETE FROM [DrivingSchool].[dbo].[Users] WHERE userId = @id',
     putUser: 'UPDATE Users SET nameSurename = @nameSurename, address = @address, birthDate = @birthDate, jmbg = @jmbg, phoneNumber = @phoneNumber, role = @role, username = @username WHERE userId = @id',
+    checkUsernameExists: 'SELECT * FROM Users WHERE username = @username',
 
     loginUser: 'SELECT * FROM Users WHERE username = @username',
     findUserId: 'SELECT MAX(userId) from Users WHERE username = @username'

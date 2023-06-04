@@ -31,6 +31,7 @@
     "jose": "^4.14.4",
     "jwt-decode": "^3.1.2",
     "material-icons": "^1.13.6",
+    "mdb-react-ui-kit": "^6.1.0",
     "number-counter": "^1.0.3",
     "parse": "^3.4.3-alpha.2",
     "react": "^18.2.0",

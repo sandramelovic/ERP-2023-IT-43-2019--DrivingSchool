@@ -55,14 +55,13 @@ export const deleteUser = async (req, res) => {
 
 export const putUser = async (req, res) => {
     const { nameSurename, address, birthDate, jmbg, phoneNumber, username } = req.body
-    let role = null
+    let role = req.body.role
 
     const { id } = req.params
-    console.log(role)
-    if (role === null){
-         role = Role.User
-    }
-    console.log(role)
+    console.log(req.params.role)
+    if (!role) {
+        role = Role.User; 
+      }
 
     if (nameSurename == null || jmbg == null || phoneNumber == null || username == null) {
         return res.status(400).json({ msg: "Bad Request. Please fill all fields" })
@@ -111,6 +110,16 @@ export const postUser = async (req, res) => {
         }
 
         const pool = await getConnection()
+
+        // Check if username already exists in the database
+        const usernameExists = await pool
+            .request()
+            .input("username", sql.VarChar, username)
+            .query(query.checkUsernameExists);
+
+        if (usernameExists.recordset.length > 0) {
+            return res.status(400).json({ msg: "Username already exists. Please choose a different username" });
+        }
 
         var salt = await bcrypt.genSalt(HASH_SALT);
         password = await bcrypt.hash(password, salt);
@@ -262,10 +271,7 @@ export const protect = async (req, res, next) => {
         });
     }
     next();
-
-
 }
-
 
 exports.authRole = function (role) {
     return (req, res, next) => {

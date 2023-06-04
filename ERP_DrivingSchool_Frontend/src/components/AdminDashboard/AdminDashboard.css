@@ -31,48 +31,51 @@
   .dashboardSummary > div {
     display: flex;
     justify-content: center;
+    -moz-box-shadow: 0.2px 14px 45px -15px orange;
+    box-shadow: 1px 14px 35px -40px orange;
+    
   }
   .dashboardSummary > div > p {
-    background-color: orange;
-    color: var(--darkGray);
-    font: 300 1.3rem "Roboto";
+    border: 1px solid orange;
+    color: orange;
+    font: 500 1.3rem "Roboto";
     text-align: center;
+    font-size: xx-large;
     padding: 1.5rem;
     width: 100%;
     margin: 0 2rem;
 
   }
-  .dashboardSummaryBox2 > a {
-    color: rgb(0, 0, 0);
-    font: 300 2rem "Roboto";
-    text-align: center;
-    background-color: orange;
-    text-decoration: none;
-    padding: 1.5rem;
-    width: 10vmax;
-    height: 10vmax;
-    margin: 2rem;
-    border-radius: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+  
+  .statistics {
+    color: var(--dk-gray-200);
   }
   
-  .dashboardSummaryBox2 > a:first-child {
-    background-color: orange;
-    color: black;
+  
+  .statistics .box {
+    background-color: var(--dk-dark-bg);
+    
   }
   
-  .dashboardSummaryBox2 > a:last-child {
-    background-color: orange;
-    color: black;
+  .statistics .box i {
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    
   }
   
+  .statistics .box p {
+    color: var(--dk-gray-400);
+    
+  }
+
   .lineChart {
     background-color: var(--lightgray);
     width: 80%;
     margin: auto;
+    border: 1px solid orange;
+    -moz-box-shadow: 1px 14px 45px -15px orange;
+    box-shadow: 1px 14px 35px -20px orange;
   }
   
   .doughnutChart {

@@ -25,65 +25,65 @@ const Profile = () => {
   return (
     <div>
       <Header />
-      <Fragment>
-        <Fragment>
-          <h1 className="text-center"> <span className="stroke-text display-6 fw-bolder text-warning" style={{ color: 'var(--darkGrey)' }}>{`${user.nameSurename}`}</span><span className="display-6 fw-bolder text-warning"> profil </span></h1>
-          <div className="profileContainer">
+      <div class="profile-wrapper">
+        <div class="profile-image">
+          <img src={user.userImage}></img>
+        </div>
+        <div class="close"></div>
+        <h2 class="profile-title">{user.nameSurename} <span>profil</span></h2>
+        <div class="profile-info">
+          <div class="content">
+            <h3>Personalne informacije</h3>
             <div>
-              <h1 className="text-warning">Moj profil</h1>
-              <img src={user.userImage} alt={user.name} />
-              <Link to="/me/update">Izmeni profil</Link>
+              <h6 className="text-warning">Ime i prezime:</h6>
+              <p>{user.nameSurename}</p>
             </div>
             <div>
-              <div>
-                <h4 className="text-warning">Ime i prezime:</h4>
-                <p className="text-light ">{user.nameSurename}</p>
-              </div>
-              <div>
-                <h4 className="text-warning">Korisničko ime:</h4>
-                <p className="text-light">{user.username}</p>
-              </div>
-              <div>
-                <h4 className="text-warning">Broj telefona:</h4>
-                <p className="text-light">{user.phoneNumber}</p>
-              </div>
-              <div>
-                <h4 className="text-warning">JMBG:</h4>
-                <p className="text-light">{user.jmbg}</p>
-              </div>
-              <div>
-                <h4 className="text-warning">Adresa:</h4>
-                {!user.address ? (
-                  <span>
-                    <p className="text-danger">Adresa nije uneta</p>
-                    <Link to="/me/update">
-                      <WarningAmberIcon /> Unesi adresu
-                    </Link>
-                  </span>
-                ) : (
-                  <p className="text-light">{user.address}</p>
-                )}
-              </div>
-              <div>
-                <h4 className="text-warning">Datum rođenja:</h4>
-                {!user.birthDate ? (
-                  <span>
-                    <p className="text-danger">Datum rođenja nije unet </p> <Link to="/me/update"><WarningAmberIcon></WarningAmberIcon> Unesi datum rođenja</Link>
-                  </span>
-                ) : (
-                  <p className="text-light">{formattedDate}</p>
-                )}
-              </div>
-
-
-              <div>
-                <Link to="/orders">Moje porudžbine</Link>
-              </div>
+              <h6 className="text-warning">Korisničko ime:</h6>
+              <p>{user.username}</p>
+            </div>
+            <div>
+              <h6 className="text-warning">Broj telefona:</h6>
+              <p>{user.phoneNumber}</p>
+            </div>
+            <div>
+              <h6 className="text-warning">JMBG:</h6>
+              <p>{user.jmbg}</p>
+            </div>
+            <div>
+              <h6 className="text-warning">Adresa:</h6>
+              {!user.address ? (
+                <span>
+                  <p className="text-danger">Adresa nije uneta</p>
+                  <Link to="/me/update">
+                    <WarningAmberIcon /> Unesi adresu
+                  </Link>
+                </span>
+              ) : (
+                <p>{user.address}</p>
+              )}
+            </div>
+            <div>
+              <h6 className="text-warning">Datum rođenja:</h6>
+              {!user.birthDate ? (
+                <span>
+                  <p className="text-danger">Datum rođenja nije unet </p> <Link to="/me/update"><WarningAmberIcon></WarningAmberIcon> Unesi datum rođenja</Link>
+                </span>
+              ) : (
+                <p>{formattedDate}</p>
+              )}
             </div>
           </div>
-        </Fragment>
-      </Fragment>
-      <div style={{ marginTop: "48rem" }}>
+          <div class="stats">
+
+            <Link to="/orders">Moje porudžbine</Link>
+            <Link to="/me/update">Izmeni profil</Link>
+
+          </div>
+
+        </div>
+      </div>
+      <div style={{ marginTop: "60rem" }}>
         <Footer />
       </div>
     </div>

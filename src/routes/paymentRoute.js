@@ -76,7 +76,7 @@ const createOrder = async (customer, data) => {
 
 
 router.post('/order/confirm', async (req, res) => {
-  const updatedCartItems = req.body.cartItems.map(({ description, ...rest }) => rest);
+  const updatedCartItems = req.body.cartItems.map(({ programImage, description, ...rest }) => rest);
 
   const customer = await stripe.customers.create({
     metadata: {
@@ -84,8 +84,8 @@ router.post('/order/confirm', async (req, res) => {
       userId: req.body.userId.toString(),
       cart: JSON.stringify(updatedCartItems)
     }
-  })
-
+  });
+ 
   const line_items = req.body.cartItems.map((item) => {
     return {
       price_data: {

@@ -1,15 +1,14 @@
 #search-header {
-    display: flex;
-    margin-top: -2vmax;
-    margin-bottom: 4vmax ;
+    margin-left: 1vmax;
+    margin-top: -1vmax;
     justify-content: center;
   }
   #search-text {
     margin-right: 10px;
-    font-size: 22px;
+    text-align: left;
+    font-size: 15px;
     display: flex;
-    align-items: center;
-    justify-content: center;
+   
     color: orange;
     font-weight: bold;
   }
@@ -20,7 +19,7 @@
   }
   #search-box[placeholder] {
     line-height: 15px;
-    font-size: 15px;
+    font-size: 10px;
   }
   .cars{
     background-color: var(--darkGrey);
@@ -33,6 +32,7 @@
 
 .car-text{
     color: white;
+    text-align: justify;
 }
 
 
@@ -54,8 +54,8 @@ transform: translateY(20px);
 }
 
 .card{
-    width:  420px;
-    height: 220px;
+    width:  400px;
+    height: 200px;
     padding: 2rem 1rem;
     background:#fff;
     position: relative;

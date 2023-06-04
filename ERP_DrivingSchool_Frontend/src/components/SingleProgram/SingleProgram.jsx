@@ -12,8 +12,11 @@ import useSelection from "antd/es/table/hooks/useSelection";
 import { setCategory, setProgramType } from "../../redux/actions/categoryActions";
 import image from '../../assets/CarTheory.png'
 import uploadPhotoGrayBack from '../../assets/uploadPhotoGrayBack.png'
+import { useNavigate } from 'react-router-dom';
 
 const SingleProgram = () => {
+
+    const navigate = useNavigate();
 
     const state = useSelector((state) => state.orderItemReducer)
     const dispatch = useDispatch()
@@ -30,7 +33,8 @@ const SingleProgram = () => {
             message.error('Već ste dodali program u korpu!');
         } else {
             dispatch(addOrderItemToCart(singleProgram));
-            message.success('Program uspešno dodat u korpu!');
+            message.success('Program uspešno dodat u korpu!')
+            navigate('/programs');
         }
     };
 

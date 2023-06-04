@@ -11,6 +11,7 @@ const Cars = () => {
   const [filter, setFilter] = useState(data)
   const [loading, setLoading] = useState(false)
   const [searchField, setSearchField] = useState("");
+  const [selectedType, setSelectedType] = useState("")
 
   let componentMounted = true
 
@@ -47,10 +48,14 @@ const Cars = () => {
     )
   }
 
-
   const filterCars = (type) => {
-    const updatedList = data.filter((x) => x.type === type)
-    setFilter(updatedList)
+    if (type === "") {
+      setFilter(data);
+    } else {
+      const updatedList = data.filter((x) => x.type === type);
+      setFilter(updatedList);
+    }
+    setSelectedType(type);
   }
 
   const handleChange = (event) => {
@@ -64,23 +69,38 @@ const Cars = () => {
   const ShowCars = () => {
     return (
       <>
-        <div className="buttons d-flex justify-content-center mb-5 pb-5 local-bootstrap">
-          <button className="btn btn-outline-dark me-4" onClick={() => setFilter(data)}>Sva vozila</button>
-          <button className="btn btn-outline-dark me-4" onClick={() => filterCars("Automobil")}>Automobili</button>
-          <button className="btn btn-outline-dark me-4" onClick={() => filterCars("Kamion")}>Kamioni</button>
-          <button className="btn btn-outline-dark me-4" onClick={() => filterCars("Motor")}>Motori</button>
-        </div>
+        <div className="d-flex mb-5 pb-5 local-bootstrap">
+          <div className="select-container">
+            <select
+              className="form-select bg-warning me-4"
+              value={selectedType}
+              onChange={(e) => filterCars(e.target.value)}
+            >
+              <option value="">Sva vozila</option>
+              <option value="Automobil">Automobili</option>
+              <option value="Kamion">Kamioni</option>
+              <option value="Motor">Motori</option>
+              <option value="Skuter">Skuteri</option>
+              <option value="Kamion sa prikolicom">Kamioni sa prikolicama</option>
+            </select>
+          </div>
 
-        <div id="search-header">
-          <div id="search-text">Pretraga:</div>
-          <input value={searchField} placeholder="Pretraži vozila koja posedujemo" onChange={handleChange} />
+          <div id="search-header">
+            <div id="search-text">Pretraga:</div>
+            <input
+              autoFocus="autoFocus"
+              value={searchField}
+              placeholder="Pretraži vozila koja posedujemo"
+              onChange={handleChange}
+            />
+          </div>
         </div>
 
         {filter.map((car) => {
           return (
             <>
-              <div className="col-md-4 mb-5">
-                <div class="card h-100 text-center p-4" key={car.vehicleId}>
+              <div className="col-md-4 mb-4">
+                <div class="card h-100 text-center p-1" key={car.vehicleId}>
                   <img src={car.carImage} class="card-img-top" alt={car.vin} height="150px" />
                   <div class="card-body">
                     <p className="info">
