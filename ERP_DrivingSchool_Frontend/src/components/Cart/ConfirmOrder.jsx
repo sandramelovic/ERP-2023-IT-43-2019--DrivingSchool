@@ -12,11 +12,14 @@ import uploadPhotoGrayBack from '../../assets/uploadPhotoGrayBack.png'
 import { setCategory } from '../../redux/actions/categoryActions'
 import { setProgramType } from "../../redux/actions/categoryActions";
 import { useDispatch } from "react-redux";
+import { useState } from "react";
 import { createOrder, clearErrors } from "../../redux/actions/orderAction";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const ConfirmOrder = ({ history }) => {
   const shippingInfo = useSelector((state) => state.shippingInfo);
   const cartItems = useSelector((state) => state.orderItemReducer);
+  const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -50,6 +53,8 @@ const ConfirmOrder = ({ history }) => {
   const address = `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.state}, ${shippingInfo.pinCode}, ${shippingInfo.country}`;
 
   const proceedToPayment = () => {
+    setLoading(true);
+
     const data = {
       subtotal,
       shippingCharges,
@@ -91,6 +96,8 @@ const ConfirmOrder = ({ history }) => {
     //  payBtn.current.disabled = false;
     alert.error(error.response.data?.message);
   }
+
+  setLoading(false);
 }
 
   return (
@@ -159,6 +166,7 @@ const ConfirmOrder = ({ history }) => {
             </div>
           </div>
         </div>
+        {loading && <LoadingSpinner />}
       </Fragment>
       <Footer />
     </div>

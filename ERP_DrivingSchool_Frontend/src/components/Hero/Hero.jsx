@@ -18,11 +18,18 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Person2Icon from '@mui/icons-material/Person2';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import { Link } from 'react-router-dom';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+import { CometChat } from '@cometchat-pro/chat';
+import Error from "../Notifications/Error/Error"    
 
 const Hero = () => {
 
+    const [loading, setLoading] = useState(false)
+
     const transition = { type: 'spring', duration: 3 }
     const mobile = window.innerWidth <= 768 ? true : false
+    const [logoutNotification, setLogoutNotification] = useState(false);
+    const [notificationMessages, setNotificationMessages] = useState("");
 
     const navigate = useNavigate();
 
@@ -52,162 +59,197 @@ const Hero = () => {
                 setUser(user);
             }
         }
-
         checkLoggedIn()
     }, []);
 
+    
     function logOut(user) {
-        try {
-            dispatch(logoutUser(user))
-            setUser(null)
-            localStorage.removeItem('user')
-        } catch (error) {
-            alert(`Error! ${error.message}`);
-            return false;
-        }
+        setLoading(true)
 
+        CometChat.removeMessageListener("client-listener");
+        CometChat.logout()
+            .then(() => {
+                console.log('Logged out from CometChat');
+            })
+            .catch(error => {
+                console.log('Error logging out from CometChat:', error);
+            });
+
+
+        dispatch(logoutUser(user)).then((response) => {
+            console.log(user)
+            const message = `Zdravo ${(JSON.parse(user)).data.user.username}!`;
+            setNotificationMessages(message)
+            setLogoutNotification(true);
+            console.log(response)
+            if (response.data.status = 'success') {
+                setUser(null)
+                localStorage.removeItem('user')
+                setLoading(false)
+                setTimeout(() => {
+                    navigate('/login');
+                  }, 3000);
+            }
+
+        })
+            .catch((error) => {
+                console.log('Register failed:', error);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     };
 
     return (
-        <div className='hero' id='home'>
-            <div className='blur hero-blur'></div>
-            <div className="left-h">
-                <Header />
-                {/* the best ad */}
-                <div className='the-best-ad'>
-                    <motion.div
-                        initial={{ left: mobile ? "150px" : '238px' }}
-                        whileInView={{ left: '8px' }}
-                        transition={{ ...transition, type: 'tween' }}
-                    ></motion.div>
-                    <span>najbolja auto škola u gradu</span>
-                </div>
+        <>
+            <div className='hero' id='home'>
+                <div className='blur hero-blur'></div>
+                <div className="left-h">
+                    <Header />
+                    {/* the best ad */}
+                    <div className='the-best-ad'>
+                        <motion.div
+                            initial={{ left: mobile ? "150px" : '238px' }}
+                            whileInView={{ left: '8px' }}
+                            transition={{ ...transition, type: 'tween' }}
+                        ></motion.div>
+                        <span>najbolja auto škola u gradu</span>
+                    </div>
 
-                {/* Hero Heading */}
-                <div className="hero-text">
-                    <div>
-                        <span className='stroke-text'>Postani </span>
-                        <span>Najbolji</span>
-                    </div>
-                    <div>
-                        <span>Vozač u gradu</span>
-                    </div>
-                    <div>
-                        <span>
-                            Ovde ćeš naučiti sve što ti je potrebno da se slobodno prepustiš ulicama - vozilom kojim ti želiš, po najboljim cenama!
-                        </span>
-                    </div>
-                </div>
-
-                {/* figures */}
-                <div className="figures">
-                    <div>
-                        <span>
-                            <NumberCounter end={40} start={10} delay='2' preFix="+" />
-                        </span>
-                        <span>iskusnih instruktora</span>
-                    </div>
-                    <div>
-                        <span>
-                            <NumberCounter end={978} start={900} delay='4' preFix="+" />
-                        </span>
-                        <span>zadovoljnih članova</span>
-                    </div>
-                    <div>
-                        <span>
-                            <NumberCounter end={20} start={0} delay='1' preFix="+" />
-                        </span>
-                        <span>programa</span>
-                    </div>
-                </div>
-
-                {/* hero buttons */}
-                <div className="hero-buttons">
-                    {localStorage.getItem('user') !== 'undefined' && localStorage.getItem('user') != null ? (
+                    {/* Hero Heading */}
+                    <div className="hero-text">
                         <div>
-                            <Link to="/programs" className="btn">
+                            <span className='stroke-text'>Postani </span>
+                            <span>Najbolji</span>
+                        </div>
+                        <div>
+                            <span>Vozač u gradu</span>
+                        </div>
+                        <div>
+                            <span>
+                                Ovde ćeš naučiti sve što ti je potrebno da se slobodno prepustiš ulicama - vozilom kojim ti želiš, po najboljim cenama!
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* figures */}
+                    <div className="figures">
+                        <div>
+                            <span>
+                                <NumberCounter end={40} start={10} delay='2' preFix="+" />
+                            </span>
+                            <span>iskusnih instruktora</span>
+                        </div>
+                        <div>
+                            <span>
+                                <NumberCounter end={978} start={900} delay='4' preFix="+" />
+                            </span>
+                            <span>zadovoljnih članova</span>
+                        </div>
+                        <div>
+                            <span>
+                                <NumberCounter end={20} start={0} delay='1' preFix="+" />
+                            </span>
+                            <span>programa</span>
+                        </div>
+                    </div>
+
+                    {/* hero buttons */}
+                    <div className="hero-buttons">
+                        {localStorage.getItem('user') !== 'undefined' && localStorage.getItem('user') != null ? (
+                            <div>
+                                <Link to="/programs" className="btn">
+                                    Kreni sada!
+                                </Link>
+                            </div>
+                        ) : (
+                            <Link to="/login" className="btn">
                                 Kreni sada!
                             </Link>
-                        </div>
-                    ) : (
-                        <Link to="/login" className="btn">
-                            Kreni sada!
+                        )}
+
+                        <Link to="/cars" className="btn">
+                            Saznaj više
                         </Link>
-                    )}
-
-                    <Link to="/cars" className="btn">
-                        Saznaj više
-                    </Link>
+                    </div>
                 </div>
-            </div>
 
 
-            <div className="right-h">
-                {localStorage.getItem('user') !== 'undefined' && localStorage.getItem('user') != null ? (
-                    user.data?.user.role == 'User' ? (
+                <div className="right-h">
+                    {localStorage.getItem('user') !== 'undefined' && localStorage.getItem('user') != null ? (
+                        user.data?.user.role == 'User' ? (
+                            <>
+                                <span>
+                                    <button onClick={routeChange1} className='btn' style={{ marginTop: "2rem" }}>
+                                        <ShoppingCartIcon fontSize='large' /><b>({state?.length})</b>
+                                    </button>
+                                </span>
+                                <span>
+                                    <button onClick={routeChange3} className='btn' style={{ marginTop: "2rem" }}>
+                                        <Person2Icon fontSize='large' />
+                                    </button>
+                                </span>
+                                <button onClick={() => logOut(localStorage.getItem('user'))} className='btn'>Odjavi se</button>
+                            </>
+                        ) : (
+                            <>
+                                <button onClick={routeChange2} className='btn' style={{ marginRight: "15rem" }}>
+                                    <AdminPanelSettingsIcon fontSize='large' />
+                                </button>
+                                <button onClick={() => logOut(localStorage.getItem('user'))} className='btn'>Odjavi se</button>
+                            </>
+                        )
+                    ) : (
                         <>
                             <span>
                                 <button onClick={routeChange1} className='btn' style={{ marginTop: "2rem" }}>
                                     <ShoppingCartIcon fontSize='large' /><b>({state?.length})</b>
                                 </button>
                             </span>
-                            <span>
-                                <button onClick={routeChange3} className='btn' style={{ marginTop: "2rem" }}>
-                                    <Person2Icon fontSize='large' />
-                                </button>
-                            </span>
-                            <button onClick={() => logOut(localStorage.getItem('user'))} className='btn'>Odjavi se</button>
+
+                            <button onClick={routeChange} className='btn'>Pridruži se</button>
                         </>
-                    ) : (
-                        <>
-                            <button onClick={routeChange2} className='btn' style={{ marginRight: "15rem" }}>
-                                <AdminPanelSettingsIcon fontSize='large' />
-                            </button>
-                            <button onClick={() => logOut(localStorage.getItem('user'))} className='btn'>Odjavi se</button>
-                        </>
-                    )
-                ) : (
-                    <>
+                    )}
+
+                    <motion.div
+                        initial={{ right: "-1rem" }}
+                        whileInView={{ right: "4rem" }}
+                        transition={transition}
+                        className='finger-rate'>
+                        <img src={Finger} alt="" />
+                        <span>Da li je sada pravo vreme da dođeš po svoju vozačku dozvolu?</span>
                         <span>
-                            <button onClick={routeChange1} className='btn' style={{ marginTop: "2rem" }}>
-                                <ShoppingCartIcon fontSize='large' /><b>({state?.length})</b>
-                            </button>
+                            <NumberCounter end={100} start={10} delay='1' postFix="%" />
                         </span>
+                    </motion.div>
 
-                        <button onClick={routeChange} className='btn'>Pridruži se</button>
-                    </>
-                )}
+                    {/* hero images */}
+                    <img src={hero_image} alt="" className='hero-image' />
+                    <img src={hero_image_back} alt="" className='hero-image-back' />
 
-                <motion.div
-                    initial={{ right: "-1rem" }}
-                    whileInView={{ right: "4rem" }}
-                    transition={transition}
-                    className='finger-rate'>
-                    <img src={Finger} alt="" />
-                    <span>Da li je sada pravo vreme da dođeš po svoju vozačku dozvolu?</span>
-                    <span>
-                        <NumberCounter end={100} start={10} delay='1' postFix="%" />
-                    </span>
-                </motion.div>
-
-                {/* hero images */}
-                <img src={hero_image} alt="" className='hero-image' />
-                <img src={hero_image_back} alt="" className='hero-image-back' />
-
-                { /* calories */}
-                <motion.div
-                    initial={{ right: "50rem" }}
-                    whileInView={{ right: "40rem" }}
-                    transition={transition}
-                    className="calories">
-                    <img src={Calories} alt="" />
-                    <div>
-                        <span>Prolaznost praktičnog ispita</span>
-                        <span>65 %</span>
-                    </div>
-                </motion.div>
+                    { /* calories */}
+                    <motion.div
+                        initial={{ right: "50rem" }}
+                        whileInView={{ right: "40rem" }}
+                        transition={transition}
+                        className="calories">
+                        <img src={Calories} alt="" />
+                        <div>
+                            <span>Prolaznost praktičnog ispita</span>
+                            <span>65 %</span>
+                        </div>
+                    </motion.div>
+                </div>
             </div>
-        </div>
+            <motion.div
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                exit={{ scaleX: 0 }}
+                transition={{ duration: 2.5 }}>
+                     {logoutNotification && <Error notificationMessages={notificationMessages} />}
+                    </motion.div>
+            {loading && <div className="spinner"><LoadingSpinner /></div>}
+        </>
     )
 }
 

@@ -17,6 +17,8 @@ import { getUserDetails } from "../../redux/actions/userActions";
 import {
     useNavigate
 } from "react-router-dom";
+import noUserPhoto from '../../assets/no-user-image-icon.jpg'
+
 
 const UpdateProfile = () => {
     const dispatch = useDispatch();
@@ -24,9 +26,9 @@ const UpdateProfile = () => {
     const navigate = useNavigate();
     const { user } = useSelector((state) => state.userDetails);
     const { error, isUpdated, loading } = useSelector((state) => state.profile);
-    
+
     const userFromLocalS = JSON.parse(localStorage.getItem('user'))
-    const token =userFromLocalS.token
+    const token = userFromLocalS.token
     const id = userFromLocalS.data.user.userId
 
     const [nameSurename, setNameSurename] = useState(user.nameSurename);
@@ -49,32 +51,40 @@ const UpdateProfile = () => {
         myForm.set("phoneNumber", phoneNumber)
         myForm.set("birthDate", birthDate);
         myForm.set("username", username);
-     
+        myForm.set("userImage", avatar);
+
 
         dispatch(updateProfile(id, myForm, token));
     };
 
     const updateProfileDataChange = (e) => {
         const reader = new FileReader();
+        const file = e.target.files[0];
 
         reader.onload = () => {
             if (reader.readyState === 2) {
                 setAvatarPreview(reader.result);
-                setAvatar(reader.result);
+                setAvatar(file.name);
             }
         };
-
-        reader.readAsDataURL(e.target.files[0]);
+        console.log(file)
+        if (file) {
+            reader.readAsDataURL(file);
+        }  else {
+            // Set default photo here
+            setAvatarPreview(noUserPhoto); // Replace 'default_photo_url' with the actual URL of the default photo
+            setAvatar(noUserPhoto); // Replace 'default_photo_name' with the desired default photo name
+        }
     };
 
     useEffect(() => {
         dispatch(getUserDetails(userFromLocalS.data.user.userId, userFromLocalS.token))
 
-      /*  if (userFromLocalS) {
-            setNameSurename(userFromLocalS.nameSurename);
-            setUsername(userFromLocalS.username);
-            setAvatarPreview("https://i.pinimg.com/originals/6d/e8/ad/6de8ad5eca1b8686e9ca946545194062.jpg");
-        }*/
+        /*  if (userFromLocalS) {
+              setNameSurename(userFromLocalS.nameSurename);
+              setUsername(userFromLocalS.username);
+              setAvatarPreview("https://i.pinimg.com/originals/6d/e8/ad/6de8ad5eca1b8686e9ca946545194062.jpg");
+          }*/
 
         if (error) {
             alert.error(error);
@@ -98,7 +108,7 @@ const UpdateProfile = () => {
                     <div className="updateProfileContainer">
                         <div className="updateProfileBox">
                             <h2 className="updateProfileHeading">Izmeni profil</h2>
-        
+
                             <form
                                 className="updateProfileForm"
                                 encType="multipart/form-data"
@@ -118,7 +128,7 @@ const UpdateProfile = () => {
                                 <div className="updateProfileEmail">
                                     <AccountCircleIcon />
                                     <input
-                                type="text"
+                                        type="text"
                                         placeholder="Korisnicko ime"
                                         required
                                         name="username"
@@ -129,7 +139,7 @@ const UpdateProfile = () => {
                                 <div className="updateProfileAddress">
                                     <HomeIcon />
                                     <input
-                              
+
                                         placeholder="Adresa"
                                         name="address"
                                         defaultValue={address}
@@ -139,7 +149,7 @@ const UpdateProfile = () => {
                                 <div className="updateProfileAddress">
                                     <FingerprintIcon />
                                     <input
-                                type="text"
+                                        type="text"
                                         placeholder="JMBG"
                                         required
                                         name="jmbg"
@@ -150,7 +160,7 @@ const UpdateProfile = () => {
                                 <div className="updateProfilePhoneNumber">
                                     <PhoneInTalkIcon />
                                     <input
-                                type="text"
+                                        type="text"
                                         placeholder="Broj telefona"
                                         required
                                         name="phoneNumber"
@@ -161,7 +171,7 @@ const UpdateProfile = () => {
                                 <div className="updateProfileAddress">
                                     <CalendarMonthIcon />
                                     <input
-                                type="date"
+                                        type="date"
                                         placeholder="Datum rodjenja"
                                         name="birthDate"
                                         defaultValue={birthDate}

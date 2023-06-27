@@ -1,70 +1,154 @@
-#search-header {
-    margin-left: 1vmax;
-    margin-top: -1vmax;
-    justify-content: center;
-  }
-  #search-text {
-    margin-right: 10px;
-    text-align: left;
-    font-size: 15px;
+.leftAndRight {
     display: flex;
-   
-    color: orange;
+    justify-content: space-between;
+    margin-top: 3rem;
+    z-index: 1;
+
+}
+.hero-image-back-cars{
+    position: absolute;
+    top: 10rem;
+    right: 0rem;
+    z-index: -1;
+    width: 25rem;
+    opacity: 0.6;
+
+}
+.left-h {
+    padding: 2rm;
+    margin-right: 1.5rem;
+    padding-top: 1.5rm;
+    flex: 3;
+    display: flex;
+    gap: 2rem;
+    flex-direction: column;
+    z-index: 1;
+
+}
+
+.imgCar {
+    height: 400px;
+    width: 650px
+}
+
+.right-h {
+    flex: 1;
+    position: relative;
+    background-color: var(--orange);
+    z-index: 1;
+
+}
+
+.figures {
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.search-box {
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+    margin-left: 1rem;
+    margin-top: -0.5rem;
+}
+
+.input-search {
+    height: 50px;
+    width: 50px;
+    border-style: none;
+    padding: 10px;
+    font-size: 18px;
+    letter-spacing: 2px;
+    outline: none;
+    border-radius: 25px;
+    transition: all .5s ease-in-out;
+    background-color: orange;
+    padding-right: 40px;
+    color: #fff;
+}
+
+.input-search::placeholder {
+    color: rgba(255, 255, 255, .5);
+    font-size: 18px;
+    letter-spacing: 2px;
+    font-weight: 100;
+}
+
+.btn-search {
+    width: 50px;
+    height: 50px;
+    border-style: none;
+    font-size: 20px;
     font-weight: bold;
-  }
-  #search-box {
-    height: 35px;
-    min-width: 20vmax;
-    background-color: var(--lightgray);
-  }
-  #search-box[placeholder] {
-    line-height: 15px;
-    font-size: 10px;
-  }
-  .cars{
+    outline: none;
+    cursor: pointer;
+    border-radius: 50%;
+    position: absolute;
+    right: 0px;
+    color: #ffffff;
+    background-color: transparent;
+    pointer-events: painted;
+}
+
+.btn-search:focus~.input-search {
+    width: 300px;
+    border-radius: 0px;
+    background-color: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, .5);
+    transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+}
+
+.input-search:focus {
+    width: 300px;
+    border-radius: 0px;
+    background-color: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, .5);
+    transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+}
+
+.cars {
     background-color: var(--darkGrey);
     margin-left: 1rem;
 }
 
-.bs1{
+.bs1 {
     box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
 }
 
-.car-text{
+.car-text {
     color: white;
     text-align: justify;
 }
 
-
-
-.header{
+.header {
     padding: 10px;
 }
 
-.context{
+.context {
     min-height: 90vh;
 }
-.card{
+
+.card {
     transition: 0.5s ease-in-out;
 
 }
 
-.card:hover{
-transform: translateY(20px);
+.card:hover {
+    transform: translateY(20px);
 }
 
-.card{
-    width:  400px;
+.card {
+    width: 400px;
     height: 200px;
     padding: 2rem 1rem;
-    background:#fff;
+    background: #fff;
     position: relative;
     display: flex;
     align-items: flex-end;
-   
+
 }
 
-.card:before{
+.card:before {
     content: "";
     position: absolute;
     top: 0;
@@ -78,11 +162,11 @@ transform: translateY(20px);
     z-index: 2;
 }
 
-.card:hover:before{
+.card:hover:before {
     opacity: 1;
 }
 
-.card img{
+.card img {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -92,7 +176,7 @@ transform: translateY(20px);
     left: 0;
 }
 
-.card .info{
+.card .info {
     position: relative;
     z-index: 3;
     color: #fff;
@@ -101,18 +185,18 @@ transform: translateY(20px);
     transition: 0.5s all;
 }
 
-.card:hover .info{
+.card:hover .info {
     opacity: 1;
     transform: translateY(0px);
-   
+
 }
 
-.card .info h1{
+.card .info h1 {
     margin: 0;
 }
 
 
-.card .info p{
+.card .info p {
     letter-spacing: 1px;
     font-size: 15px;
     margin-top: 8px;
@@ -120,12 +204,12 @@ transform: translateY(20px);
     text-align: left;
 }
 
-.buttons>button{
+.buttons>button {
     background-color: orange;
     font-weight: 400px;
 }
 
-.buttons>button:hover{
+.buttons>button:hover {
     background-color: orange;
     opacity: 0.7;
 }

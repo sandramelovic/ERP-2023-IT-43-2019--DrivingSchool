@@ -15,13 +15,14 @@ import { DELETE_PRODUCT_RESET } from "../../redux/constants/productConstants";
 import { token } from "morgan";
 import { useNavigate } from 'react-router-dom'
 import { setCategory, setProgramType } from "../../redux/actions/categoryActions";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const ProductList = () => {
   const dispatch = useDispatch();
 
   const alert = useAlert();
   const navigate = useNavigate();
-  const { error, products } = useSelector((state) => state.products);
+  const { error, products, loading } = useSelector((state) => state.products);
 
   const { error: deleteError, isDeleted } = useSelector(
     (state) => state.product
@@ -32,7 +33,7 @@ const ProductList = () => {
 
   const deleteProductHandler = (id) => {
     dispatch(deleteProduct(id, token));
-  }; 
+  };
 
   useEffect(() => {
     if (error) {
@@ -49,7 +50,7 @@ const ProductList = () => {
       alert.success("Product Deleted Successfully");
       navigate("/adminDashboard");
       dispatch({ type: DELETE_PRODUCT_RESET });
-    } 
+    }
 
     dispatch(getAdminProduct());
   }, [dispatch, alert, error, deleteError, isDeleted]);
@@ -60,20 +61,20 @@ const ProductList = () => {
     {
       field: "category",
       headerName: "Kategorija",
-      minWidth: 170,
-      flex: 0.5,
+      minWidth: 270,
+      flex: 0.6,
     },
     {
       field: "programType",
       headerName: "Tip programa",
-      minWidth: 250,
-      flex: 0.5,
+      minWidth: 350,
+      flex: 0.6,
     },
     {
       field: "price",
       headerName: "Cena",
       type: "number",
-      minWidth: 150,
+      minWidth: 250,
       flex: 0.3,
     },
 
@@ -116,30 +117,34 @@ const ProductList = () => {
       });
     });
 
+  const ShowContent = () => {
+    return (
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        pageSize={10}
+        disableSelectionOnClick
+        className="productListTable"
+        autoHeight
+      />
+    )
+  }
   return (
     <div>
 
-   <Header/>
-    <Fragment>
-      <div className="dashboard">
-        <SideBar />
-        <div className="productListContainer">
-          <h1 id="productListHeading">SVI PROGRAMI</h1>
-
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            pageSize={10}
-            disableSelectionOnClick
-            className="productListTable"
-            autoHeight
-          />
+      <Header />
+      <Fragment>
+        <div className="dashboard">
+          <SideBar />
+          <div className="productListContainer">
+            <h1 id="productListHeading">SVI PROGRAMI</h1>
+            {loading ? <div className="spinner"><LoadingSpinner /></div> : <div className="content"><ShowContent /></div>}
+          </div>
         </div>
+      </Fragment>
+      <div style={{ marginTop: "51rem" }}>
+        <Footer />
       </div>
-    </Fragment>
-    <div style={{ marginTop: "51rem" }}>
-            <Footer/>
-    </div>
     </div>
   );
 };

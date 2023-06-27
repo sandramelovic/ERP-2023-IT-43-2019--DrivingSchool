@@ -15,6 +15,7 @@ import { DELETE_ORDER_RESET } from "../../redux/constants/orderConstants";
 //import { deleteOrder, getAllOrders, clearErrors} from "../../actions/orderAction";
 import { Navigate } from "react-router-dom";
 import { getAllUsers } from "../../redux/actions/userActions";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const OrderList = () => {
   const dispatch = useDispatch();
@@ -23,8 +24,8 @@ const OrderList = () => {
 
   const token = JSON.parse(localStorage.getItem('user')).token
 
-   const { error, orders } = useSelector((state) => state.allOrders);
-   const { users } = useSelector((state) => state.allUsers);
+  const { error, orders, loading } = useSelector((state) => state.allOrders);
+  const { users } = useSelector((state) => state.allUsers);
 
   /* const { error: deleteError, isDeleted } = useSelector((state) => state.order);
  
@@ -32,26 +33,26 @@ const OrderList = () => {
      dispatch(deleteOrder(id));
    };
  */
-   useEffect(() => {
-  /*   if (error) {
-       alert.error(error);
-       dispatch(clearErrors());
-     }
- 
-     if (deleteError) {
-       alert.error(deleteError);
-       dispatch(clearErrors());
-     }
- 
-     if (isDeleted) {
-       alert.success("Order Deleted Successfully");
-       history.push("/admin/orders");
-       dispatch({ type: DELETE_ORDER_RESET });
-     }
- */
-     dispatch(getAllOrders(token));
-     dispatch(getAllUsers(token));
- //  }, [dispatch, alert, error, deleteError, history, isDeleted]);
+  useEffect(() => {
+    /*   if (error) {
+         alert.error(error);
+         dispatch(clearErrors());
+       }
+   
+       if (deleteError) {
+         alert.error(deleteError);
+         dispatch(clearErrors());
+       }
+   
+       if (isDeleted) {
+         alert.success("Order Deleted Successfully");
+         history.push("/admin/orders");
+         dispatch({ type: DELETE_ORDER_RESET });
+       }
+   */
+    dispatch(getAllOrders(token));
+    dispatch(getAllUsers(token));
+    //  }, [dispatch, alert, error, deleteError, history, isDeleted]);
   }, [dispatch, alert, error]);
 
   const columns = [
@@ -60,65 +61,79 @@ const OrderList = () => {
     {
       field: "username",
       headerName: "Username",
-      minWidth: 100,
+      minWidth: 300,
       flex: 0.3,
     },
     {
       field: "date",
       headerName: "Datum",
-      minWidth: 100,
+      minWidth: 250,
       flex: 0.4,
     },
 
     {
       field: "status",
       headerName: "Status",
-      minWidth: 100,
+      minWidth: 220,
       flex: 0.3,
       cellClassName: (params) => {
-          return params.getValue(params.id, "status") === "paid"
-              ? "greenColor"
-              : "redColor";
+        return params.getValue(params.id, "status") === "paid"
+          ? "greenColor"
+          : "redColor";
       },
-  },
+    },
 
     {
       field: "total",
       headerName: "+ ostali troskovi",
       type: "number",
-      minWidth: 100,
+      minWidth: 200,
       flex: 0.3,
-  },
-  {
+    },
+    {
       field: "subtotal",
       headerName: "Ukupno",
       type: "number",
-      minWidth: 100,
+      minWidth: 200,
       flex: 0.4,
-  },
+    },
 
-    
+
   ];
-  
+
   const rows = [];
 
-    orders &&
-      orders.forEach((item) => {
-        const user = users.find((user) => user.userId === item.userId);
-  const username = user ? user.username : 'Nepoznat';
-  const status = item.payment_status ? item.payment_status : "Unknown";
+  orders &&
+    orders.forEach((item) => {
+      const user = users.find((user) => user.userId === item.userId);
+      const username = user ? user.username : 'Nepoznat';
+      const status = item.payment_status ? item.payment_status : "Unknown";
 
-        rows.push({
-          id: item.orderId,
-          orderId: item.orderId,
-          username: username,
-          status: status,
-          total: item.total ,
-          subtotal: item.subtotal ,
-          date: item.date,
-        });
+      rows.push({
+        id: item.orderId,
+        orderId: item.orderId,
+        username: username,
+        status: status,
+        total: item.total,
+        subtotal: item.subtotal,
+        date: item.date,
       });
-  
+    });
+
+  const ShowContent = () => {
+    return (
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        pageSize={10}
+        disableSelectionOnClick
+        className="productListTable"
+        autoHeight
+
+      />
+    )
+  }
+
   return (
     <div>
       <Header />
@@ -128,16 +143,7 @@ const OrderList = () => {
           <SideBar />
           <div className="productListContainer">
             <h1 id="productListHeading">SVE PORUDŽBINE</h1>
-
-            <DataGrid
-              rows={rows}
-              columns={columns}
-              pageSize={10}
-              disableSelectionOnClick
-              className="productListTable"
-              autoHeight
-              
-            />
+            {loading ? <div className="spinner"><LoadingSpinner /></div> : <div className="content"><ShowContent /></div>}
           </div>
         </div>
       </Fragment>

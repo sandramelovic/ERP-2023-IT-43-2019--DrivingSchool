@@ -11,6 +11,7 @@ import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
 import { getUserDetails } from "../../redux/actions/userActions";
 import { getAllPayments } from "../../redux/actions/paymentAction";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const MyOrders = () => {
     const dispatch = useDispatch();
@@ -121,22 +122,26 @@ const MyOrders = () => {
         return null;
     }
 
+    const ShowContent = () => {
+        return (
+            <DataGrid
+                rows={rows}
+                columns={columns}
+                pageSize={10}
+                disableSelectionOnClick
+                className="myOrdersTable"
+                autoHeight
+            />
+        )
+    }
+
     return (
         <div>
             <Header />
             <Fragment>
-
                 <h1 className="text-center"> <span className="stroke-text display-6 fw-bolder text-warning" style={{ color: 'var(--darkGrey)' }}>{`${user.nameSurename}`}</span><span className="display-6 fw-bolder text-warning"> porudzbine </span></h1>
-
                 <div className="myOrdersPage">
-                    <DataGrid
-                        rows={rows}
-                        columns={columns}
-                        pageSize={10}
-                        disableSelectionOnClick
-                        className="myOrdersTable"
-                        autoHeight
-                    />
+                    {loading ? <div className="spinner"><LoadingSpinner /></div> : <div className="content"><ShowContent /></div>}
                 </div>
             </Fragment>
             <div style={{ marginTop: "50rem" }}>

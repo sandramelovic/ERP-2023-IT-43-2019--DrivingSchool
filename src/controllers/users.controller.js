@@ -54,14 +54,15 @@ export const deleteUser = async (req, res) => {
 }
 
 export const putUser = async (req, res) => {
-    const { nameSurename, address, birthDate, jmbg, phoneNumber, username } = req.body
+    const { nameSurename, address, birthDate, jmbg, phoneNumber, username, uid, userImage } = req.body
     let role = req.body.role
 
     const { id } = req.params
-    console.log(req.params.role)
+
     if (!role) {
         role = Role.User; 
       }
+      
 
     if (nameSurename == null || jmbg == null || phoneNumber == null || username == null) {
         return res.status(400).json({ msg: "Bad Request. Please fill all fields" })
@@ -80,13 +81,15 @@ export const putUser = async (req, res) => {
             .input("phoneNumber", sql.VarChar, phoneNumber)
             .input("role", sql.VarChar, role)
             .input("username", sql.VarChar, username)
+            .input("uid", sql.VarChar, uid)
+            .input("userImage", sql.VarChar, userImage)
             .input("id", sql.Int, id)
             .query(query.putUser)
 
 
             res.status(200).json({
                 success: true,
-                data: { nameSurename, address, birthDate, jmbg, phoneNumber, role, username }})
+                data: { nameSurename, address, birthDate, jmbg, phoneNumber, role, username, uid, userImage }})
    //     res.json({ nameSurename, address, birthDate, jmbg, phoneNumber, role, username, password })
     } catch (error) {
         console.log(error)

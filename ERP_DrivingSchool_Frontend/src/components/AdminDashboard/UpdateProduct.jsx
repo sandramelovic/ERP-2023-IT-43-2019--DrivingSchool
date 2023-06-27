@@ -80,6 +80,19 @@ const UpdateProduct = () => {
       alert.success("Product Updated Successfully");
       navigate("/admin/products")
       dispatch({ type: UPDATE_PRODUCT_RESET });
+
+      if (price != product.price) {
+        if (localStorage.getItem('updatedProducts')) {
+          const updatedProducts = JSON.parse(localStorage.getItem('updatedProducts'));
+          updatedProducts.push(parseInt(product.programId));
+          console.log(updatedProducts)
+          localStorage.setItem('updatedProducts', JSON.stringify(updatedProducts));
+        } else {
+          const newArrayOdUpdatedProducts = [product.programId];
+          localStorage.setItem('updatedProducts', JSON.stringify(newArrayOdUpdatedProducts));
+        }
+      }
+      
     } 
   }, [
     dispatch,

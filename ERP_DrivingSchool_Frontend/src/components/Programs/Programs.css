@@ -6,11 +6,24 @@
   height: 100vh;
   flex-wrap: no-wrap;
   background-color: white;
+  z-index: 22;
+
+}
+
+.hero-image-back-programs{
+  position: absolute;
+  top: 10rem;
+  right: 0rem;
+  z-index:1;
+  width: 20rem;
+  opacity: 0.6;
 }
 
 .text-programs{
     padding-top: 10px;
     text-align: left;
+    z-index: 22;
+
 }
 .cont img{
        object-fit: cover;

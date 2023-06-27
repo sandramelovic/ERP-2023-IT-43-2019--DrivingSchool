@@ -19,6 +19,7 @@ var _payments = _interopRequireDefault(require("./routes/payments.routes"));
 var _users = _interopRequireDefault(require("./routes/users.routes"));
 var _errorHandler = _interopRequireDefault(require("./helpers/error-handler"));
 var _paymentRoute = _interopRequireDefault(require("./routes/paymentRoute"));
+var _supportChat = _interopRequireDefault(require("./routes/supportChat.routes"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 var app = (0, _express["default"])();
 var corsOptions = {
@@ -55,5 +56,6 @@ app.use(_payments["default"]);
 app.use(_users["default"]);
 app.use(_paymentRoute["default"]);
 app.use(_errorHandler["default"]);
+app.use(_supportChat["default"]);
 var _default = app;
 exports["default"] = _default;

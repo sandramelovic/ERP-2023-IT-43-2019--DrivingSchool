@@ -7,3 +7,39 @@
     background-color: orange;
     opacity: 0.7;
 }
+
+.notification{
+    margin-left: 22rem;
+    cursor: pointer;
+}
+
+.notification:hover{
+    color: var(--orange);
+}
+
+.notification .icon-text {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .info-text {
+    color: var(--darkGrey);
+    font-size: large;
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    padding: 7px;
+    width: 17rem;
+    text-align: center;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin: 0.5rem;
+  }
+  
+  .notification .icon-text:hover .info-text {
+    display: block;
+  }
+  

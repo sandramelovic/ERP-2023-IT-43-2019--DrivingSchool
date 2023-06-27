@@ -7,6 +7,9 @@ import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import { getUserDetails } from "../../redux/actions/userActions";
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import hero_image_back from "../../assets/hero_image_back.png"
+import noUserPhoto from '../../assets/no-user-image-icon.jpg'
 
 const Profile = () => {
 
@@ -22,12 +25,12 @@ const Profile = () => {
   }, [dispatch]);
 
   const formattedDate = user.birthDate ? new Date(user.birthDate).toLocaleDateString() : null;
-  return (
-    <div>
-      <Header />
-      <div class="profile-wrapper">
+
+  const ShowContent = () => {
+    return (
+      <>
         <div class="profile-image">
-          <img src={user.userImage}></img>
+          <img  src={user.userImage ? require(`../../assets/${user.userImage}`) : noUserPhoto}/>
         </div>
         <div class="close"></div>
         <h2 class="profile-title">{user.nameSurename} <span>profil</span></h2>
@@ -82,8 +85,19 @@ const Profile = () => {
           </div>
 
         </div>
+      </>
+    )
+  }
+
+  return (
+    <div>
+      <Header />
+      <img src={hero_image_back} alt="" className='hero-image-back-profile' />
+
+      <div class="profile-wrapper">
+        {loading ? <div className="spinner"><LoadingSpinner /></div> : <div className="content"><ShowContent /></div>}
       </div>
-      <div style={{ marginTop: "60rem" }}>
+      <div style={{ marginTop: "65rem" }}>
         <Footer />
       </div>
     </div>

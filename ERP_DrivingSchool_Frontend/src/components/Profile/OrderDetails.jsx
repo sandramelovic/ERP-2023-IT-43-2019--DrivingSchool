@@ -14,13 +14,14 @@ import { getAllPayments } from "../../redux/actions/paymentAction";
 import { setCategory, setProgramType } from "../../redux/actions/categoryActions";
 import { getProduct } from "../../redux/actions/productAction";
 import uploadPhotoGrayBack from '../../assets/uploadPhotoGrayBack.png'
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const OrderDetails = () => {
     const { orderItems } = useSelector((state) => state.allOrderItems);
     const { products } = useSelector((state) => state.products)
 
     const { order, error, loading } = useSelector((state) => state.orderDetails);
-    const {payments} = useSelector((state) => state.allPayments)
+    const { payments } = useSelector((state) => state.allPayments)
 
     const id = useParams()
     const dispatch = useDispatch();
@@ -43,7 +44,7 @@ const OrderDetails = () => {
 
     }, [dispatch, alert, error, orderId.id]);
 
-    
+
     const status = order.payment_status ? order.payment_status : "Unknown";
 
     useEffect(() => {
@@ -51,89 +52,96 @@ const OrderDetails = () => {
             return alert.error(error)
         }
         dispatch(getProduct())
-       
+
     }, [dispatch, error])
+
+    const ShowContent = () => {
+        return (
+            <div className="orderDetailsPage">
+                <div className="orderDetailsContainer">
+
+                    <Typography component="h1">
+                        Porudžbina br. #{order && order.orderId}
+                    </Typography>
+                    <Typography>Podaci isporuke</Typography>
+                    <div className="orderDetailsContainerBox">
+                        <div>
+                            <p>Ime i prezime:</p>
+                            <span>{user.data.user.nameSurename}</span>
+                        </div>
+                        <div>
+                            <p>Broj telefona:</p>
+                            <span>
+                                {user.data.user.phoneNumber}
+                            </span>
+                        </div>
+                        <div>
+                            <p>Datum isporuke:</p>
+                            <span>
+                                {order.date}
+                            </span>
+                        </div>
+                    </div>
+                    <Typography>Plaćanje</Typography>
+                    <div className="orderDetailsContainerBox">
+                        <div>
+
+                            <p
+                                className={
+                                    status &&
+                                        status === 'paid'
+                                        ? "greenColor"
+                                        : "redColor"
+                                }
+                            > <span>
+                                    {status &&
+                                        status === 'paid'
+                                        ? "PLAĆENO"
+                                        : "NIJE PLAĆENO"}
+                                </span>
+
+                            </p>
+                        </div>
+
+                        <div>
+                            <p>Ukupno:</p>
+                            <span>{order.total / 100},00 RSD</span>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div className="orderDetailsCartItems">
+                    <Typography>Stavke porudžbine:</Typography>
+                    <div className="orderDetailsCartItemsContainer">
+                        {orderItems && Array.isArray(orderItems) && orderItems.length > 0 ? (
+                            orderItems.map((item) => (
+                                <div key={item.orderItemId}>
+                                    <img src={(products.find(program => program.programId === item.programId).programImage) ? require(`../../assets/${products.find(program => program.programId === item.programId).programImage}`) : uploadPhotoGrayBack} alt="Product" />
+
+                                    <Link to={`/programs/${item.programId}`}>{setCategory(products.find(program => program.programId === item.programId).categoryId)} - {setProgramType(products.find(program => program.programId === item.programId).programTypeId)}</Link>{" "}
+
+                                    <span>
+                                        <b> {item.amount},00 RSD</b>
+                                    </span>
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-danger"><WarningAmberIcon></WarningAmberIcon><span>Nisu pronađene stavke porudžbine.</span></p>
+                        )}
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div>
 
             <Header />
             <Fragment>
-                <div className="orderDetailsPage">
-                    <div className="orderDetailsContainer">
-      
-                        <Typography component="h1">
-                        Porudžbina br. #{order && order.orderId}
-                        </Typography>
-                        <Typography>Podaci isporuke</Typography>
-                        <div className="orderDetailsContainerBox">
-                            <div>
-                                <p>Ime i prezime:</p>
-                                <span>{user.data.user.nameSurename}</span>
-                            </div>
-                            <div>
-                                <p>Broj telefona:</p>
-                                <span>
-                                    {user.data.user.phoneNumber}
-                                </span>
-                            </div>
-                            <div>
-                                <p>Datum isporuke:</p>
-                                <span>
-                                   {order.date}
-                                </span>
-                            </div>
-                        </div>
-                        <Typography>Plaćanje</Typography>
-                        <div className="orderDetailsContainerBox">
-                            <div>
-                                
-                                <p
-                                    className={
-                                        status &&
-                                        status === 'paid'
-                                            ? "greenColor"
-                                            : "redColor"
-                                    }
-                                > <span>
-                                    { status &&
-                                        status === 'paid'
-                                        ? "PLAĆENO"
-                                        : "NIJE PLAĆENO"}
-                                </span>
-                                   
-                                </p>
-                            </div>
-
-                            <div>
-                                <p>Ukupno:</p>
-                                <span>{order.total / 100},00 RSD</span>
-                            </div>
-                        </div>
-
-
-                    </div>
-
-                    <div className="orderDetailsCartItems">
-                        <Typography>Stavke porudžbine:</Typography>
-                        <div className="orderDetailsCartItemsContainer">
-                            {orderItems && Array.isArray(orderItems) && orderItems.length > 0 ? (
-                                orderItems.map((item) => (
-                                    <div key={item.orderItemId}>
-                                        <img src={(products.find(program => program.programId === item.programId).programImage) ? require(`../../assets/${products.find(program => program.programId === item.programId).programImage}`) : uploadPhotoGrayBack } alt="Product" />
-
-                                        <Link to={`/programs/${item.programId}`}>{setCategory(products.find(program => program.programId === item.programId).categoryId)} - {setProgramType(products.find(program => program.programId === item.programId).programTypeId)}</Link>{" "}
-                                        
-                                        <span>
-                                            <b> {item.amount},00 RSD</b>
-                                        </span>
-                                    </div>
-                                ))
-                            ) : (
-                                <p className="text-danger"><WarningAmberIcon></WarningAmberIcon><span>Nisu pronađene stavke porudžbine.</span></p>
-                            )}
-                        </div>
-                    </div>
-                </div>
+                {loading ? <div className="spinner"><LoadingSpinner /></div> : <div className="content"><ShowContent /></div>}
             </Fragment>
             <Footer />
         </div>

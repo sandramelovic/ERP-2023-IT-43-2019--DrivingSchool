@@ -11,6 +11,7 @@ import ListAltIcon from "@material-ui/icons/ListAlt";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import PeopleIcon from "@material-ui/icons/People";
 import RateReviewIcon from "@material-ui/icons/RateReview";
+import ChatIcon from '@mui/icons-material/Chat';  
 
 const Sidebar = () => {
   return (
@@ -48,6 +49,11 @@ const Sidebar = () => {
       <Link to="/admin/users">
         <p>
           <PeopleIcon /> Korisnici
+        </p>
+      </Link>
+      <Link to="/admin/chat">
+        <p>
+          <ChatIcon /> Ćaskanje
         </p>
       </Link>
       

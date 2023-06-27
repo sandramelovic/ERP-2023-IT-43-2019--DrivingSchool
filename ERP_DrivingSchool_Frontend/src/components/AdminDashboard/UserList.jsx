@@ -13,6 +13,7 @@ import Footer from "../Footer/Footer";
 import { getAllUsers, clearErrors, deleteUser } from "../../redux/actions/userActions";
 import { DELETE_USER_RESET } from "../../redux/constants/userConstants";
 import { Navigate } from "react-router-dom";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const UsersList = () => {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ const UsersList = () => {
   const alert = useAlert();
   const user = localStorage.getItem('user')
   const token = JSON.parse(user).token
-  const { error, users } = useSelector((state) => state.allUsers);
+  const { error, users, loading } = useSelector((state) => state.allUsers);
 
   const {
     error: deleteError,
@@ -59,20 +60,20 @@ const UsersList = () => {
     {
       field: "username",
       headerName: "Korisničko ime",
-      minWidth: 150,
+      minWidth: 300,
       flex: 0.5,
     },
     {
       field: "name",
       headerName: "Ime i prezime",
-      minWidth: 150,
+      minWidth: 300,
       flex: 0.5,
     },
 
     {
       field: "role",
       headerName: "Role",
-      minWidth: 100,
+      minWidth: 200,
       flex: 0.3,
       cellClassName: (params) => {
         return params.getValue(params.id, "role") === "Admin"
@@ -85,7 +86,7 @@ const UsersList = () => {
       field: "actions",
       flex: 0.3,
       headerName: "Akcije",
-      minWidth: 150,
+      minWidth: 250,
       type: "number",
       sortable: false,
       renderCell: (params) => {
@@ -120,6 +121,19 @@ const UsersList = () => {
       });
     });
 
+    const ShowContent = () => {
+      return (
+        <DataGrid
+            rows={rows}
+            columns={columns}
+            pageSize={10}
+            disableSelectionOnClick
+            className="productListTable"
+            autoHeight
+          />
+      )
+    }
+
   return (
     <div>
         <Header/>
@@ -128,15 +142,7 @@ const UsersList = () => {
         <SideBar />
         <div className="productListContainer">
           <h1 id="productListHeading">SVI KANDIDATI</h1>
-
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            pageSize={10}
-            disableSelectionOnClick
-            className="productListTable"
-            autoHeight
-          />
+          {loading ? <div className="spinner"><LoadingSpinner /></div> : <div className="content"><ShowContent /></div>}
         </div>
       </div>
     </Fragment>

@@ -128,37 +128,36 @@ var deleteUser = /*#__PURE__*/function () {
 exports.deleteUser = deleteUser;
 var putUser = /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var _req$body, nameSurename, address, birthDate, jmbg, phoneNumber, username, role, id, pool, salt;
+    var _req$body, nameSurename, address, birthDate, jmbg, phoneNumber, username, uid, userImage, role, id, pool, salt;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
-          _req$body = req.body, nameSurename = _req$body.nameSurename, address = _req$body.address, birthDate = _req$body.birthDate, jmbg = _req$body.jmbg, phoneNumber = _req$body.phoneNumber, username = _req$body.username;
+          _req$body = req.body, nameSurename = _req$body.nameSurename, address = _req$body.address, birthDate = _req$body.birthDate, jmbg = _req$body.jmbg, phoneNumber = _req$body.phoneNumber, username = _req$body.username, uid = _req$body.uid, userImage = _req$body.userImage;
           role = req.body.role;
           id = req.params.id;
-          console.log(req.params.role);
           if (!role) {
             role = _role["default"].User;
           }
           if (!(nameSurename == null || jmbg == null || phoneNumber == null || username == null)) {
-            _context4.next = 7;
+            _context4.next = 6;
             break;
           }
           return _context4.abrupt("return", res.status(400).json({
             msg: "Bad Request. Please fill all fields"
           }));
-        case 7:
-          _context4.prev = 7;
-          _context4.next = 10;
+        case 6:
+          _context4.prev = 6;
+          _context4.next = 9;
           return (0, _database.getConnection)();
-        case 10:
+        case 9:
           pool = _context4.sent;
-          _context4.next = 13;
+          _context4.next = 12;
           return bcrypt.genSalt(_config.HASH_SALT);
-        case 13:
+        case 12:
           salt = _context4.sent;
-          _context4.next = 16;
-          return pool.request().input("nameSurename", _database.sql.VarChar, nameSurename).input("address", _database.sql.VarChar, address).input("birthDate", _database.sql.Date, birthDate).input("jmbg", _database.sql.VarChar, jmbg).input("phoneNumber", _database.sql.VarChar, phoneNumber).input("role", _database.sql.VarChar, role).input("username", _database.sql.VarChar, username).input("id", _database.sql.Int, id).query(_database.query.putUser);
-        case 16:
+          _context4.next = 15;
+          return pool.request().input("nameSurename", _database.sql.VarChar, nameSurename).input("address", _database.sql.VarChar, address).input("birthDate", _database.sql.Date, birthDate).input("jmbg", _database.sql.VarChar, jmbg).input("phoneNumber", _database.sql.VarChar, phoneNumber).input("role", _database.sql.VarChar, role).input("username", _database.sql.VarChar, username).input("uid", _database.sql.VarChar, uid).input("userImage", _database.sql.VarChar, userImage).input("id", _database.sql.Int, id).query(_database.query.putUser);
+        case 15:
           res.status(200).json({
             success: true,
             data: {
@@ -168,25 +167,27 @@ var putUser = /*#__PURE__*/function () {
               jmbg: jmbg,
               phoneNumber: phoneNumber,
               role: role,
-              username: username
+              username: username,
+              uid: uid,
+              userImage: userImage
             }
           });
           //     res.json({ nameSurename, address, birthDate, jmbg, phoneNumber, role, username, password })
-          _context4.next = 23;
+          _context4.next = 22;
           break;
-        case 19:
-          _context4.prev = 19;
-          _context4.t0 = _context4["catch"](7);
+        case 18:
+          _context4.prev = 18;
+          _context4.t0 = _context4["catch"](6);
           console.log(_context4.t0);
           res.status(500).json({
             success: false,
             message: "User not found"
           });
-        case 23:
+        case 22:
         case "end":
           return _context4.stop();
       }
-    }, _callee4, null, [[7, 19]]);
+    }, _callee4, null, [[6, 18]]);
   }));
   return function putUser(_x7, _x8) {
     return _ref4.apply(this, arguments);

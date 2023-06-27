@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { setCategory, setProgramType } from '../../redux/actions/categoryActions';
 import uploadPhotoWhiteBack from '../../assets/uploadPhotoWhiteBack.png';
+import { motion } from 'framer-motion';
 
 const Header = () => {
   const mobile = window.innerWidth <= 768 ? true : false;
@@ -17,6 +18,21 @@ const Header = () => {
   const navigate = useNavigate();
   const menuRef = useRef(null);
   const cartRef = useRef(null);
+
+  useEffect(() => {
+    window.addEventListener('scroll', isSticky);
+    return () => {
+        window.removeEventListener('scroll', isSticky);
+    };
+});
+
+       
+/* Method that will fix header after a specific scrollable */
+       const isSticky = (e) => {
+            const header = document.querySelector('.header');
+            const scrollTop = window.scrollY;
+            scrollTop >= 250 ? header.classList.add('is-sticky') : header.classList.remove('is-sticky');
+        };
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
@@ -36,10 +52,6 @@ const Header = () => {
       window.removeEventListener('click', handleOutsideClick);
     };
   }, []);
-
-  const routeChange = () => {
-    navigate('/cars');
-  };
 
   const handleCartClick = () => {
     setIsCartOpen(!isCartOpen);
@@ -68,7 +80,7 @@ const Header = () => {
           </div>
         ) : (
           <>
-            <ul className='header-menu' ref={menuRef}>
+            <ul className='header-menu' ref={menuRef} >
               <li>
                 <Link
                   onClick={() => setMenuOpened(false)}
@@ -82,7 +94,7 @@ const Header = () => {
               </li>
               <li>
                 <Link
-                  onClick={routeChange}
+                  onClick={() => setMenuOpened(false)}
                   to='/cars'
                   span={true}
                   smooth={true}
@@ -104,7 +116,6 @@ const Header = () => {
               </li>
               <li>
                 <Link
-                  onClick={routeChange}
                   to='/contact'
                   span={true}
                   smooth={true}
@@ -118,7 +129,8 @@ const Header = () => {
               {localStorage.getItem('user') !== 'undefined' &&
                 localStorage.getItem('user') != null &&
                 window.location.pathname !== '/' &&
-                window.location.pathname !== '/cart' && (
+                window.location.pathname !== '/cart' && 
+                JSON.parse(localStorage.getItem('user')).data.user.role !== 'Admin' &&(
                   <li className='shoppingCartIcon'>
                     <div onClick={handleCartClick}>
                       <ShoppingCartIcon fontSize='large' />
@@ -133,7 +145,12 @@ const Header = () => {
         )}
       </div>
       {isCartOpen && (
-        <div className='container' ref={cartRef}>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+
+          className='container' ref={cartRef}>
           <div className='shopping-cart'>
             <div className='shopping-cart-header'>
               <ShoppingCartIcon />
@@ -162,7 +179,7 @@ const Header = () => {
               </Link>
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
     </>
   );

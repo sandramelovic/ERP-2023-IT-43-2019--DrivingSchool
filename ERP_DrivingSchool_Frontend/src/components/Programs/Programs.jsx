@@ -10,6 +10,10 @@ import { useAlert } from "react-alert";
 import { setCategory, setProgramType } from "../../redux/actions/categoryActions";
 import uploadPhotoWhiteBack from '../../assets/uploadPhotoWhiteBack.png'
 import SweetPagination from "sweetpagination";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import { motion } from "framer-motion";
+import hero_image_back from "../../assets/hero_image_back.png"
+
 
 const Programs = () => {
 
@@ -34,7 +38,7 @@ const Programs = () => {
       setCurrentPageData(products.slice(0, 6));
     }
   }, [products]);
-  
+
   useEffect(() => {
     const startIndex = (currentPage - 1) * 6;
     const endIndex = startIndex + 6;
@@ -116,11 +120,19 @@ const Programs = () => {
   return (
     <div>
       <Header />
-      <div className="container my-3 py-3">
+      <motion.div
+        initial={{ width: 0 }}
+        animate={{ width: "100%" }}
+        exit={{ x: "100%", opacity: 0 }}
+        transition={{ duration: 2, type: "spring", stiffness: 100 }}
+        className="container my-3 py-3">
         <div className="row">
           <div className="col-12 mb-5">
             <h1 className="text-center"> <span className="stroke-text display-6 fw-bolder" style={{ color: 'var(--darkGrey)' }}>Dostupni</span><span className="display-6 fw-bolder text-light"> programi </span></h1>
             <hr />
+            <div className='blur hero-blur'></div>
+            <img src={hero_image_back} alt="" className='hero-image-back-programs'/>
+
             <p className="car-text"> U autoskolama se obično nude različiti programi za obuku vozača, koji se prilagođavaju potrebama i ciljevima svakog pojedinca. Evo nekoliko uobičajenih programa koji se mogu pronaći u autoskolama:
               <br></br>
               <b>●	Program za početnike:</b> Ovaj program je namenjen osobama koje nemaju prethodno iskustvo u vožnji. Uključuje teorijsku obuku o saobraćajnim pravilima i sigurnosti, kao i praktičnu obuku vožnje sa instruktorom.
@@ -135,7 +147,7 @@ const Programs = () => {
           </div>
         </div>
         <div className="row justify-content-center">
-          {loading ? <Loading /> : <ShowPrograms />}
+          {loading ? <LoadingSpinner /> : <ShowPrograms />}
         </div>
         <SweetPagination
           currentPageData={setCurrentPageData}
@@ -145,7 +157,7 @@ const Programs = () => {
           currentPage={currentPage}
           onPageChange={handlePageChange}
         />
-      </div>
+      </motion.div>
       <Footer />
     </div>
   )

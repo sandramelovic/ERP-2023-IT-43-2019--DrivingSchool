@@ -4,6 +4,14 @@ import Footer from '../Footer/Footer';
 import { getAllCars } from '../../redux/actions/carsAction'
 import Skeleton from 'react-loading-skeleton'
 import '../Cars/Cars.css'
+import 'font-awesome/css/font-awesome.min.css';
+import hero_image from "../../assets/carsImage.png"
+import { Link } from 'react-router-dom';
+import NumberCounter from 'number-counter'
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import { motion } from "framer-motion";
+import hero_image_back from "../../assets/hero_image_back.png"
+import zIndex from "@mui/material/styles/zIndex";
 
 const Cars = () => {
 
@@ -85,16 +93,15 @@ const Cars = () => {
             </select>
           </div>
 
-          <div id="search-header">
-            <div id="search-text">Pretraga:</div>
-            <input
-              autoFocus="autoFocus"
+          <div class="search-box">
+            <button class="btn-search"><i class="fa fa-search"></i></button>
+            <input type="text" class="input-search" autoFocus="autoFocus"
               value={searchField}
               placeholder="Pretraži vozila koja posedujemo"
-              onChange={handleChange}
-            />
+              onChange={handleChange} />
           </div>
         </div>
+
 
         {filter.map((car) => {
           return (
@@ -134,17 +141,67 @@ const Cars = () => {
   return (
     <div>
       <Header />
-      <div className="container my-3 py-3">
+      <motion.div
+        initial={{ width: 0 }}
+        animate={{ width: "100%" }}
+        exit={{ x: "100%", opacity: 0 }}
+        transition={{ duration: 2, type: "spring", stiffness: 100 }}
+        className="container my-3 py-3">
         <div className="row">
+
           <div className="col-12 mb-5">
             <h1 className="text-center"> <span className="stroke-text display-6 fw-bolder" style={{ color: 'var(--darkGrey)' }}>Vozni</span><span className="display-6 fw-bolder text-light"> park </span></h1>
             <hr />
-            <p className="car-text">Naš vozni park sastoji se od raznolikog skupa vozila koji zadovoljavaju naše potrebe i zahtjeve.
+            <div className='blur hero-blur'></div>
+
+            <p className="car-text ">
               Imamo široku paletu vozila uključujući osobna vozila, kombije, kamione i motocikle. Svako vozilo je pažljivo odabrano kako bi osiguralo pouzdanost, udobnost i sigurnost naših korisnika.
               <br />
               Naš vozni park redovito se održava kako bi vozila bila u najboljem stanju i spremna za upotrebu.
-              Pridržavamo se strogih sigurnosnih standarda i provodimo redovite provjere tehničke ispravnosti. Naša vozila su opremljena suvremenim tehnologijama i
-              dodatnom opremom koja poboljšava performanse i udobnost vožnje. Dostupnost vozila za zaposlene ili korisnike može varirati u zavisnosti od organizacije i njenih politika upravljanja vozilima. Evo nekoliko uobičajenih scenarija:
+              <br />
+            </p>
+            <div className="leftAndRight ">
+              <div className="left-h ">
+                <img className="imgCar" src={hero_image} />
+              </div>
+
+              <div className="left-h">
+              <img src={hero_image_back} alt="" className='hero-image-back-cars'/>
+
+                <p className="car-text">Naš vozni park sastoji se od raznolikog skupa vozila koji zadovoljavaju naše potrebe i zahtjeve.
+                  Pridržavamo se strogih sigurnosnih standarda i provodimo redovite provjere tehničke ispravnosti. Naša vozila su opremljena suvremenim tehnologijama i
+                  dodatnom opremom koja poboljšava performanse i udobnost vožnje.
+                  Istim su postignuti rezultati, jedni od najboljih u ovoj oblasti.
+                  <br />
+                </p>
+                <div className="figures">
+                  <div>
+                    <span>
+                      <NumberCounter end={40} start={10} delay='2' preFix="+" />
+                    </span>
+                    <span>iskusnih instruktora</span>
+                  </div>
+                  <div>
+                    <span>
+                      <NumberCounter end={978} start={900} delay='4' preFix="+" />
+                    </span>
+                    <span>zadovoljnih članova</span>
+                  </div>
+                  <div>
+                    <span>
+                      <NumberCounter end={20} start={0} delay='1' preFix="+" />
+                    </span>
+                    <span>programa</span>
+                  </div>
+                </div>
+                <p className="car-text">  Dostupnost vozila za zaposlene ili korisnike može varirati u zavisnosti od organizacije i njenih politika upravljanja vozilima. Evo nekoliko uobičajenih scenarija: </p>
+
+              </div>
+
+
+
+            </div>
+            <p className="car-text ">
               <br />
               <br />
               <b>   1. </b>    Vozni park za zaposlene: U nekim firmama ili organizacijama postoji poseban vozni park namenjen isključivo zaposlenima. U takvim slučajevima, zaposleni mogu imati pristup vozilima za službene ili privatne svrhe, u skladu sa politikom kompanije. Ta vozila mogu biti u vlasništvu kompanije ili se mogu iznajmljivati od trećih lica.
@@ -159,11 +216,12 @@ const Cars = () => {
               <b>   4. </b>     Dostupnost vozila za zaposlene ili korisnike može biti regulisana određenim pravilima, kao što su potrebna vozačka dozvola, starosna ograničenja ili druge uslove koje je postavila organizacija. Ove politike obično uključuju i sistem rezervacija vozila kako bi se osiguralo da su vozila dostupna kada su potrebna.</p>
 
           </div>
+
         </div>
         <div className="row justify-content-center">
-          {loading ? <Loading /> : <ShowCars />}
+          {loading ? <LoadingSpinner /> : <ShowCars />}
         </div>
-      </div>
+      </motion.div>
       <Footer />
     </div>
   )

@@ -39,12 +39,11 @@ export const userLogin = (username, password) => async dispatch => {
     })
     localStorage.setItem('user', JSON.stringify(data.data))
     localStorage.setItem('token', data.data.token)
-    message.success('login success')
 
     dispatch({ type: LOGIN_SUCCESS, payload: data.data })
-    setTimeout(() => {
-      window.location.href = '/'
-    }, 500)
+    message.success('Uspešno ste se prijavili!')
+
+    return data.data
   } catch (error) {
     console.log(error)
     message.error('something went wrong')
@@ -65,13 +64,12 @@ export const userRegister = (reqObj) => async dispatch => {
       username: reqObj.username,
       password: reqObj.password
     })
-    setTimeout(() => {
-      message.success('Registration success')
-
-    }, 500)
-    window.location.href = '/login'
     dispatch({ type: 'LOADING', payload: false })
-  } catch (error) {
+    message.success('Uspešno ste se registrovali!')
+
+    return response
+
+    } catch (error) {
     if (error.response && error.response.status === 400) {
       message.error(error.response.data.msg);
     } else {
@@ -87,11 +85,11 @@ export const logoutUser = (reqObj) => async dispatch => {
 
   try {
     const response = await axios.post('http://localhost:4000/logout')
-    setTimeout(() => {
-      message.success('Logout success')
-    }, 500)
-    window.location.href = '/login'
+
     dispatch({ type: 'LOADING', payload: false })
+    
+    return response
+
   } catch (error) {
     console.log(error)
     message.error('something went wrong')
@@ -231,7 +229,7 @@ export const updateProfile = (id, userData, token) => async (dispatch) => {
         Authorization: `Bearer ${token}`
       }
     };
-
+console.log(userData.get("userImage"))
     const data = await axios.put(`http://localhost:4000/user/${id}`, {
       nameSurename: userData.get("nameSurename"),
       phoneNumber: userData.get("phoneNumber"),
@@ -239,6 +237,7 @@ export const updateProfile = (id, userData, token) => async (dispatch) => {
       birthDate: userData.get("birthDate"),
       address: userData.get("address"),
       username: userData.get("username"),
+      userImage: userData.get("userImage")
 
     }, config).then(res => {
       console.log(res)

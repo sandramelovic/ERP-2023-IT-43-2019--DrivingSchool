@@ -13,8 +13,10 @@ import paymentsRoutes from './routes/payments.routes'
 import usersRoutes from './routes/users.routes'
 import errorHandler from './helpers/error-handler'
 import paymentRoute from './routes/paymentRoute'
+import supportChatRoutes from './routes/supportChat.routes'
 
 const app = express()
+
 const corsOptions ={
     origin:'http://localhost:3000', 
     credentials:true,            
@@ -48,7 +50,7 @@ app.use(paymentsRoutes)
 app.use(usersRoutes)
 app.use(paymentRoute)
 app.use(errorHandler)
-
+app.use(supportChatRoutes)
 
 
 export default app

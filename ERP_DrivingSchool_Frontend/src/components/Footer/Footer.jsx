@@ -17,8 +17,7 @@ const Footer = () => {
                         <img src={Logo} alt="" />
                     </Link>
                     <p>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-                    </p>
+                    Pridružite se našoj auto školi i steknite sve veštine potrebne za bezbednu vožnju. Kontaktirajte nas danas i započnite svoje putovanje ka vozačkoj dozvoli!                    </p>
                     <div className="footer-socials">
                         <a href="linkedin.com" target="_blank" rel='noreferrer noopener'><FaLinkedin/></a>
                         <a href="https://www.facebook.com/" target="_blank"><FaFacebook/></a>

@@ -40,7 +40,7 @@ const Plans = () => {
                         </div>
 
                         <div>
-                            <span><Link to={`/programs/${i}`} className="btn">
+                            <span><Link to={`/programs/${(i+1)}`} className="btn">
                             Pogledaj više detalja
                             </Link></span>
                         </div>

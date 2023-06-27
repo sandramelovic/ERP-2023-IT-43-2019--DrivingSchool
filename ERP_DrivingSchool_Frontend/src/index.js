@@ -4,9 +4,19 @@ import './index.css';
 import App from './App';
 import store from './redux/store';
 import { Provider } from 'react-redux';
-
+import { CometChat } from '@cometchat-pro/chat';
+import config from './config';
 import { positions, transitions, Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
+
+CometChat.init(config.appID, new CometChat.AppSettingsBuilder().subscribePresenceForAllUsers().setRegion(config.region).build()).then(
+  () => {
+    console.log("Initialization successfully")
+  },
+  error => {
+    console.log("Initialization failed wit error:", error)
+  }
+)
 
 const options = {
   timeout: 5000,

@@ -15,7 +15,7 @@ const Testimonials = () => {
     return (
         <div className="Testimonials">
             <div className="left-t">
-                <span>Testimonials</span>
+                <span>Utisci</span>
                 <span className="stroke-text">Šta su rekli</span>
                 <span>o nama</span>
                 <motion.span

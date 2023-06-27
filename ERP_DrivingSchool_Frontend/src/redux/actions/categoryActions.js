@@ -43,6 +43,23 @@ const setCategoryIdByCategory = (category) => {
   }
 };
 
+const setShortCategoryByCategoryId = (category) => {
+  switch (category) {
+    case 1:
+      return "A";
+    case 2:
+      return "B";
+    case 3:
+      return "C";
+    case 4:
+      return "AM";
+    case 5:
+      return "CE";
+    default:
+      return "A";
+  }
+};
+
 const setProgramTypeIdByProgramType = (programType) => {
   switch (programType) {
     case "Teorija":
@@ -54,4 +71,4 @@ const setProgramTypeIdByProgramType = (programType) => {
   }
 };
 
-module.exports = { setCategory, setProgramType, setCategoryIdByCategory, setProgramTypeIdByProgramType };
+module.exports = { setCategory, setProgramType, setCategoryIdByCategory, setProgramTypeIdByProgramType, setShortCategoryByCategoryId };

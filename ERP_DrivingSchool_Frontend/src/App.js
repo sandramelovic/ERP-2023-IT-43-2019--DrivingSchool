@@ -36,6 +36,10 @@ import OrderSuccess from './components/Cart/OrderSuccess';
 import Reasons from './components/Reasons/Reasons';
 import PrivateRoutes from './components/Route';
 import Search from './components/Search/Search';
+import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner';
+import { PageTransition } from '@steveeeie/react-page-transition';
+import Admin from './components/AdminDashboard/Admin';
+import Success from './components/Notifications/Success/Success';
 
 const App = () => {
 
@@ -71,7 +75,8 @@ const App = () => {
           <Route exact path="/cart" element={<Cart />} />
           <Route exact path='/contact' element={<Contact />} />
           <Route exact path="/search" element={<Search/>} />
-
+          <Route exact path='/spinner' element={<LoadingSpinner/>}/>
+          
           <Route element={<PrivateRoutes isAdmin={false} />}>
             <Route exact path='/checkout' element={<Shipping />} />
             <Route exact path='/profile' element={<Profile />} />
@@ -99,6 +104,8 @@ const App = () => {
             <Route exact path='/admin/orders' element={<OrderList />} />
             <Route exact path='/admin/users' element={<UsersList />} />
             <Route exact path='/admin/user/:id' element={<UpdateUser />} />
+            <Route exact path='/admin/chat' element={<Admin />} />
+
           </Route>
           
         </Routes>

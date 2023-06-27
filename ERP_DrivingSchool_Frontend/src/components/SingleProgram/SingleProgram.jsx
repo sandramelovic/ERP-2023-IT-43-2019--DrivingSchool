@@ -9,10 +9,12 @@ import '../SingleProgram/SingleProgram.css'
 import { message } from 'antd'
 import { getProductDetails, getProduct } from "../../redux/actions/productAction";
 import useSelection from "antd/es/table/hooks/useSelection";
-import { setCategory, setProgramType } from "../../redux/actions/categoryActions";
+import { setCategory, setProgramType, setShortCategoryByCategoryId } from "../../redux/actions/categoryActions";
 import image from '../../assets/CarTheory.png'
 import uploadPhotoGrayBack from '../../assets/uploadPhotoGrayBack.png'
 import { useNavigate } from 'react-router-dom';
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 
 const SingleProgram = () => {
 
@@ -24,7 +26,29 @@ const SingleProgram = () => {
     const { id } = useParams();
     const { product, loading, error } = useSelector((state) => state.productDetails)
     const { products } = useSelector((state) => state.products)
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const user = JSON.parse(localStorage.getItem('user'))?.data.user
+    const handleNotificationClick = () => {
+      setShowSuccessMessage(true);
+      
+      if (localStorage.getItem(user.userId)) {
+        console.log(localStorage.getItem(user.userId))
+        const storedArray = JSON.parse(localStorage.getItem(user.userId));
+        if (storedArray.includes(product.programId)) {
+            message.error('Već ste kliknuli na obaveštenje!');
+            return;
+          }
+        storedArray.push(product.programId);
+        localStorage.setItem(user.userId, JSON.stringify(storedArray));
+        message.success(`Bićete obavešteni kada ${setProgramType(product.programTypeId).toLowerCase()} ${setShortCategoryByCategoryId(product.categoryId)} kategorije bude na akciji`)
+      } else {
+        const newArray = [product.programId];
+        localStorage.setItem(user.userId, JSON.stringify(newArray));
+        message.success(`Bićete obavešteni kada ${setProgramType(product.programTypeId).toLowerCase()} ${setShortCategoryByCategoryId(product.categoryId)} kategorije bude na akciji`)
+      }
 
+    };
+    
     const addSingleProgram = (singleProgram) => {
         const hasDuplicates = state.some((obj) => {
             return obj.programId === singleProgram.programId;
@@ -43,7 +67,7 @@ const SingleProgram = () => {
         dispatch(getProduct())
         if (id) {
             dispatch(getProductDetails(id));
-          }
+        }
     }, [dispatch, id])
 
     const Loading = () => {
@@ -69,16 +93,16 @@ const SingleProgram = () => {
 
     const ShowSingleProduct = () => {
         if (!product) {
-            return null; 
-          }
+            return null;
+        }
         let imgString = products.find((item) => item.programId === product.programId)?.programImage
 
         const imagePath = imgString ? require(`../../assets/${imgString}`) : uploadPhotoGrayBack;
 
         return (
             <>
-                <div className="col-md-6">
 
+                <div className="col-md-6">
                     <img
                         src={imagePath ? imagePath : uploadPhotoGrayBack}
                         class="border border-warning border-5"
@@ -88,7 +112,15 @@ const SingleProgram = () => {
                 </div>
                 <div className="col-md-6">
                     <h4 className="text-uppercase text-light">
-                        Kategorija: {product.categoryId}
+                        Kategorija: {setShortCategoryByCategoryId(product.categoryId)}
+                        <span className="notification">
+                            <span className="icon">
+                                <span className="icon-text" onClick={handleNotificationClick}>
+                                    <NotificationsActiveIcon style={{ fontSize: '3rem' }}>Zvono</NotificationsActiveIcon>
+                                    <span className="info-text">Klikni i budi obavešten/a kada program bude na sniženju!</span>
+                                </span>
+                            </span>
+                        </span>
                     </h4>
                     <h1 className="display-5 text-warning">
                         Polaži <u>{(setProgramType(product.programTypeId).slice(0, -1)).toLowerCase()}u</u> kategorije: <u>{setCategory(product.categoryId).toLowerCase()}</u>
@@ -117,7 +149,7 @@ const SingleProgram = () => {
             <hr style={{ borderColor: "white" }} />
             <div className="container py-5">
                 <div className="row py-5">
-                    {loading ? <Loading /> : <ShowSingleProduct />}
+                    {loading ? <LoadingSpinner /> : <ShowSingleProduct />}
                 </div>
             </div>
             <Footer />

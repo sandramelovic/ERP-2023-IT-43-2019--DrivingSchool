@@ -1,4 +1,12 @@
 
+.hero-image-back-profile {
+  position: absolute;
+  top: 15rem;
+  right: 0rem;
+  z-index: 1;
+  width: 20rem;
+  opacity: 0.6;
+}
   .profile-wrapper {
     display: block;
     position: absolute;
@@ -30,6 +38,8 @@
     width: 115%;
     height: 100%;
     position: absolute;
+    object-fit: cover;
+
   }
 
 
